@@ -9,7 +9,6 @@
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
-
 <style>
 :root {
   --bg: #f6f6f2;
@@ -400,7 +399,28 @@ canvas {
   padding: 2px 8px;
   font-size: 12px;
 }
+#tb {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  background: var(--panel);
+  border-top: 1px solid var(--line);
+  font-size: 11px;
+  color: var(--mute);
+  overflow-x: auto;
+}
+#tb button {
+  padding: 2px 9px;
+  font-size: 11px;
+  border-radius: 12px;
+  white-space: nowrap;
+}
+#tb span {
+  margin-right: 4px;
+}
 #st {
+  display: none;
   padding: 6px 10px;
   background: var(--panel);
   border-top: 1px solid var(--line);
@@ -467,15 +487,15 @@ canvas {
   <span class="sep"></span>
   <button id="matbtn" title="List all framing materials required">Materials</button><input id="seedin" type="text" inputmode="numeric" placeholder="Seed" title="Seed for Random Build (leave blank for a new random seed)" style="margin-left:auto;width:72px"><button id="rnd" title="Generate a random building from a seed">Random Build</button><button id="undo" title="Undo (Ctrl+Z)">Undo</button><button id="redo" title="Redo (Ctrl+Y)">Redo</button><span id='vm' class='seg' title='View'><button data-v='both' class='on'>Split</button><button data-v='2d'>2D</button><button data-v='3d'>3D</button></span><button id='sidebtn'>Hide properties</button>
 </div>
-<div id="main"><div id='rail'><button data-t='select' class='on' title='Select / move / resize (S)'><svg viewBox='0 0 24 24'><path d='M5 3l14 7-6 2-2 6z'/></svg>Select</button><button data-t='wall' title='Wall (W)'><svg viewBox='0 0 24 24'><path d='M4 19L20 5'/><circle cx='4' cy='19' r='2'/><circle cx='20' cy='5' r='2'/></svg>Wall</button><button data-t='door' title='Door (D)'><svg viewBox='0 0 24 24'><path d='M6 21V3h12v18M3 21h18'/><circle cx='15' cy='12' r='.9'/></svg>Door</button><button data-t='window' title='Window (N)'><svg viewBox='0 0 24 24'><rect x='4' y='4' width='16' height='16'/><path d='M12 4v16M4 12h16'/></svg>Window</button><button data-t='room' title='Room (R)'><svg viewBox='0 0 24 24'><path d='M4 7l8-3 8 4-2 10H6z'/></svg>Room</button><button data-t='stairs' title='Stairs (T)'><svg viewBox='0 0 24 24'><path d='M3 20h6v-5h6v-5h6'/></svg>Stairs</button><button data-t='roof' title='Roof (F)'><svg viewBox='0 0 24 24'><path d='M3 12l9-8 9 8M6 10v9h12v-9'/></svg>Roof</button><button data-t='dormer' title='Dormer'><svg viewBox='0 0 24 24'><path d='M3 20l9-9 9 9M8 20v-5l4-4 4 4v5M10 20v-3h4v3'/></svg>Dormer</button><button data-t='foundation' title='Foundation (G)'><svg viewBox='0 0 24 24'><path d='M3 20h18M5 20v-6h14v6M8 14V9h8v5'/></svg>Found.</button><button data-t='fsys' title='Floor System (J)'><svg viewBox='0 0 24 24'><path d='M3 6h18M3 18h18M7 6v12M12 6v12M17 6v12'/></svg>Joists</button><button data-t='deck' title='Deck (K)'><svg viewBox='0 0 24 24'><path d='M3 8h18M3 12h18M3 16h18M5 8v12M19 8v12M3 8l2-3h14l2 3'/></svg>Deck</button><button data-t='cabinet' title='Cabinet (C)'><svg viewBox='0 0 24 24'><rect x='3' y='5' width='18' height='14'/><path d='M12 5v14M9 12h.01M15 12h.01'/></svg>Cabinet</button><button data-t='measure' title='Measure (M)'><svg viewBox='0 0 24 24'><path d='M3 17l14-14 4 4L7 21z'/><path d='M7 13l2 2M10 10l2 2M13 7l2 2'/></svg>Measure</button><button id='snapbtn' title='Wall snap: Center'><svg viewBox='0 0 24 24'><rect x='9' y='3' width='6' height='18'/><circle cx='12' cy='12' r='2'/></svg><span id='snapl'>Snap: Center</span></button><button id='frm2' title='Show framing for all objects' style='margin-top:auto'><svg viewBox='0 0 24 24'><rect x='3' y='3' width='18' height='18'/><path d='M8 3v18M12 3v18M16 3v18M3 8h18'/></svg>Framing</button></div>
+<div id="main"><div id='rail'><button data-t='select' class='on' title='Select / move / resize (S)'><svg viewBox='0 0 24 24'><path d='M5 3l14 7-6 2-2 6z'/></svg>Select</button><button data-t='wall' title='Wall (W)'><svg viewBox='0 0 24 24'><path d='M4 19L20 5'/><circle cx='4' cy='19' r='2'/><circle cx='20' cy='5' r='2'/></svg>Wall</button><button data-t='door' title='Door (D)'><svg viewBox='0 0 24 24'><path d='M6 21V3h12v18M3 21h18'/><circle cx='15' cy='12' r='.9'/></svg>Door</button><button data-t='window' title='Window (N)'><svg viewBox='0 0 24 24'><rect x='4' y='4' width='16' height='16'/><path d='M12 4v16M4 12h16'/></svg>Window</button><button data-t='path' title='Path: driveways and walkways (P)'><svg viewBox='0 0 24 24'><path d='M5 21c0-7 7-5 7-10s-4-4-4-8M19 21c0-7-7-5-7-10'/></svg>Path</button><button data-t='stairs' title='Stairs (T)'><svg viewBox='0 0 24 24'><path d='M3 20h6v-5h6v-5h6'/></svg>Stairs</button><button data-t='roof' title='Roof (F)'><svg viewBox='0 0 24 24'><path d='M3 12l9-8 9 8M6 10v9h12v-9'/></svg>Roof</button><button data-t='dormer' title='Dormer'><svg viewBox='0 0 24 24'><path d='M3 20l9-9 9 9M8 20v-5l4-4 4 4v5M10 20v-3h4v3'/></svg>Dormer</button><button data-t='foundation' title='Foundation (G)'><svg viewBox='0 0 24 24'><path d='M3 20h18M5 20v-6h14v6M8 14V9h8v5'/></svg>Found.</button><button data-t='fsys' title='Floor System (J)'><svg viewBox='0 0 24 24'><path d='M3 6h18M3 18h18M7 6v12M12 6v12M17 6v12'/></svg>Joists</button><button data-t='deck' title='Deck (K)'><svg viewBox='0 0 24 24'><path d='M3 8h18M3 12h18M3 16h18M5 8v12M19 8v12M3 8l2-3h14l2 3'/></svg>Deck</button><button data-t='cabinet' title='Cabinet (C)'><svg viewBox='0 0 24 24'><rect x='3' y='5' width='18' height='14'/><path d='M12 5v14M9 12h.01M15 12h.01'/></svg>Cabinet</button><button data-t='measure' title='Measure (M)'><svg viewBox='0 0 24 24'><path d='M3 17l14-14 4 4L7 21z'/><path d='M7 13l2 2M10 10l2 2M13 7l2 2'/></svg>Measure</button><button id='snapbtn' title='Wall snap: Center'><svg viewBox='0 0 24 24'><rect x='9' y='3' width='6' height='18'/><circle cx='12' cy='12' r='2'/></svg><span id='snapl'>Snap: Center</span></button><button id='frm2' title='Show framing for all objects' style='margin-top:auto'><svg viewBox='0 0 24 24'><rect x='3' y='3' width='18' height='18'/><path d='M8 3v18M12 3v18M16 3v18M3 8h18'/></svg>Framing</button></div>
   <div class="pane" id="p2"><canvas id="c2"></canvas><div class="tag">2D plan · wheel zoom · right-click cancels · right/middle-drag pans</div></div>
   <div class="pane" id="p3"><canvas id="c3"></canvas><div class="tag">3D view · drag orbit · wheel zoom</div></div>
 <div id='side'><div id='props'></div><details id='terrd'><summary>Terrain</summary><div id='terrBody'></div></details><details id='furnd'><summary>Furniture / Appliances</summary><div id='furnList'></div></details><details><summary>Floors</summary><div id='flList'></div><div class='r fb'><button id='addf2'>+ Add</button><button id='delf2'>− Remove</button></div></details><details><summary>Objects</summary><div class='r fb'><button id='frm' title='Show framing for all objects'>▦ Framing: all</button></div><div id='obList'></div></details></div></div>
+<div id='tb'><span>View</span><button data-vw='grid' title='Plan grid'>Grid</button><button data-vw='dims' title='Wall dimensions (zoom in to see them)'>Dimensions</button><button data-vw='labels' title='Room names and areas'>Room labels</button><button data-vw='land' title='3 ft stair landing zones'>Landings</button><button data-vw='roofs' title='Show roofs and dormers'>Roofs</button><button data-vw='fram' title='Show framing for all objects'>Framing</button><button data-vw='terr' title='Terrain and trees in 3D'>Terrain</button><button data-vw='sky' title='Sky in 3D'>Sky</button></div>
 <div id='st'>Select: click to select, drag to move, drag a square handle to resize. Delete removes. Q rotates stairs.</div>
 <div id='fly'></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-/*
+<script>/*
  * CADieux — single-file home design program.
  *
  * Layout of this script
@@ -493,6 +513,7 @@ const FH = 8.5,
     cf: 0,
     roof: {type: 'gable', pitch: 6},
     terr: {on: true, seed: 7},
+    paths: [],
   };
 ['walls', 'rooms', 'stairs', 'roofs'].forEach((k) =>
   Object.defineProperty(M, k, {
@@ -523,6 +544,10 @@ let allAt = -1,
   first = true;
 const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const status = (s) => ($('st').textContent = s);
+var VW = {grid: true, dims: true, labels: true, land: true, sky: true, roofs: true};
+try {
+  Object.assign(VW, JSON.parse(localStorage.getItem('cadieux.vw') || '{}'));
+} catch (e) {}
 const geom = (w) => {
   const [ax, ay] = w.a,
     [bx, by] = w.b,
@@ -803,7 +828,8 @@ function renderLists() {
     (M.terr && M.terr.on ? 'seed ' + (M.terr.seed || 7) : 'off') +
     ' <b class=eye title=Hide/show style=cursor:pointer>' +
     (M.terr && M.terr.on ? '\u25c9' : '\u25cb') +
-    '</b></span></div>';
+    '</b></span></div>' +
+    pathListHtml();
   $('obList').innerHTML = M.floors
     .map((F, fi) => {
       let h = '<div class=hd>' + fname(fi) + '</div>';
@@ -924,6 +950,23 @@ $('frm').onclick = $('frm2').onclick = () =>
     M.framing = !M.framing;
   });
 $('flList').onclick = (e) => {
+  const pa = e.target.closest('[data-path]');
+  if (pa) {
+    const o = (M.paths || [])[+pa.dataset.path];
+    if (!o) return;
+    if (e.target.closest('.eye')) {
+      mut(() => {
+        o.hid = !o.hid;
+        if (sel && sel.o === o) sel = null;
+      });
+      return;
+    }
+    M.cf = pathFloor();
+    setTool('select');
+    sel = {t: 'path', o};
+    changed();
+    return;
+  }
   const tr = e.target.closest('[data-terr]');
   if (tr) {
     if (e.target.closest('.eye')) {
@@ -1027,6 +1070,7 @@ function renderTerr() {
     row('Show', '<select id=t_on><option value=1>On</option><option value=0>Off</option></select>') +
     row('Seed', num('t_seed', T.seed || 7)) +
     row('Hill height (ft)', num('t_amp', T.amp == null ? 6 : T.amp)) +
+    row('Elevation (ft)', num('t_el', T.elev || 0)) +
     row('Flat margin (ft)', num('t_pad', T.pad == null ? 8 : T.pad)) +
     row('Blend (ft)', num('t_bl', T.blend == null ? 34 : T.blend)) +
     row('Trees', '<select id=t_tr><option value=1>On</option><option value=0>Off</option></select>') +
@@ -1040,6 +1084,7 @@ function renderTerr() {
   B('t_on', (v) => mut(() => (T.on = v === '1')));
   B('t_seed', (v) => mut(() => (T.seed = Math.round(+v))));
   B('t_amp', (v) => mut(() => (T.amp = Math.max(0, +v))));
+  B('t_el', (v) => mut(() => (T.elev = Math.max(-60, Math.min(60, +v || 0)))));
   B('t_pad', (v) => mut(() => (T.pad = Math.max(0, +v))));
   B('t_bl', (v) => mut(() => (T.blend = Math.max(1, +v))));
   B('t_tn', (v) => mut(() => (T.tn = Math.max(0, Math.min(300, Math.round(+v))))));
@@ -1091,8 +1136,7 @@ function renderSide() {
       ro('Rooms', M.rooms.length) +
       ro('Stairs', M.stairs.length) +
       ro('Roofs', M.roofs.length) +
-      floorSysUI(M.floors[M.cf]) +
-      '<p class=m>Press S, then click an object to see and edit its properties.</p>';
+      floorSysUI(M.floors[M.cf]);
     S.innerHTML = h;
     floorSysWire(M.floors[M.cf], B);
     const fe = $('p_fn');
@@ -1271,6 +1315,59 @@ function renderSide() {
         clampT(o, w);
       }),
     );
+  } else if (sel.t === 'path') {
+    const o = sel.o;
+    S.innerHTML =
+      '<h3>' +
+      PATHN[o.k] +
+      '</h3>' +
+      NM +
+      row(
+        'Type',
+        '<select id=p_pk><option value=drive>Driveway</option><option value=walk>Walkway</option></select>',
+      ) +
+      row(
+        'Style',
+        '<select id=p_ps>' +
+          Object.keys(PATHST[o.k])
+            .map((k) => '<option value=' + k + '>' + PATHST[o.k][k][0] + '</option>')
+            .join('') +
+          '</select>',
+      ) +
+      row(
+        'Corners',
+        '<select id=p_pc><option value=0>Smooth curves</option><option value=1>Sharp corners</option></select>',
+      ) +
+      row('Width (ft)', num('p_pw', o.w, 0.5)) +
+      ro('Length', fmt(pathLen(o))) +
+      ro('Area', Math.round(pathLen(o) * o.w) + ' sq ft') +
+      ro('Points', o.pts.length) +
+      sty(o, pathStyle(o)[1], pathStyle(o)[2], 1);
+    $('p_pk').value = o.k;
+    $('p_pc').value = o.sharp ? 1 : 0;
+    B('p_pc', (v) => mut(() => (o.sharp = v === '1')));
+    $('p_ps').value = PATHST[o.k][o.st] ? o.st : 'concrete';
+    titleRename(o);
+    B('p_pk', (v) =>
+      mut(() => {
+        o.k = v;
+        o.st = 'concrete';
+        o.color = PATHST[v].concrete[1];
+        o.tex = PATHST[v].concrete[2];
+        if (o.w === PATHD[v === 'drive' ? 'walk' : 'drive'].w) o.w = PATHD[v].w;
+      }),
+    );
+    B('p_ps', (v) =>
+      mut(() => {
+        const S = PATHST[o.k][v];
+        o.st = v;
+        o.color = S[1];
+        o.tex = S[2];
+      }),
+    );
+    B('p_pw', (v) => mut(() => (o.w = Math.max(1, +v))));
+    $('p_c').onchange = () => mut(() => (o.color = $('p_c').value));
+    $('p_x').onchange = () => mut(() => (o.tex = $('p_x').value));
   } else if (sel.t === 'terr') {
     const T = sel.o;
     h =
@@ -1278,6 +1375,7 @@ function renderSide() {
       row('Show', '<select id=p_tn><option value=1>On</option><option value=0>Off</option></select>') +
       row('Seed', num('p_ts', T.seed || 7, 1)) +
       row('Hill height (ft)', num('p_th', T.amp == null ? 6 : T.amp, 0.5)) +
+      row('Elevation (ft)', num('p_te', T.elev || 0, 1)) +
       row('Flat margin (ft)', num('p_tp', T.pad == null ? 8 : T.pad, 1)) +
       row('Blend (ft)', num('p_tb', T.blend == null ? 34 : T.blend, 2)) +
       '<div class="r fb"><button id=p_tr>New random seed</button></div>';
@@ -1291,6 +1389,11 @@ function renderSide() {
     B('p_ts', (v) =>
       mut(() => {
         T.seed = Math.round(+v);
+      }),
+    );
+    B('p_te', (v) =>
+      mut(() => {
+        T.elev = Math.max(-60, Math.min(60, +v || 0));
       }),
     );
     B('p_th', (v) =>
@@ -1863,21 +1966,45 @@ function renderSide() {
     h =
       '<h3>Stairs</h3>' +
       NM +
-      row('Width (ft)', num('p_w', s.w, 0.5)) +
-      row('Run (ft)', num('p_l', s.len, 0.5)) +
+      row(
+        'Style',
+        '<select id=p_sty><option value=straight>Straight</option><option value=L>L-shaped</option><option value=U>U-shaped</option><option value=spiral>Spiral</option></select>',
+      ) +
+      (s.style
+        ? row('Turn', '<select id=p_hd><option value=1>Left</option><option value=-1>Right</option></select>')
+        : '') +
+      row(s.style === 'spiral' ? 'Radius (ft)' : 'Width (ft)', num('p_w', s.w, 0.5)) +
+      (s.style === 'spiral' ? '' : row(s.style ? 'First run (ft)' : 'Run (ft)', num('p_l', s.len, 0.5))) +
       row(
         'Direction',
         '<select id=p_r><option value=0>East</option><option value=1>North</option><option value=2>West</option><option value=3>South</option></select>',
       ) +
-      row('Start X (ft)', num('p_x', s.x, 0.5)) +
-      row('Start Y (ft)', num('p_y', s.y, 0.5)) +
+      row(s.style === 'spiral' ? 'Center X (ft)' : 'Start X (ft)', num('p_x', s.x, 0.5)) +
+      row(s.style === 'spiral' ? 'Center Y (ft)' : 'Start Y (ft)', num('p_y', s.y, 0.5)) +
+      sty(s, '#b08a5a', 'none', 1) +
       stairInfo(s) +
-      railUI(s) +
-      sty(s, '#b08a5a', 'none', 1);
+      railUI(s);
     S.innerHTML = h;
     bsty(s);
     $('p_r').value = s.rot;
+    $('p_sty').value = s.style || 'straight';
+    if ($('p_hd')) $('p_hd').value = s.hd === -1 ? -1 : 1;
     railWire(s, B);
+    B('p_sty', (v) =>
+      mut(() => {
+        const tr = s.style === 'spiral' ? 10 / 12 : s.len / (s.style ? 6 : 14);
+        if (v === 'straight') {
+          delete s.style;
+          delete s.hd;
+          s.len = tr * 14;
+        } else {
+          s.style = v;
+          s.hd = s.hd === -1 ? -1 : 1;
+          if (v !== 'spiral') s.len = tr * 6;
+        }
+      }),
+    );
+    B('p_hd', (v) => mut(() => (s.hd = +v === -1 ? -1 : 1)));
     B('p_w', (v) => mut(() => (s.w = Math.max(1, +v))));
     B('p_l', (v) => mut(() => (s.len = Math.max(3, +v))));
     B('p_r', (v) => mut(() => (s.rot = +v)));
@@ -1893,13 +2020,48 @@ function refreshUI() {
   $('delf2').disabled = M.floors.length < 2;
   $('frm').classList.toggle('on', !!M.framing);
   $('frm2').classList.toggle('on', !!M.framing);
+  tbSync();
 }
+function tbSync() {
+  const on = {...VW, fram: !!M.framing, terr: !(M.terr && M.terr.on === false)};
+  document.querySelectorAll('#tb [data-vw]').forEach((b) => b.classList.toggle('on', !!on[b.dataset.vw]));
+  try {
+    sky.visible = !!VW.sky;
+  } catch (e) {}
+}
+$('tb').onclick = (e) => {
+  const b = e.target.closest('[data-vw]');
+  if (!b) return;
+  const k = b.dataset.vw;
+  if (k === 'fram')
+    mut(() => {
+      M.framing = !M.framing;
+    });
+  else if (k === 'terr')
+    mut(() => {
+      M.terr = M.terr || {on: true, seed: 7};
+      M.terr.on = !M.terr.on;
+    });
+  else {
+    VW[k] = !VW[k];
+    try {
+      localStorage.setItem('cadieux.vw', JSON.stringify(VW));
+    } catch (e) {}
+    tbSync();
+    if (k === 'roofs') build3();
+    draw2();
+    try {
+      render();
+    } catch (e) {}
+  }
+};
 function setM(d) {
   M.floors = d.floors || [{walls: d.walls, rooms: d.rooms, stairs: []}];
   M.cf = d.cf || 0;
   M.bsmt = d.bsmt || 0;
   M.framing = !!d.framing;
   M.terr = d.terr || {on: true, seed: 7};
+  M.paths = d.paths || [];
   M.roof = d.roof || M.roof;
   sel = null;
   msel = [];
@@ -1938,7 +2100,7 @@ function sample() {
         ],
       },
     ],
-    stairs: [{x: 17, y: 3, w: 3.5, len: 10, rot: 0, name: 'Main stairs'}],
+    stairs: [{x: 27, y: 3.5, w: 3.5, len: 10, rot: 1, name: 'Main stairs'}],
     roofs: [],
     foundations: [{type: 'stem', d: 3, x0: -0.5, y0: -0.5, x1: 30.5, y1: 20.5, name: 'Stem wall'}],
   };
@@ -1952,16 +2114,17 @@ function sample() {
     open: [{t: 0.5, w: 3, kind: 'door', dt: 'pocket', name: 'Pocket door'}],
     name: 'Partition',
   });
+  /* openings keep clear of the partition (x = 15) and of the stair */
   f0.walls[0].open.push(
     {t: 0.2, w: 3, kind: 'door', dt: 'hinged', name: 'Front door'},
-    {t: 0.5, w: 3, kind: 'window', wt: 'dh'},
-    {t: 0.8, w: 3, kind: 'window', wt: 'dh'},
+    {t: 0.4, w: 3, kind: 'window', wt: 'dh'},
+    {t: 0.62, w: 3, kind: 'window', wt: 'dh'},
+    {t: 0.85, w: 3, kind: 'window', wt: 'dh'},
   );
-  f0.walls[1].open.push({t: 0.5, w: 4, kind: 'window', wt: 'fixed'});
+  f0.walls[1].open.push({t: 0.7, w: 4, kind: 'window', wt: 'fixed'});
   f0.walls[2].open.push(
-    {t: 0.2, w: 2.5, kind: 'window', wt: 'casement'},
-    {t: 0.55, w: 6, kind: 'door', dt: 'slider', name: 'Patio door'},
-    {t: 0.85, w: 2.5, kind: 'window', wt: 'casement'},
+    {t: 0.3, w: 2.5, kind: 'window', wt: 'casement'},
+    {t: 0.75, w: 6, kind: 'door', dt: 'slider', name: 'Patio door'},
   );
   f0.walls[3].open.push({t: 0.5, w: 3, kind: 'window', wt: 'awning'});
   const f1 = {
@@ -2000,8 +2163,130 @@ function sample() {
   M.cf = 0;
   M.bsmt = 0;
   M.framing = false;
+  M.terr = {on: true, seed: 7};
+  /* a walkway from the front door and a driveway to the street */
+  M.paths = [
+    {
+      k: 'walk',
+      pts: [
+        [6, -1.2],
+        [6, -10],
+        [14, -16],
+      ],
+      w: 4,
+      st: 'flagstone',
+      color: '#9a948a',
+      tex: 'stone',
+      name: 'Front walk',
+    },
+    {
+      k: 'drive',
+      pts: [
+        [14, -16],
+        [24, -24],
+        [24, -50],
+      ],
+      w: 12,
+      st: 'asphalt',
+      color: '#4a4d52',
+      tex: 'none',
+      name: 'Driveway',
+    },
+  ];
+  /* furnish both floors; furnPlace snaps each piece to the nearest wall */
+  const furnish = (fi, L) => {
+    M.cf = fi;
+    L.forEach(([k, pt]) => {
+      const D = FURN[k],
+        pl = furnPlace(pt, k, 0);
+      (M.floors[fi].furn = M.floors[fi].furn || []).push({
+        k,
+        c: pl.c,
+        rot: pl.rot,
+        w: D[2],
+        d: D[3],
+        h: D[4],
+        color: D[5],
+      });
+    });
+  };
+  furnish(0, [
+    ['sofa', [1, 14]],
+    ['tvstand', [14, 14]],
+    ['coffee', [8, 14]],
+    ['armchair', [1, 5]],
+    ['fridge', [16.5, 19]],
+    ['range', [19, 19]],
+    ['ksink', [21.5, 19]],
+    ['dishwasher', [24, 19]],
+    ['dining', [21, 11]],
+  ]);
+  furnish(1, [
+    ['bedqueen', [15, 19]],
+    ['night', [12, 19]],
+    ['night', [18, 19]],
+    ['dresser', [15, 1]],
+  ]);
+  /* two gable dormers on the front slope of the roof */
+  [
+    [9, 3],
+    [21, 3],
+  ].forEach((pt) => {
+    const D = dormDefault(pt);
+    if (!D) return;
+    const fi = D._fi;
+    delete D._fi;
+    D.color = '#e6dfd0';
+    D.tex = 'siding';
+    D.win = true;
+    (M.floors[fi].dormers = M.floors[fi].dormers || []).push(D);
+  });
+  M.cf = 0;
 }
 
+/* keep doors and windows clear of wall junctions: any opening whose span would run into a wall ending on (or crossing) its wall,
+   or into a corner, is slid to the nearest clear spot, or dropped when there is none */
+function clearJunctions(F) {
+  const MG = 0.3;
+  F.walls.forEach((w) => {
+    if (!w.open || !w.open.length) return;
+    const dx = w.b[0] - w.a[0],
+      dy = w.b[1] - w.a[1],
+      L = Math.hypot(dx, dy);
+    if (L < 0.5) return;
+    const ux = dx / L,
+      uy = dy / L,
+      hit = [[0, w.t / 2]];
+    hit.push([L, w.t / 2]);
+    F.walls.forEach((v) => {
+      if (v === w) return;
+      [v.a, v.b].forEach((p) => {
+        const px = p[0] - w.a[0],
+          py = p[1] - w.a[1],
+          u = px * ux + py * uy,
+          d = Math.abs(-px * uy + py * ux);
+        if (u > -0.5 && u < L + 0.5 && d <= (w.t + v.t) / 2 + 0.2) hit.push([u, v.t / 2]);
+      });
+    });
+    const kept = [],
+      free = (u, o) =>
+        u - o.w / 2 >= MG &&
+        u + o.w / 2 <= L - MG &&
+        hit.every((h) => Math.abs(u - h[0]) >= o.w / 2 + h[1] + MG) &&
+        kept.every((k) => Math.abs(u - k.t * L) >= (o.w + k.w) / 2 + 0.3);
+    w.open.forEach((o) => {
+      const u0 = o.t * L;
+      let best = null;
+      for (let d = 0; d <= L / 2 && best === null; d += 0.25)
+        for (const s of d ? [-1, 1] : [1]) if (best === null && free(u0 + s * d, o)) best = u0 + s * d;
+      if (best !== null) {
+        o.t = best / L;
+        kept.push(o);
+      }
+    });
+    w.open = kept;
+  });
+}
 function randomBuild(seed) {
   let a = seed >>> 0;
   const rnd = () => {
@@ -2243,17 +2528,116 @@ function randomBuild(seed) {
       name: bsm ? 'Basement' : 'Foundation',
     },
   ];
+  floors.forEach(clearJunctions);
   M.floors = floors;
   M.cf = 0;
   M.bsmt = 0;
   M.framing = false;
   M.terr = {on: true, seed: (seed % 997) + 1};
+  {
+    const fd = floors.flatMap((F) => F.walls).find((w) => w.open.some((o) => o.name === 'Front door')),
+      fo = fd && fd.open.find((o) => o.name === 'Front door'),
+      fx = fd ? fd.a[0] + (fd.b[0] - fd.a[0]) * fo.t : W * 0.25;
+    const ws = pick(['concrete', 'flagstone', 'brick', 'gravel']),
+      ds = pick(['concrete', 'asphalt', 'pavers', 'gravel']);
+    M.paths = [
+      {
+        k: 'walk',
+        pts: [
+          [fx, -1.2],
+          [fx, -12],
+          [W * 0.62, -18],
+        ],
+        w: 4,
+        st: ws,
+        color: PATHST.walk[ws][1],
+        tex: PATHST.walk[ws][2],
+        name: 'Front walk',
+      },
+      {
+        k: 'drive',
+        pts: [
+          [W * 0.62, -18],
+          [W * 0.78, -26],
+          [W * 0.78, -60],
+        ],
+        w: 12,
+        st: ds,
+        color: PATHST.drive[ds][1],
+        tex: PATHST.drive[ds][2],
+        name: 'Driveway',
+      },
+    ];
+  }
   if (bsm) {
     const fo = f0.foundations[0];
     addBasement(fo);
     M.floors[0].stairs.push({x: xs / 2, y: 1.5, w: 3.5, len: 10, rot: 1, name: 'Basement stairs'});
     M.cf = 1;
   }
+  /* every stair needs 3 ft of clear floor at its bottom and top, inside the walls: search for a spot that works */
+  const fit = (s, rx) => {
+    const fi = M.floors.findIndex((F) => F.stairs.includes(s)),
+      m = T6 / 2 - 0.01,
+      inb = (pts) => pts.every((p) => p[0] >= m && p[0] <= W - m && p[1] >= m && p[1] <= D - m),
+      good = () => {
+        const pl = stairPolys(s),
+          L = stairLandings(s);
+        if (!inb(pl.flat()) || !inb(L.bot) || (M.floors[fi + 1] && !inb(L.top))) return false;
+        /* keep 3 ft clear of every door: the stair and its bottom landing on this floor, its top landing above */
+        if (pl.some((P) => nearDoor(fi, P, 3)) || nearDoor(fi, L.bot, 3) || nearDoor(fi + 1, L.top, 3))
+          return false;
+        const lc = stairLandCheck(s);
+        return (
+          !lc.bot.blk.length &&
+          !(lc.top.upper && lc.top.blk.length) &&
+          !pl.some((P) => landingBlockers(fi, P, s).some((b) => b === 'wall' || b === 'door swing'))
+        );
+      },
+      ax = (rx[0] + rx[1]) / 2,
+      o = [s.x, s.y, s.rot];
+    let best = null,
+      bd = 1e9;
+    for (const rot of [1, 3, 0, 2])
+      for (let x = rx[0]; x <= rx[1]; x += 0.5)
+        for (let y = 0; y <= D; y += 0.5) {
+          s.rot = rot;
+          s.x = x;
+          s.y = y;
+          const c = stairPolys(s).flat(),
+            cx = (Math.min(...c.map((p) => p[0])) + Math.max(...c.map((p) => p[0]))) / 2,
+            cy = (Math.min(...c.map((p) => p[1])) + Math.max(...c.map((p) => p[1]))) / 2,
+            d = Math.hypot(cx - ax, cy - 4);
+          if (cx < rx[0] || cx > rx[1] || d >= bd || !good()) continue;
+          bd = d;
+          best = [x, y, rot];
+        }
+    if (!best) {
+      [s.x, s.y, s.rot] = o;
+      return false;
+    }
+    [s.x, s.y, s.rot] = best;
+    const b0 = [s.x, s.y];
+    stairSnap(s);
+    if (!good()) [s.x, s.y] = b0;
+    return true;
+  };
+  if (stories === 2 && !fit(f0.stairs[0], [xs, W]) && splitR) {
+    /* the cross partition is in the way: merge the two right-hand rooms and try again */
+    f0.walls = f0.walls.filter((w) => !(w.name === 'Partition' && w.a[1] === ys && w.b[1] === ys));
+    const nr = f0.rooms.filter((r) => r.pts[0][0] === xs && r.pts[0][1] === 0 && r.pts[1][0] === W);
+    if (nr.length === 1 && f0.rooms.length > 2)
+      f0.rooms = f0.rooms.filter((r) => !(r.pts[0][0] === xs && r.pts[0][1] === ys && r.pts[1][0] === W));
+    if (nr.length === 1)
+      nr[0].pts = [
+        [xs, 0],
+        [W, 0],
+        [W, D],
+        [xs, D],
+      ];
+    fit(f0.stairs[0], [xs, W]);
+  }
+  if (bsm) fit(M.floors[0].stairs[0], [0, xs]);
   return {W, D, H: D + D2, L, stories, bsm};
 }
 /* ---------- 2D plan ---------- */
@@ -2308,11 +2692,11 @@ function draw2() {
   x2.clearRect(0, 0, W, H);
   const a = s2w(0, H),
     b = s2w(W, 0);
-  for (let i = Math.floor(a[0]); i <= b[0] + 1; i++) {
+  for (let i = Math.floor(a[0]); VW.grid && i <= b[0] + 1; i++) {
     if (sc < 8 && i % 5) continue;
     line([i, a[1] - 1], [i, b[1] + 1], i % 5 ? css('--grid') : css('--grid5'), 1);
   }
-  for (let j = Math.floor(a[1]); j <= b[1] + 1; j++) {
+  for (let j = Math.floor(a[1]); VW.grid && j <= b[1] + 1; j++) {
     if (sc < 8 && j % 5) continue;
     line([a[0] - 1, j], [b[0] + 1, j], j % 5 ? css('--grid') : css('--grid5'), 1);
   }
@@ -2346,8 +2730,9 @@ function draw2() {
     x2.fillStyle = css('--ink');
     x2.font = '12px system-ui';
     x2.textAlign = 'center';
-    x2.fillText(r.name + '  ' + area(r.pts).toFixed(0) + ' sq ft', q[0], q[1]);
+    if (VW.labels) x2.fillText(r.name + '  ' + area(r.pts).toFixed(0) + ' sq ft', q[0], q[1]);
   });
+  if (M.cf === pathFloor()) (M.paths || []).forEach((o) => !o.hid && drawPath2(o));
   if (M.cf > 0 && !M.floors[M.cf - 1].hid) {
     const B = M.floors[M.cf - 1];
     B.walls.forEach((w) => line(w.a, w.b, css('--grid5'), Math.max(1, w.t * sc)));
@@ -2368,11 +2753,13 @@ function draw2() {
   (M.floors[M.cf].furn || []).forEach((o) => {
     if (!o.hid) drawFurn2(o, sel && sel.o === o);
   });
-  M.floors.forEach((F) =>
-    (F.dormers || []).forEach((o) => {
-      if (!o.hid) drawDorm2(o, sel && sel.o === o);
-    }),
-  );
+  /* dormers belong to the roof: only shown in the plan when the Roof view is selected */
+  if (roofAt === M.cf)
+    M.floors.forEach((F) =>
+      (F.dormers || []).forEach((o) => {
+        if (!o.hid) drawDorm2(o, sel && sel.o === o);
+      }),
+    );
   (M.floors[M.cf].rails || []).forEach((r) => {
     if (!r.hid) {
       const on = sel && sel.o === r;
@@ -2438,7 +2825,7 @@ function draw2() {
   });
   drawFnds();
   drawRoofs();
-  if (sc > 9) M.walls.filter((w) => !w.hid).forEach(dim);
+  if (sc > 9 && VW.dims) M.walls.filter((w) => !w.hid).forEach(dim);
   drawSel();
   drawMs();
   drawMeas();
@@ -2484,6 +2871,17 @@ function draw2() {
         Math.hypot(cur[0] - sa[0], cur[1] - sa[1]).toFixed(1) +
         ' ft' +
         (ag != null ? '  ·  inside angle ' + ag + '°' : ''),
+    );
+  }
+  if (tool === 'path' && roomPts.length) {
+    const D = PATHD[pathType],
+      P = [...roomPts, cur];
+    drawPath2({k: pathType, pts: P, w: D.w, color: D.color}, true);
+    status(
+      PATHN[pathType] +
+        ' ' +
+        fmt(pathLen({pts: P})) +
+        ' · click to add points, Enter or double-click to finish, Esc cancels',
     );
   }
   if (tool === 'room' && roomPts.length) {
@@ -2564,10 +2962,150 @@ const sd = (s) => {
     n = [-d[1], d[0]];
   return {d, n, P: (u, v) => [s.x + d[0] * u + n[0] * v, s.y + d[1] * u + n[1] * v]};
 };
-function stairBox(s) {
-  const q = sd(s);
-  return [q.P(0, -s.w / 2), q.P(s.len, -s.w / 2), q.P(s.len, s.w / 2), q.P(0, s.w / 2)];
+/* stair styles: straight, L (one turn), U (switchback), spiral. A stair is a list of parts: straight runs, landings, or a spiral */
+const STAIRN = {
+    straight: 'Straight',
+    Ll: 'L-shaped (turn left)',
+    Lr: 'L-shaped (turn right)',
+    Ul: 'U-shaped (left)',
+    Ur: 'U-shaped (right)',
+    spiral: 'Spiral',
+  },
+  STAIRS = {
+    straight: ['straight', 1],
+    Ll: ['L', 1],
+    Lr: ['L', -1],
+    Ul: ['U', 1],
+    Ur: ['U', -1],
+    spiral: ['spiral', 1],
+  },
+  SP_DA = (24 * Math.PI) / 180,
+  SP_R0 = 0.4;
+var stairType = 'straight';
+const frN = (d) => [-d[1], d[0]],
+  frP = (p, u, v) => [p.o[0] + p.d[0] * u - p.d[1] * v, p.o[1] + p.d[1] * u + p.d[0] * v];
+function newStair(c) {
+  const [st, hd] = STAIRS[stairType],
+    s = {x: c[0], y: c[1], w: 3, len: st === 'L' || st === 'U' ? 5 : 10, rot: 0};
+  if (st !== 'straight') {
+    s.style = st;
+    s.hd = hd;
+  }
+  return s;
 }
+function stairParts(s) {
+  const q = sd(s),
+    st = s.style || 'straight',
+    hd = s.hd === -1 ? -1 : 1,
+    w = s.w;
+  if (st === 'spiral')
+    return [{k: 'spiral', c: [s.x, s.y], R: w, a0: (s.rot * Math.PI) / 2, hd, n: 14, s0: 0, w}];
+  const o = [s.x, s.y];
+  if (st === 'straight') return [{k: 'run', o, d: q.d, len: s.len, n: 14, s0: 0, w}];
+  const tr = s.len / 6,
+    A = {k: 'run', o, d: q.d, len: s.len, n: 6, s0: 0, w},
+    P = (u, v) => q.P(u, v);
+  if (st === 'L') {
+    const d2 = [q.n[0] * hd, q.n[1] * hd];
+    return [
+      A,
+      {k: 'land', o: P(s.len + w / 2, 0), d: q.d, a: w, b: w, s0: 6, w},
+      {k: 'run', o: P(s.len + w / 2, (hd * w) / 2), d: d2, len: 7 * tr, n: 7, s0: 7, w},
+    ];
+  }
+  return [
+    A,
+    {k: 'land', o: P(s.len + w / 2, (hd * w) / 2), d: q.d, a: w, b: 2 * w, s0: 6, w},
+    {k: 'run', o: P(s.len, hd * w), d: [-q.d[0], -q.d[1]], len: 7 * tr, n: 7, s0: 7, w},
+  ];
+}
+function partQuad(p) {
+  if (p.k === 'spiral') {
+    const [x, y] = p.c,
+      R = p.R;
+    return [
+      [x - R, y - R],
+      [x + R, y - R],
+      [x + R, y + R],
+      [x - R, y + R],
+    ];
+  }
+  const n = frN(p.d),
+    a = p.k === 'land' ? p.a / 2 : 0,
+    b = (p.k === 'land' ? p.b : p.w) / 2,
+    c = p.o;
+  if (p.k === 'land')
+    return [
+      [-1, -1],
+      [1, -1],
+      [1, 1],
+      [-1, 1],
+    ].map(([i, j]) => [c[0] + p.d[0] * a * i + n[0] * b * j, c[1] + p.d[1] * a * i + n[1] * b * j]);
+  return [frP(p, 0, -b), frP(p, p.len, -b), frP(p, p.len, b), frP(p, 0, b)];
+}
+function spStep(p, i) {
+  const a1 = p.a0 + p.hd * i * SP_DA,
+    a2 = a1 + p.hd * SP_DA,
+    pt = (a, r) => [p.c[0] + Math.cos(a) * r, p.c[1] + Math.sin(a) * r],
+    out = [pt(a1, SP_R0)];
+  for (let k = 0; k <= 4; k++) out.push(pt(a1 + ((a2 - a1) * k) / 4, p.R));
+  out.push(pt(a2, SP_R0));
+  return out;
+}
+/* convex outlines for overlap tests, outlines and snapping */
+/* slide a stair so its edge sits flush against a nearby wall face (straight walls only) */
+function stairSnap(s) {
+  if (snapMode === 'off') return;
+  const THR = 0.75,
+    pts = stairPolys(s).flat(),
+    bb = {
+      x0: Math.min(...pts.map((p) => p[0])),
+      x1: Math.max(...pts.map((p) => p[0])),
+      y0: Math.min(...pts.map((p) => p[1])),
+      y1: Math.max(...pts.map((p) => p[1])),
+    };
+  let bx = null,
+    by = null;
+  M.walls.forEach((w) => {
+    if (w.hid) return;
+    const h = w.t / 2,
+      vert = Math.abs(w.a[0] - w.b[0]) < 1e-6,
+      hor = Math.abs(w.a[1] - w.b[1]) < 1e-6;
+    if (vert) {
+      const lo = Math.min(w.a[1], w.b[1]),
+        hi = Math.max(w.a[1], w.b[1]);
+      if (hi < bb.y0 - THR || lo > bb.y1 + THR) return;
+      [w.a[0] + h - bb.x0, w.a[0] - h - bb.x1].forEach((d) => {
+        if (Math.abs(d) <= THR && (bx === null || Math.abs(d) < Math.abs(bx))) bx = d;
+      });
+    } else if (hor) {
+      const lo = Math.min(w.a[0], w.b[0]),
+        hi = Math.max(w.a[0], w.b[0]);
+      if (hi < bb.x0 - THR || lo > bb.x1 + THR) return;
+      [w.a[1] + h - bb.y0, w.a[1] - h - bb.y1].forEach((d) => {
+        if (Math.abs(d) <= THR && (by === null || Math.abs(d) < Math.abs(by))) by = d;
+      });
+    }
+  });
+  if (bx !== null) s.x += bx;
+  if (by !== null) s.y += by;
+}
+function stairPolys(s) {
+  return stairParts(s).map((p) => {
+    if (p.k !== 'spiral') return partQuad(p);
+    return Array.from({length: 16}, (_, i) => [
+      p.c[0] + Math.cos((i * Math.PI) / 8) * p.R,
+      p.c[1] + Math.sin((i * Math.PI) / 8) * p.R,
+    ]);
+  });
+}
+function stairHit(s, pt) {
+  return stairParts(s).some((p) =>
+    p.k === 'spiral' ? Math.hypot(pt[0] - p.c[0], pt[1] - p.c[1]) <= p.R : inside(pt, partQuad(p)),
+  );
+}
+const stairPivot = (s) => (s.style === 'spiral' ? [s.x, s.y] : sd(s).P(s.len / 2, 0)),
+  stairHalf = (s) => (s.style === 'spiral' ? 0 : s.len / 2);
 function winSym(o, pt, h, s0, s1, ext) {
   const p0 = pt,
     es = ext || 1;
@@ -2657,40 +3195,265 @@ function doorSym(o, pt, h, s0, s1) {
 function stairInfo(s) {
   const r2 = (v) => Math.round(v * 100) / 100,
     ro = (l, v) => '<div class=r><span>' + l + '</span><span>' + v + '</span></div>',
+    P = stairParts(s),
+    sp = P[0].k === 'spiral',
+    runs = P.filter((p) => p.k === 'run'),
+    lands = P.filter((p) => p.k === 'land').length,
     n = 14,
     R = flh(M.cf) * 12,
-    run = s.len * 12,
     ris = R / n,
-    tr = run / n,
-    L = Math.hypot(R, run),
-    ang = (Math.atan2(R, run) * 180) / Math.PI,
-    ns = Math.max(2, Math.ceil((s.w * 12) / 16) + 1),
-    ok = ris <= 7.75 && tr >= 10,
+    run = runs.reduce((a, p) => a + p.len * 12, 0),
+    tr = sp ? (SP_R0 + 1) * SP_DA * 12 : Math.min(...runs.map((p) => (p.len * 12) / p.n)),
+    L = sp
+      ? Math.hypot(R, ((SP_R0 + s.w) / 2) * n * SP_DA * 12)
+      : runs.reduce((a, p) => a + Math.hypot((R * p.n) / n, p.len * 12), 0),
+    ang = sp ? 0 : (Math.atan2((R * runs[0].n) / n, runs[0].len * 12) * 180) / Math.PI,
+    ns = sp ? 1 : Math.max(2, Math.ceil((s.w * 12) / 16) + 1) * runs.length,
+    ok = sp ? ris <= 9.5 && tr >= 6.75 : ris <= 7.75 && tr >= 10,
     f = (x) => fmt(x / 12);
   return (
+    ro(
+      'Style',
+      STAIRN[s.style ? s.style + (s.style === 'spiral' ? '' : s.hd === -1 ? 'r' : 'l') : 'straight'],
+    ) +
     ro('Total rise', f(R) + ' (' + r2(R) + ' in)') +
-    ro('Total run', f(run) + ' (' + r2(run) + ' in)') +
+    (sp
+      ? ro('Footprint', 'Ø ' + fmt(s.w * 2))
+      : ro('Total run', f(run) + ' (' + r2(run) + ' in)') +
+        (lands ? ro('Landing', fmt(P[1].a) + ' x ' + fmt(P[1].b)) : '')) +
     ro('Risers', n + ' at ' + r2(ris) + ' in') +
-    ro('Treads', n + ' at ' + r2(tr) + ' in') +
+    ro('Treads', (lands ? n - lands : n) + ' at ' + r2(tr) + ' in' + (sp ? ' (12 in from pole)' : '')) +
     ro('Stringer length', f(L) + ' (' + r2(L) + ' in)') +
-    ro('Stringer angle', r2(ang) + '°') +
+    (sp ? '' : ro('Stringer angle', r2(ang) + '°')) +
     ro('Stringers', '~' + ns + ' at 16 in oc') +
     ro(
       'Code check',
-      ok ? 'OK (riser ≤ 7.75, tread ≥ 10)' : 'Riser ' + r2(ris) + ' / tread ' + r2(tr) + ' out of range',
-    )
+      ok
+        ? sp
+          ? 'OK (riser ≤ 9.5, tread ≥ 6.75)'
+          : 'OK (riser ≤ 7.75, tread ≥ 10)'
+        : 'Riser ' + r2(ris) + ' / tread ' + r2(tr) + ' out of range',
+    ) +
+    (() => {
+      const lc = stairLandCheck(s),
+        txt = (z, none) =>
+          none ? 'no floor above' : z.blk.length ? 'Blocked by ' + [...new Set(z.blk)].join(', ') : 'Clear';
+      return (
+        ro('Bottom landing (' + STAIR_LAND + ' ft)', txt(lc.bot)) +
+        ro('Top landing (' + STAIR_LAND + ' ft)', txt(lc.top, !lc.top.upper))
+      );
+    })()
   );
 }
+/* every stair needs a clear landing, STAIR_LAND ft deep and as wide as the stair, at its bottom and its top */
+const STAIR_LAND = 3;
+function stairLandings(s) {
+  const P = stairParts(s),
+    L = STAIR_LAND,
+    out = (o, d, w) => {
+      const n = frN(d);
+      return [
+        [o[0] - n[0] * (w / 2), o[1] - n[1] * (w / 2)],
+        [o[0] + d[0] * L - n[0] * (w / 2), o[1] + d[1] * L - n[1] * (w / 2)],
+        [o[0] + d[0] * L + n[0] * (w / 2), o[1] + d[1] * L + n[1] * (w / 2)],
+        [o[0] + n[0] * (w / 2), o[1] + n[1] * (w / 2)],
+      ];
+    },
+    f = P[0],
+    l = P[P.length - 1];
+  if (f.k === 'spiral') {
+    const e = (i) => {
+      const a = f.a0 + f.hd * (i + 0.5) * SP_DA,
+        d = [Math.cos(a), Math.sin(a)];
+      return out([f.c[0] + d[0] * f.R, f.c[1] + d[1] * f.R], d, 3);
+    };
+    return {bot: e(0), top: e(13)};
+  }
+  const oe = [l.o[0] + l.d[0] * l.len, l.o[1] + l.d[1] * l.len];
+  return {bot: out(f.o, [-f.d[0], -f.d[1]], f.w), top: out(oe, l.d, l.w)};
+}
+function quadsOverlap(A, B, eps) {
+  eps = eps == null ? 0.03 : eps;
+  for (const P of [A, B])
+    for (let i = 0; i < P.length; i++) {
+      const a = P[i],
+        b = P[(i + 1) % P.length],
+        nx = b[1] - a[1],
+        ny = a[0] - b[0],
+        pr = (Q) => {
+          const v = Q.map((p) => p[0] * nx + p[1] * ny);
+          return [Math.min(...v), Math.max(...v)];
+        },
+        u = pr(A),
+        w = pr(B),
+        l = Math.hypot(nx, ny) || 1;
+      if (u[1] - w[0] <= eps * l || w[1] - u[0] <= eps * l) return false;
+    }
+  return true;
+}
+/* what stands in a landing zone on floor fi (walls, other stairs, furniture, cabinets) */
+function landingBlockers(fi, poly, self) {
+  const F = M.floors[fi],
+    out = [];
+  if (!F) return out;
+  F.walls.forEach((w) => {
+    if (w.hid) return;
+    const g = geom(w),
+      h = w.t / 2;
+    if (
+      quadsOverlap(poly, [
+        [g.ax + g.n[0] * h, g.ay + g.n[1] * h],
+        [g.ax + g.d[0] * g.L + g.n[0] * h, g.ay + g.d[1] * g.L + g.n[1] * h],
+        [g.ax + g.d[0] * g.L - g.n[0] * h, g.ay + g.d[1] * g.L - g.n[1] * h],
+        [g.ax - g.n[0] * h, g.ay - g.n[1] * h],
+      ])
+    )
+      out.push('wall');
+  });
+  /* the swing of a hinged door: a door-wide square on either side of its wall */
+  F.walls.forEach((w) => {
+    if (w.hid) return;
+    const g = geom(w);
+    w.open.forEach((o) => {
+      if (o.hid || o.kind !== 'door' || (o.dt && o.dt !== 'hinged')) return;
+      const s = o.t * g.L,
+        P = (u, v) => [g.ax + g.d[0] * u + g.n[0] * v, g.ay + g.d[1] * u + g.n[1] * v];
+      if (
+        quadsOverlap(poly, [
+          P(s - o.w / 2, -o.w),
+          P(s + o.w / 2, -o.w),
+          P(s + o.w / 2, o.w),
+          P(s - o.w / 2, o.w),
+        ])
+      )
+        out.push('door swing');
+    });
+  });
+  F.stairs.forEach((t) => {
+    if (t !== self && !t.hid && stairPolys(t).some((Q) => quadsOverlap(poly, Q))) out.push('stairs');
+  });
+  (F.furn || []).forEach((o) => {
+    if (!o.hid && quadsOverlap(poly, furnPts(o)))
+      out.push(FURN[o.k] ? FURN[o.k][0].toLowerCase() : 'furniture');
+  });
+  (F.cabs || []).forEach((c) => {
+    if (!c.hid && quadsOverlap(poly, cabPts(c))) out.push('cabinet');
+  });
+  return out;
+}
+/* true when a shape comes within m feet of a door opening on floor fi */
+function nearDoor(fi, poly, m) {
+  const F = M.floors[fi];
+  if (!F) return false;
+  return F.walls.some((w) => {
+    if (w.hid) return false;
+    const g = geom(w);
+    return w.open.some((o) => {
+      if (o.hid || o.kind !== 'door') return false;
+      const s = o.t * g.L,
+        h = o.w / 2 + m,
+        v = w.t / 2 + m,
+        P = (u, k) => [g.ax + g.d[0] * u + g.n[0] * k, g.ay + g.d[1] * u + g.n[1] * k];
+      return quadsOverlap(poly, [P(s - h, -v), P(s + h, -v), P(s + h, v), P(s - h, v)]);
+    });
+  });
+}
+function stairLandCheck(s) {
+  let fi = M.floors.findIndex((F) => F.stairs.includes(s));
+  if (fi < 0) fi = M.cf;
+  const L = stairLandings(s);
+  return {
+    fi,
+    bot: {pts: L.bot, blk: landingBlockers(fi, L.bot, s)},
+    top: {pts: L.top, blk: landingBlockers(fi + 1, L.top, s), upper: !!M.floors[fi + 1]},
+  };
+}
+function drawLanding(z, faint, label) {
+  if (!VW.land) return;
+  const bad = z.blk.length > 0,
+    q = w2s([z.pts.reduce((a, p) => a + p[0], 0) / 4, z.pts.reduce((a, p) => a + p[1], 0) / 4]);
+  x2.save();
+  x2.setLineDash([5, 4]);
+  poly(z.pts, bad ? 'rgba(220,60,60,.16)' : 'rgba(60,160,90,.13)', null);
+  const Q = z.pts;
+  x2.strokeStyle = bad ? '#d23c3c' : faint ? 'rgba(60,154,90,.55)' : '#3c9a5a';
+  x2.lineWidth = 1.3;
+  x2.beginPath();
+  Q.forEach((p, i) => {
+    const w = w2s(p);
+    i ? x2.lineTo(w[0], w[1]) : x2.moveTo(w[0], w[1]);
+  });
+  x2.closePath();
+  x2.stroke();
+  x2.setLineDash([]);
+  if (sc > 7) {
+    x2.fillStyle = bad ? '#d23c3c' : '#2f7d4a';
+    x2.font = '10px system-ui';
+    x2.textAlign = 'center';
+    x2.textBaseline = 'middle';
+    x2.fillText(label + (bad ? ' blocked' : ''), q[0], q[1]);
+  }
+  x2.restore();
+}
 function drawStair(s, ghost) {
-  const q = sd(s),
-    col = ghost ? css('--grid5') : css('--ink');
-  poly(stairBox(s), ghost ? null : css('--panel'), col);
-  if (ghost) return;
-  for (let i = 1; i < 14; i++) line(q.P((s.len * i) / 14, -s.w / 2), q.P((s.len * i) / 14, s.w / 2), col, 1);
-  line(q.P(0.3, 0), q.P(s.len - 0.3, 0), '#b9702a', 2);
-  const RL = rlOf(s);
-  if (RL.l) line(q.P(0, s.w / 2), q.P(s.len, s.w / 2), '#6b4a2b', 3);
-  if (RL.r) line(q.P(0, -s.w / 2), q.P(s.len, -s.w / 2), '#6b4a2b', 3);
+  const col = ghost ? css('--grid5') : css('--ink'),
+    lc = stairLandCheck(s),
+    P = stairParts(s),
+    RL = rlOf(s),
+    RC = '#6b4a2b';
+  P.forEach((p) => {
+    if (p.k === 'spiral')
+      for (let i = 0; i < p.n; i++) poly(spStep(p, i), ghost ? null : css('--panel'), col);
+    else poly(partQuad(p), ghost ? null : css('--panel'), col);
+  });
+  /* the stair arrives on this floor from below: its top landing sits here */
+  if (ghost) {
+    drawLanding(lc.top, false, '3′ landing');
+    return;
+  }
+  drawLanding(lc.bot, false, '3′ landing');
+  if (lc.top.upper) drawLanding(lc.top, true, '3′ top');
+  const path = [];
+  P.forEach((p) => {
+    if (p.k === 'run') {
+      for (let i = 1; i < p.n; i++)
+        line(frP(p, (p.len * i) / p.n, -p.w / 2), frP(p, (p.len * i) / p.n, p.w / 2), col, 1);
+      if (RL.l) line(frP(p, 0, p.w / 2), frP(p, p.len, p.w / 2), RC, 3);
+      if (RL.r) line(frP(p, 0, -p.w / 2), frP(p, p.len, -p.w / 2), RC, 3);
+      path.push(frP(p, 0.3, 0), frP(p, p.len - 0.3, 0));
+    } else if (p.k === 'land') path.push(p.o);
+    else {
+      const rm = (SP_R0 + p.R) / 2;
+      for (let i = 0; i <= p.n * 4; i++) {
+        const a = p.a0 + p.hd * (i / 4 + 0.5) * SP_DA * 1;
+        path.push([p.c[0] + Math.cos(a) * rm, p.c[1] + Math.sin(a) * rm]);
+      }
+      if (RL.l || RL.r) {
+        let prev = null;
+        for (let i = 0; i <= p.n * 2; i++) {
+          const a = p.a0 + p.hd * (i / 2) * SP_DA,
+            pt = [p.c[0] + Math.cos(a) * (p.R - 0.05), p.c[1] + Math.sin(a) * (p.R - 0.05)];
+          if (prev) line(prev, pt, RC, 3);
+          prev = pt;
+        }
+      }
+      x2.beginPath();
+      const c = w2s(p.c);
+      x2.arc(c[0], c[1], SP_R0 * sc * 0.75, 0, 7);
+      x2.fillStyle = col;
+      x2.fill();
+    }
+  });
+  for (let i = 1; i < path.length; i++) line(path[i - 1], path[i], '#b9702a', 2);
+  if (path.length > 1) {
+    const a = path[path.length - 2],
+      b = path[path.length - 1],
+      L = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1,
+      d = [(b[0] - a[0]) / L, (b[1] - a[1]) / L];
+    [-1, 1].forEach((k) =>
+      line(b, [b[0] - d[0] * 0.6 - d[1] * 0.3 * k, b[1] - d[1] * 0.6 + d[0] * 0.3 * k], '#b9702a', 2),
+    );
+  }
 }
 function handle(p) {
   const q = w2s(p);
@@ -2710,7 +3473,10 @@ function drawSel() {
   } else if (sel.t === 'room') {
     poly(sel.o.pts, null, A);
     sel.o.pts.forEach(handle);
-  } else if (sel.t === 'stair') poly(stairBox(sel.o), null, A);
+  } else if (sel.t === 'path') {
+    sel.o.pts.forEach((p, i) => i && line(sel.o.pts[i - 1], p, A, 2, [6, 4]));
+    sel.o.pts.forEach(handle);
+  } else if (sel.t === 'stair') stairPolys(sel.o).forEach((Q) => poly(Q, null, A));
   else if (sel.t === 'rl' || sel.t === 'cb') {
     handle(sel.o.a);
     handle(sel.o.b);
@@ -2789,6 +3555,7 @@ function pick(x, y) {
   if (sel && sel.t === 'wall')
     for (const k of ['a', 'b']) if (near(sel.o[k])) return begin('pts', refsAt(sel.o[k]));
   if (sel && sel.t === 'room') for (const p of sel.o.pts) if (near(p)) return begin('pts', refsAt(p));
+  if (sel && sel.t === 'path') for (const p of sel.o.pts) if (near(p)) return begin('pts', [p]);
   for (const m of MS()) {
     if (near(m.a)) {
       sel = null;
@@ -2813,7 +3580,7 @@ function pick(x, y) {
   }
   for (const F of M.floors)
     for (const o of F.dormers || []) {
-      if (o.hid) continue;
+      if (o.hid || roofAt !== M.cf) continue;
       if (inside(raw, dormPts(o))) {
         sel = {t: 'dm', o};
         return begin('pts', [o.f]);
@@ -2836,12 +3603,15 @@ function pick(x, y) {
       sel = {t: 'wall', o: w};
       return begin('pts', new Set([...refsAt(w.a), ...refsAt(w.b)]));
     }
+  if (M.cf === pathFloor())
+    for (const o of M.paths || [])
+      if (!o.hid && pathDist(o, raw) <= Math.max(o.w / 2, tol)) {
+        sel = {t: 'path', o};
+        return begin('pts', o.pts);
+      }
   for (const s of M.stairs) {
     if (s.hid) continue;
-    const q = sd(s),
-      u = (raw[0] - s.x) * q.d[0] + (raw[1] - s.y) * q.d[1],
-      v = (raw[0] - s.x) * q.n[0] + (raw[1] - s.y) * q.n[1];
-    if (u >= 0 && u <= s.len && Math.abs(v) <= s.w / 2) {
+    if (stairHit(s, raw)) {
       sel = {t: 'stair', o: s};
       return begin('stair', null, {o: s, orig: [s.x, s.y]});
     }
@@ -2934,6 +3704,7 @@ function moveDrag() {
   else if (drag.k === 'stair') {
     drag.o.x = drag.orig[0] + dx;
     drag.o.y = drag.orig[1] + dy;
+    stairSnap(drag.o);
   } else if (drag.k === 'roof') {
     const r = drag.o,
       q = drag.orig;
@@ -2954,6 +3725,7 @@ function delSel() {
   mut(() => {
     if (s.t === 'wall') M.walls.splice(M.walls.indexOf(s.o), 1);
     else if (s.t === 'room') M.rooms.splice(M.rooms.indexOf(s.o), 1);
+    else if (s.t === 'path') M.paths.splice(M.paths.indexOf(s.o), 1);
     else if (s.t === 'stair') M.stairs.splice(M.stairs.indexOf(s.o), 1);
     else if (s.t === 'roof') M.roofs.splice(M.roofs.indexOf(s.o), 1);
     else if (s.t === 'fnd') {
@@ -2999,6 +3771,230 @@ function place(p) {
       ...(tool === 'door' ? {dt: doorType} : {wt: windowType}),
     }),
   );
+}
+/* paths: driveways and walkways, drawn as a wide ribbon along a polyline and laid on the terrain */
+var pathType = 'drive',
+  PATHN = {drive: 'Driveway', walk: 'Walkway'},
+  PATHD = {drive: {w: 12, color: '#a9acb0'}, walk: {w: 4, color: '#cfc9bd'}},
+  /* surface styles: each sets the color and texture; both stay editable afterwards */
+  PATHST = {
+    drive: {
+      concrete: ['Concrete', '#a9acb0', 'none'],
+      asphalt: ['Asphalt', '#4a4d52', 'none'],
+      gravel: ['Gravel', '#a89f8f', 'stone'],
+      pavers: ['Brick pavers', '#a8553a', 'brick'],
+      cobble: ['Cobblestone', '#8d8a84', 'stone'],
+    },
+    walk: {
+      concrete: ['Concrete', '#cfc9bd', 'none'],
+      flagstone: ['Flagstone', '#9a948a', 'stone'],
+      brick: ['Brick', '#a8553a', 'brick'],
+      gravel: ['Gravel', '#a89f8f', 'stone'],
+      boardwalk: ['Wood boardwalk', '#9c7a52', 'wood'],
+      tile: ['Tile', '#c9b79c', 'tile'],
+    },
+  };
+const pathStyle = (o) => (PATHST[o.k] && PATHST[o.k][o.st]) || PATHST[o.k || 'drive'].concrete;
+const pathFloor = () => Math.min(M.floors.length - 1, M.bsmt ? 1 : 0);
+/* the drawn centerline: a Catmull-Rom curve through the clicked points (o.sharp keeps straight segments) */
+function pathCurve(o) {
+  const P = o.pts;
+  if (o.sharp || P.length < 3) return P;
+  const out = [];
+  for (let i = 0; i < P.length - 1; i++) {
+    const p0 = P[i - 1] || P[i],
+      p1 = P[i],
+      p2 = P[i + 1],
+      p3 = P[i + 2] || P[i + 1],
+      n = Math.max(2, Math.min(24, Math.ceil(Math.hypot(p2[0] - p1[0], p2[1] - p1[1]) / 1.5)));
+    for (let k = 0; k < n; k++) {
+      const u = k / n,
+        u2 = u * u,
+        u3 = u2 * u,
+        c = (j) =>
+          0.5 *
+          (2 * p1[j] +
+            (-p0[j] + p2[j]) * u +
+            (2 * p0[j] - 5 * p1[j] + 4 * p2[j] - p3[j]) * u2 +
+            (-p0[j] + 3 * p1[j] - 3 * p2[j] + p3[j]) * u3);
+      out.push([c(0), c(1)]);
+    }
+  }
+  out.push(P[P.length - 1]);
+  return out;
+}
+function pathLen(o) {
+  const Q = pathCurve(o);
+  return Q.reduce((s, p, i) => (i ? s + Math.hypot(p[0] - Q[i - 1][0], p[1] - Q[i - 1][1]) : 0), 0);
+}
+function pathDist(o, p) {
+  let best = 1e9;
+  const Q = pathCurve(o);
+  for (let i = 1; i < Q.length; i++) {
+    const a = Q[i - 1],
+      b = Q[i],
+      dx = b[0] - a[0],
+      dy = b[1] - a[1],
+      L2 = dx * dx + dy * dy || 1e-9,
+      u = Math.max(0, Math.min(1, ((p[0] - a[0]) * dx + (p[1] - a[1]) * dy) / L2));
+    best = Math.min(best, Math.hypot(p[0] - a[0] - dx * u, p[1] - a[1] - dy * u));
+  }
+  return best;
+}
+function drawPath2(o, faint) {
+  if (!o.pts || o.pts.length < 2) return;
+  x2.save();
+  x2.lineCap = 'butt';
+  x2.lineJoin = 'round';
+  x2.globalAlpha = faint ? 0.6 : 1;
+  const Q = pathCurve(o),
+    trace = () => {
+      x2.beginPath();
+      Q.forEach((p, i) => {
+        const q = w2s(p);
+        i ? x2.lineTo(q[0], q[1]) : x2.moveTo(q[0], q[1]);
+      });
+    };
+  trace();
+  x2.strokeStyle = 'rgba(60,60,60,.55)';
+  x2.lineWidth = o.w * sc + 3;
+  x2.stroke();
+  trace();
+  let fillS = o.color || pathStyle(o)[1];
+  if (o.tex && o.tex !== 'none' && FLOORS[o.tex]) {
+    try {
+      const tx = mkTex(o.tex, o.color || pathStyle(o)[1]),
+        cv = tx.userData && tx.userData.canvas,
+        pt = cv && x2.createPattern(cv, 'repeat'),
+        k = (sc * TS[o.tex]) / 128;
+      if (pt && pt.setTransform) {
+        pt.setTransform(new DOMMatrix([k, 0, 0, -k, off.x, off.y]));
+        fillS = pt;
+      }
+    } catch (e) {}
+  }
+  x2.strokeStyle = fillS;
+  x2.lineWidth = o.w * sc;
+  x2.stroke();
+  x2.restore();
+  if (!faint && sc > 7) {
+    const m = o.pts[Math.floor((o.pts.length - 1) / 2)],
+      n = o.pts[Math.floor(o.pts.length / 2)],
+      q = w2s([(m[0] + n[0]) / 2, (m[1] + n[1]) / 2]);
+    x2.fillStyle = css('--ink');
+    x2.font = '11px system-ui';
+    x2.textAlign = 'center';
+    x2.fillText(o.name || PATHN[o.k] || 'Path', q[0], q[1]);
+  }
+}
+function finishPath() {
+  const P = roomPts.filter((p, i, a) => !i || p[0] !== a[i - 1][0] || p[1] !== a[i - 1][1]);
+  roomPts = [];
+  if (P.length >= 2)
+    mut(() => {
+      const D = PATHD[pathType];
+      (M.paths = M.paths || []).push({
+        k: pathType,
+        st: 'concrete',
+        pts: P,
+        w: D.w,
+        color: D.color,
+        tex: 'none',
+      });
+    });
+  else draw2();
+}
+function pathListHtml() {
+  const A = M.paths || [];
+  if (!A.length) return '';
+  return (
+    '<div class=hd>Paths</div>' +
+    A.map(
+      (o, i) =>
+        '<div class=' +
+        (sel && sel.o === o ? 'cur' : 'it') +
+        ' data-path=' +
+        i +
+        (o.hid ? ' style=opacity:.5' : '') +
+        '><span>' +
+        escH(o.name || PATHN[o.k] + ' ' + (i + 1)) +
+        '</span><span class=m>' +
+        fmt(pathLen(o)) +
+        ' <b class=eye title=Hide/show style=cursor:pointer>' +
+        (o.hid ? '○' : '◉') +
+        '</b></span></div>',
+    ).join('')
+  );
+}
+/* terrain height at a point (bilinear on the ground grid) */
+function terrZ(x, y) {
+  if (!(M.terr && M.terr.on)) return 0;
+  const pos = gr.geometry.attributes.position,
+    N = 160,
+    st = 400 / N,
+    fc = (x + 200) / st,
+    fr = (200 - y) / st,
+    c0 = Math.max(0, Math.min(N - 1, Math.floor(fc))),
+    r0 = Math.max(0, Math.min(N - 1, Math.floor(fr))),
+    tx = Math.max(0, Math.min(1, fc - c0)),
+    ty = Math.max(0, Math.min(1, fr - r0)),
+    g = (r, c) => pos.getZ(r * (N + 1) + c);
+  return (
+    (g(r0, c0) * (1 - tx) + g(r0, c0 + 1) * tx) * (1 - ty) +
+    (g(r0 + 1, c0) * (1 - tx) + g(r0 + 1, c0 + 1) * tx) * ty
+  );
+}
+function paths3() {
+  (M.paths || []).forEach((o) => {
+    if (o.hid || !o.pts || o.pts.length < 2) return;
+    /* centerline sampled every ~2 ft */
+    const C = [],
+      cp = pathCurve(o);
+    for (let i = 1; i < cp.length; i++) {
+      const a = cp[i - 1],
+        b = cp[i],
+        n = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1]) / 2));
+      for (let k = i === 1 ? 0 : 1; k <= n; k++)
+        C.push([a[0] + ((b[0] - a[0]) * k) / n, a[1] + ((b[1] - a[1]) * k) / n]);
+    }
+    const hw = o.w / 2,
+      pos = [],
+      uv = [],
+      idx = [],
+      sm = mat(o.color || '#8e9298', o.tex || 'none', {side: THREE.DoubleSide}),
+      tile = (sm.userData && sm.userData.tile) || 4,
+      dir = (i) => {
+        const a = C[Math.max(0, i - 1)],
+          b = C[Math.min(C.length - 1, i + 1)],
+          L = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
+        return [(b[0] - a[0]) / L, (b[1] - a[1]) / L];
+      };
+    C.forEach((c, i) => {
+      const d = dir(i),
+        nx = -d[1],
+        ny = d[0];
+      [-1, 0, 1].forEach((s) => {
+        const x = c[0] + nx * hw * s,
+          y = c[1] + ny * hw * s;
+        pos.push(x, y, terrZ(x, y) + 0.2);
+        uv.push(x / tile, y / tile);
+      });
+    });
+    for (let i = 0; i < C.length - 1; i++)
+      for (let s = 0; s < 2; s++) {
+        const a = i * 3 + s,
+          b = (i + 1) * 3 + s;
+        idx.push(a, b, a + 1, a + 1, b, b + 1);
+      }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+    g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+    g.setIndex(idx);
+    g.computeVertexNormals();
+    const m = new THREE.Mesh(g, sm);
+    m.userData.sel = {t: 'path', o, fi: 0};
+    grp.add(m);
+  });
 }
 function finishRoom() {
   const P = roomPts.filter((p, i, a) => !i || p[0] !== a[i - 1][0] || p[1] !== a[i - 1][1]);
@@ -3047,6 +4043,39 @@ function showFly(t) {
     f.style.display = 'block';
     f.style.left = (cv ? cr.right + 6 : cr.left) + 'px';
     f.style.top = (cv ? cr.top : cr.bottom + 6) + 'px';
+    return;
+  }
+  if (t === 'stairs') {
+    const sb = document.querySelector('#rail [data-t=stairs]'),
+      sr = sb.getBoundingClientRect(),
+      sv = getComputedStyle($('rail')).flexDirection === 'column';
+    f.innerHTML =
+      '<div>Stair style</div>' +
+      Object.keys(STAIRN)
+        .map(
+          (k) =>
+            '<button data-st=' + k + (k === stairType ? ' class=on' : '') + '>' + STAIRN[k] + '</button>',
+        )
+        .join('');
+    f.style.display = 'block';
+    f.style.left = (sv ? sr.right + 6 : sr.left) + 'px';
+    f.style.top = (sv ? sr.top : sr.bottom + 6) + 'px';
+    return;
+  }
+  if (t === 'path') {
+    const pb = document.querySelector('#rail [data-t=path]'),
+      pr = pb.getBoundingClientRect(),
+      pv = getComputedStyle($('rail')).flexDirection === 'column';
+    f.innerHTML =
+      '<div>Path type</div>' +
+      Object.keys(PATHN)
+        .map(
+          (k) => '<button data-pt=' + k + (k === pathType ? ' class=on' : '') + '>' + PATHN[k] + '</button>',
+        )
+        .join('');
+    f.style.display = 'block';
+    f.style.left = (pv ? pr.right + 6 : pr.left) + 'px';
+    f.style.top = (pv ? pr.top : pr.bottom + 6) + 'px';
     return;
   }
   if (t === 'deck') {
@@ -3176,6 +4205,28 @@ $('fly').onclick = (e) => {
     );
     return;
   }
+  const ptb = e.target.closest('[data-pt]');
+  if (ptb) {
+    showFly(false);
+    pathType = ptb.dataset.pt;
+    roomPts = [];
+    status(
+      PATHN[pathType] + ': click points along the route, then Enter or double-click to finish. Esc cancels.',
+    );
+    draw2();
+    return;
+  }
+  const sty = e.target.closest('[data-st]');
+  if (sty) {
+    showFly(false);
+    stairType = sty.dataset.st;
+    status(
+      'Stairs (' +
+        STAIRN[stairType] +
+        '): click to place it. Keep the green 3 ft landings clear. Q rotates a selected stair.',
+    );
+    return;
+  }
   const dk = e.target.closest('[data-dk]');
   if (dk) {
     showFly(false);
@@ -3251,6 +4302,8 @@ document.addEventListener(
       !e.target.closest('[data-t=select]') &&
       !e.target.closest('[data-t=roof]') &&
       !e.target.closest('[data-t=deck]') &&
+      !e.target.closest('[data-t=stairs]') &&
+      !e.target.closest('[data-t=path]') &&
       !e.target.closest('[data-t=cabinet]') &&
       !e.target.closest('[data-t=foundation]')
     )
@@ -3336,11 +4389,12 @@ function snapV(x, y) {
   }
   snapGuide = null;
   snapKind = '';
-  if (snapMode === 'off' && ['wall', 'room', 'roof', 'foundation', 'deck', 'cabinet'].includes(tool))
+  if (snapMode === 'off' && ['wall', 'room', 'path', 'roof', 'foundation', 'deck', 'cabinet'].includes(tool))
     return c;
   if (
     tool !== 'wall' &&
     tool !== 'room' &&
+    tool !== 'path' &&
     tool !== 'measure' &&
     tool !== 'roof' &&
     tool !== 'foundation' &&
@@ -3451,7 +4505,7 @@ function snapV(x, y) {
     if (tool !== 'deck') [...(F.decks || []), ...(F.fsys || []), ...(F.roofs || [])].forEach(add4);
     if (tool !== 'deck') (F.foundations || []).forEach(add4);
     (F.stairs || []).forEach((st) => {
-      if (!st.hid) stairBox(st).forEach((q) => P.push(q));
+      if (!st.hid) stairPolys(st).forEach((Q) => Q.forEach((q) => P.push(q)));
     });
     (F.rails || []).forEach((r) => P.push(r.a, r.b));
     if (tool !== 'deck') F.rooms.forEach((r) => r.pts.forEach((q) => P.push(q)));
@@ -3783,6 +4837,7 @@ function terrain3() {
       T.on,
       T.seed,
       T.amp,
+      T.elev,
       T.pad,
       T.blend,
       T.trees,
@@ -3832,7 +4887,7 @@ function terrain3() {
         d = has ? Math.hypot(dx, dy) : 40,
         m = Math.max(0, Math.min(1, (d - pd) / bl)),
         sm = m * m * (3 - 2 * m);
-      pos.setZ(i, hh * sm - 0.05 * (1 - sm));
+      pos.setZ(i, hh * sm + (T.elev || 0) - 0.5 * (1 - sm));
       const t = Math.max(0, Math.min(1, ((hh * sm) / (amp || 1) + 1) / 2));
       col.setXYZ(i, 0.4 + 0.28 * t + 0.08 * (1 - sm), 0.58 + 0.12 * t, 0.3 + 0.2 * t);
     }
@@ -4024,6 +5079,7 @@ function drawRoofPlan(r) {
   }
 }
 function drawRoofs() {
+  if (!VW.roofs) return;
   if (roofAt === M.cf) {
     M.floors.forEach((F) =>
       (F.roofs || []).forEach((r) => {
@@ -5345,7 +6401,7 @@ function finishMq() {
     if (!r.hid && (cross ? bbo(r.pts) : r.pts.every(inR))) L.push({t: 'room', o: r});
   });
   M.stairs.forEach((s) => {
-    const B = stairBox(s);
+    const B = stairPolys(s).flat();
     if (!s.hid && (cross ? bbo(B) : B.every(inR))) L.push({t: 'stair', o: s});
   });
   sel = null;
@@ -5374,7 +6430,7 @@ function drawMs() {
   msLive().forEach((m) => {
     if (m.t === 'wall') line(m.o.a, m.o.b, A, 3);
     else if (m.t === 'room') poly(m.o.pts, null, A);
-    else poly(stairBox(m.o), null, A);
+    else stairPolys(m.o).forEach((Q) => poly(Q, null, A));
   });
   if (mq) {
     const p = w2s(mq.a),
@@ -5406,7 +6462,7 @@ function selCenter() {
       ys = o.pts.map((p) => p[1]);
     return [(Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2];
   }
-  if (sel.t === 'stair') return sd(o).P(o.len / 2, 0);
+  if (sel.t === 'stair') return stairPivot(o);
   if (sel.t === 'roof') {
     const b = roofBox();
     return b ? [(b.x0 + b.x1) / 2, (b.y0 + b.y1) / 2] : null;
@@ -5461,8 +6517,8 @@ function doRot(e, x, y) {
     const st = Math.round(d / (Math.PI / 2));
     r.o.rot = (((r.rot0 + st) % 4) + 4) % 4;
     const q2 = sd(r.o);
-    r.o.x = r.c[0] - (q2.d[0] * r.o.len) / 2;
-    r.o.y = r.c[1] - (q2.d[1] * r.o.len) / 2;
+    r.o.x = r.c[0] - q2.d[0] * stairHalf(r.o);
+    r.o.y = r.c[1] - q2.d[1] * stairHalf(r.o);
   } else {
     r.o.rr = r.rr0 !== (Math.abs(Math.round(d / (Math.PI / 2))) % 2 === 1);
   }
@@ -5579,7 +6635,7 @@ c2.addEventListener('pointerdown', (e) => {
     }
     start = [...cur];
   } else if (tool === 'door' || tool === 'window') place(cur);
-  else if (tool === 'room') roomPts.push([...cur]);
+  else if (tool === 'room' || tool === 'path') roomPts.push([...cur]);
   else if (tool === 'dormer') placeDormer(cur);
   else if (tool === 'roof') {
     if (rstart) finishRoof();
@@ -5662,7 +6718,12 @@ c2.addEventListener('pointerdown', (e) => {
     renderSide();
     renderLists();
     build3();
-  } else if (tool === 'stairs') mut(() => M.stairs.push({x: cur[0], y: cur[1], w: 3, len: 10, rot: 0}));
+  } else if (tool === 'stairs')
+    mut(() => {
+      const ns = newStair(cur);
+      stairSnap(ns);
+      M.stairs.push(ns);
+    });
   draw2();
 });
 c2.addEventListener('pointermove', (e) => {
@@ -5786,6 +6847,7 @@ if (window.matchMedia && matchMedia('(pointer: coarse)').matches) {
 }
 c2.addEventListener('dblclick', () => {
   if (tool === 'room') finishRoom();
+  if (tool === 'path') finishPath();
   if (tool === 'wall') {
     start = null;
     draw2();
@@ -5944,11 +7006,125 @@ function box(g, s0, s1, z0, z1, t, mat) {
   m.userData.sel = TAG;
   grp.add(m);
   if (!m0.transparent) {
+    if (
+      TAG &&
+      TAG.t === 'wall' &&
+      M.floors[TAG.fi] &&
+      wallEdges(g, s0, s1, z0, z1, t, TAG.o, M.floors[TAG.fi])
+    )
+      return;
     const e = new THREE.LineSegments(new THREE.EdgesGeometry(geo), lineMat);
     e.position.copy(m.position);
     e.rotation.copy(m.rotation);
     grp.add(e);
   }
+}
+/* outline of a wall piece, minus the parts that fall inside a wall it joins, so connected walls read as one solid */
+function wallEdges(g, s0, s1, z0, z1, t, self, F) {
+  const h = t / 2,
+    EPS = 0.02,
+    cs = [
+      [s0, -h],
+      [s1, -h],
+      [s1, h],
+      [s0, h],
+    ],
+    W = (c, z) => [g.ax + g.d[0] * c[0] + g.n[0] * c[1], g.ay + g.d[1] * c[0] + g.n[1] * c[1], z + ZB],
+    segs = [],
+    /* pieces of this wall that touch this one across a cut (beside a door or window, or above and below it) */
+    nb = self
+      ? pieces(self, F.walls).filter(
+          (p) => Math.abs(p[0] - s0) + Math.abs(p[1] - s1) + Math.abs(p[2] - z0) + Math.abs(p[3] - z1) > 1e-6,
+        )
+      : [];
+  for (const z of [z0, z1])
+    for (let i = 0; i < 4; i++)
+      segs.push([W(cs[i], z), W(cs[(i + 1) % 4], z), i === 1 ? s1 : i === 3 ? s0 : null]);
+  cs.forEach((c) => segs.push([W(c, z0), W(c, z1), c[0]]));
+  const O = F.walls
+    .filter((o) => o !== self && !o.hid)
+    .map((o) => ({
+      q: geom(o),
+      e0: endExt(o, F.walls, 0),
+      e1: endExt(o, F.walls, 1),
+      h: o.t / 2,
+      top: o.h || WH,
+    }));
+  const out = [];
+  segs.forEach(([A, B, sc]) => {
+    let keep = [[0, 1]];
+    const cut = (t0, t1) => {
+      const nk = [];
+      keep.forEach(([p, r]) => {
+        if (t1 <= p || t0 >= r) nk.push([p, r]);
+        else {
+          if (t0 > p) nk.push([p, t0]);
+          if (t1 < r) nk.push([t1, r]);
+        }
+      });
+      keep = nk;
+    };
+    /* a line lying in the joint between two pieces of the same wall is a seam, not an edge */
+    if (sc !== null)
+      nb.forEach((p) => {
+        if (Math.abs(p[0] - sc) > 1e-4 && Math.abs(p[1] - sc) > 1e-4) return;
+        const za = A[2] - ZB,
+          zb = B[2] - ZB;
+        if (Math.abs(zb - za) < 1e-9) {
+          if (za >= p[2] - 1e-6 && za <= p[3] + 1e-6) cut(-1, 2);
+        } else {
+          const u0 = (p[2] - za) / (zb - za),
+            u1 = (p[3] - za) / (zb - za);
+          cut(Math.max(0, Math.min(u0, u1)), Math.min(1, Math.max(u0, u1)));
+        }
+      });
+    O.forEach((o) => {
+      if (A[2] - ZB > o.top + 0.01 && B[2] - ZB > o.top + 0.01) return;
+      const q = o.q,
+        loc = (P) => [
+          (P[0] - q.ax) * q.d[0] + (P[1] - q.ay) * q.d[1],
+          (P[0] - q.ax) * q.n[0] + (P[1] - q.ay) * q.n[1],
+        ],
+        a = loc(A),
+        b = loc(B),
+        lim = [
+          [-o.e0 + EPS, q.L + o.e1 - EPS],
+          [-o.h + EPS, o.h - EPS],
+        ];
+      let t0 = 0,
+        t1 = 1;
+      for (let k = 0; k < 2 && t0 < t1; k++) {
+        const d = b[k] - a[k];
+        if (Math.abs(d) < 1e-9) {
+          if (a[k] < lim[k][0] || a[k] > lim[k][1]) t1 = -1;
+        } else {
+          let u0 = (lim[k][0] - a[k]) / d,
+            u1 = (lim[k][1] - a[k]) / d;
+          if (u0 > u1) [u0, u1] = [u1, u0];
+          t0 = Math.max(t0, u0);
+          t1 = Math.min(t1, u1);
+        }
+      }
+      if (t0 >= t1) return;
+      cut(t0, t1);
+    });
+    keep.forEach(([p, r]) => {
+      if (r - p < 1e-4) return;
+      out.push(
+        A[0] + (B[0] - A[0]) * p,
+        A[1] + (B[1] - A[1]) * p,
+        A[2] + (B[2] - A[2]) * p,
+        A[0] + (B[0] - A[0]) * r,
+        A[1] + (B[1] - A[1]) * r,
+        A[2] + (B[2] - A[2]) * r,
+      );
+    });
+  });
+  if (!out.length) return true;
+  const lg = new THREE.BufferGeometry();
+  lg.setAttribute('position', new THREE.Float32BufferAttribute(out, 3));
+  grp.add(new THREE.LineSegments(lg, lineMat));
+  return true;
 }
 const hmesh = [];
 let hd = null;
@@ -6052,7 +7228,7 @@ function warpRoofMeshes(R, from, fi) {
 }
 function roofHandles() {
   hmesh.length = 0;
-  if (!(sel && sel.t === 'roof')) return;
+  if (!(sel && sel.t === 'roof') || !VW.roofs) return;
   if (allAt !== M.cf && roofAt !== M.cf) return;
   const R = sel.o,
     fi = M.floors.findIndex((f) => (f.roofs || []).includes(R));
@@ -6166,6 +7342,7 @@ function build3() {
   roofHandles();
   if (roofAt !== M.cf && (M.cf === 0 || allAt === M.cf) && !M.floors[0].hid) found3();
   ground3();
+  paths3();
   highlight3();
   render();
 }
@@ -6837,13 +8014,13 @@ function flipSel(ax) {
           p.fv = !p.fv;
         });
     } else if (s.t === 'stair') {
-      const q = sd(o),
-        c = q.P(o.len / 2, 0),
+      const c = stairPivot(o),
         map = ax === 'h' ? {0: 2, 2: 0, 1: 1, 3: 3} : {1: 3, 3: 1, 0: 0, 2: 2};
       o.rot = map[o.rot];
+      if (o.style) o.hd = o.hd === -1 ? 1 : -1;
       const q2 = sd(o);
-      o.x = c[0] - (q2.d[0] * o.len) / 2;
-      o.y = c[1] - (q2.d[1] * o.len) / 2;
+      o.x = c[0] - q2.d[0] * stairHalf(o);
+      o.y = c[1] - q2.d[1] * stairHalf(o);
     } else if (s.t === 'room') {
       const P = o.pts,
         xs = P.map((p) => p[0]),
@@ -7279,21 +8456,30 @@ function slab3(F, i) {
   m.position.set(0, 0, ZB - 0.5);
   grp.add(m);
 }
-function stairCut(s, fi) {
-  const q = sd(s),
-    n = 14,
-    H = flh(fi),
-    rise = H / n,
-    HEAD = 6 + 8 / 12;
-  let k = 0;
-  while (k < n && H - fthick(fi + 1) - rise * (k + 1) >= HEAD) k++;
-  const x0 = Math.max(0, (s.len / n) * k - 0.1),
-    h = s.w / 2;
-  return [q.P(x0, h), q.P(s.len, h), q.P(s.len, -h), q.P(x0, -h)];
+function stairCuts(s, fi) {
+  const H = flh(fi),
+    rise = H / 14,
+    HEAD = 6 + 8 / 12,
+    ok = (i) => H - fthick(fi + 1) - rise * (i + 1) >= HEAD,
+    out = [];
+  stairParts(s).forEach((p) => {
+    if (p.k === 'spiral') out.push(partQuad(p));
+    else if (p.k === 'land') {
+      if (!ok(p.s0)) out.push(partQuad(p));
+    } else {
+      let k = 0;
+      while (k < p.n && ok(p.s0 + k)) k++;
+      if (k >= p.n) return;
+      const x0 = Math.max(0, (p.len / p.n) * k - 0.1),
+        h = p.w / 2;
+      out.push([frP(p, x0, h), frP(p, p.len, h), frP(p, p.len, -h), frP(p, x0, -h)]);
+    }
+  });
+  return out;
 }
 function floorCuts(fi) {
   const F = M.floors[fi - 1];
-  return F ? F.stairs.filter((s) => !s.hid).map((s) => stairCut(s, fi - 1)) : [];
+  return F ? F.stairs.filter((s) => !s.hid).flatMap((s) => stairCuts(s, fi - 1)) : [];
 }
 function cutHoles(shape, fi, bx) {
   floorCuts(fi).forEach((c) => {
@@ -7320,65 +8506,111 @@ function rlOf(s) {
 function rlInfo(s, fi) {
   const R = rlOf(s),
     H = flh(fi),
-    len = s.len,
-    sl = Math.hypot(len, H),
-    n = (R.l ? 1 : 0) + (R.r ? 1 : 0),
-    nb = Math.floor((sl * 12) / Math.max(2, R.bal)),
-    np = Math.max(2, Math.ceil(sl / 4) + 1);
+    rise = H / 14;
+  let sl = 0,
+    nb = 0,
+    np = 0,
+    n = (R.l ? 1 : 0) + (R.r ? 1 : 0);
+  stairParts(s).forEach((p) => {
+    if (p.k === 'run') {
+      const l = Math.hypot(p.len, rise * p.n);
+      sl += l;
+      nb += Math.floor((l * 12) / Math.max(2, R.bal));
+      np += Math.max(2, Math.ceil(l / 4) + 1);
+    } else if (p.k === 'spiral') {
+      sl += Math.hypot(((SP_R0 + p.R) / 2 + p.R / 2) * p.n * SP_DA, H);
+      np += p.n + 1;
+      n = n ? 1 : 0;
+    }
+  });
   return {R, H, sl, n, nb, np};
 }
 function railing3(s, fi) {
   const R = rlOf(s);
   if (!R.l && !R.r) return;
-  const q = sd(s),
-    n = 14,
+  const n = 14,
     H = flh(fi),
     rise = H / n,
-    trd = s.len / n,
     h = R.h / 12,
     m = mat(R.col, 'none'),
-    tag = {t: 'stair', o: s, fi: fi},
-    rot = (s.rot * Math.PI) / 2,
-    tz = (u) => rise * (Math.min(n - 1, Math.max(0, Math.floor(u / trd + 1e-6))) + 1),
-    ln = (u) => (H * u) / s.len,
-    bx = (sx, sy, sz, u, v, z) => {
-      const c = q.P(u, v),
-        g = new THREE.BoxGeometry(sx, sy, sz),
-        b = new THREE.Mesh(g, m);
-      b.position.set(c[0], c[1], ZB + z);
-      b.rotation.z = rot;
-      b.userData.sel = tag;
-      grp.add(b);
-    };
-  [
-    [R.l, s.w / 2 - 0.08],
-    [R.r, -s.w / 2 + 0.08],
-  ].forEach(([on, v]) => {
-    if (!on) return;
-    const m0 = q.P(s.len / 2, v),
-      g = new THREE.BoxGeometry(Math.hypot(s.len, H), 0.2, 0.12),
-      hr = new THREE.Mesh(g, m);
-    hr.rotation.order = 'ZYX';
-    hr.rotation.z = rot;
-    hr.rotation.y = -Math.atan2(H, s.len);
-    hr.position.set(m0[0], m0[1], ZB + H / 2 + h);
-    hr.userData.sel = tag;
-    grp.add(hr);
-    const np = Math.max(2, Math.ceil(Math.hypot(s.len, H) / 4) + 1);
-    for (let k = 0; k < np; k++) {
-      const u = (s.len * k) / (np - 1),
-        z0 = tz(u),
-        zt = ln(u) + h;
-      bx(0.25, 0.25, zt - z0 + 0.1, u, v, (z0 + zt) / 2);
+    tag = {t: 'stair', o: s, fi: fi};
+  stairParts(s).forEach((p) => {
+    if (p.k === 'land') return;
+    if (p.k === 'spiral') {
+      const rr = p.R - 0.1,
+        pt = (i) => {
+          const a = p.a0 + p.hd * i * SP_DA;
+          return [
+            p.c[0] + Math.cos(a) * rr,
+            p.c[1] + Math.sin(a) * rr,
+            ZB + rise * (Math.min(i, 13) + 1) + h,
+          ];
+        };
+      for (let i = 0; i <= n; i++) {
+        const a = pt(i),
+          g = new THREE.BoxGeometry(0.2, 0.2, h + 0.1),
+          b = new THREE.Mesh(g, m);
+        b.position.set(a[0], a[1], a[2] - h / 2);
+        b.userData.sel = tag;
+        grp.add(b);
+        if (i < n) {
+          const c = pt(i + 1),
+            v = new THREE.Vector3(c[0] - a[0], c[1] - a[1], c[2] - a[2]),
+            hr = new THREE.Mesh(new THREE.BoxGeometry(v.length(), 0.12, 0.12), m);
+          hr.position.set((a[0] + c[0]) / 2, (a[1] + c[1]) / 2, (a[2] + c[2]) / 2);
+          hr.quaternion.setFromUnitVectors(new THREE.Vector3(1, 0, 0), v.normalize());
+          hr.userData.sel = tag;
+          grp.add(hr);
+        }
+      }
+      return;
     }
-    const sp = Math.max(2, R.bal) / 12,
-      nb = Math.floor(Math.hypot(s.len, H) / sp);
-    for (let k = 1; k < nb; k++) {
-      const u = (s.len * k) / nb,
-        z0 = tz(u),
-        zt = ln(u) + h - 0.06;
-      if (zt - z0 > 0.2) bx(0.07, 0.07, zt - z0, u, v, (z0 + zt) / 2);
-    }
+    const trd = p.len / p.n,
+      z0b = rise * p.s0,
+      dz = rise * p.n,
+      sl = Math.hypot(p.len, dz),
+      rot = Math.atan2(p.d[1], p.d[0]),
+      tz = (u) => rise * (p.s0 + Math.min(p.n - 1, Math.max(0, Math.floor(u / trd + 1e-6))) + 1),
+      ln = (u) => z0b + (dz * u) / p.len,
+      bx = (sx, sy, sz, u, v, z) => {
+        const c = frP(p, u, v),
+          g = new THREE.BoxGeometry(sx, sy, sz),
+          b = new THREE.Mesh(g, m);
+        b.position.set(c[0], c[1], ZB + z);
+        b.rotation.z = rot;
+        b.userData.sel = tag;
+        grp.add(b);
+      };
+    [
+      [R.l, p.w / 2 - 0.08],
+      [R.r, -p.w / 2 + 0.08],
+    ].forEach(([on, v]) => {
+      if (!on) return;
+      const m0 = frP(p, p.len / 2, v),
+        g = new THREE.BoxGeometry(sl, 0.2, 0.12),
+        hr = new THREE.Mesh(g, m);
+      hr.rotation.order = 'ZYX';
+      hr.rotation.z = rot;
+      hr.rotation.y = -Math.atan2(dz, p.len);
+      hr.position.set(m0[0], m0[1], ZB + z0b + dz / 2 + h);
+      hr.userData.sel = tag;
+      grp.add(hr);
+      const np = Math.max(2, Math.ceil(sl / 4) + 1);
+      for (let k = 0; k < np; k++) {
+        const u = (p.len * k) / (np - 1),
+          z0 = tz(u),
+          zt = ln(u) + h;
+        bx(0.25, 0.25, zt - z0 + 0.1, u, v, (z0 + zt) / 2);
+      }
+      const sp = Math.max(2, R.bal) / 12,
+        nb = Math.floor(sl / sp);
+      for (let k = 1; k < nb; k++) {
+        const u = (p.len * k) / nb,
+          z0 = tz(u),
+          zt = ln(u) + h - 0.06;
+        if (zt - z0 > 0.2) bx(0.07, 0.07, zt - z0, u, v, (z0 + zt) / 2);
+      }
+    });
   });
 }
 function railUI(s) {
@@ -7425,24 +8657,58 @@ function railWire(s, B) {
   B('p_rc', (v) => set('col', v));
 }
 function stair3(s, fi) {
-  const q = sd(s),
-    n = 14,
-    rise = flh(fi) / n;
-  for (let k = 0; k < n; k++) {
-    const h = rise * (k + 1),
-      c = q.P((s.len / n) * (k + 0.5), 0),
-      sg = new THREE.BoxGeometry(s.len / n, s.w, h),
-      sm = mat(s.color || '#b08a5a', s.tex || 'none'),
-      m = new THREE.Mesh(sg, sm);
-    if (sm.map) uvBox(sg, s.len / n, s.w, h, sm.userData.tile);
-    m.position.set(c[0], c[1], ZB + h / 2);
-    m.rotation.z = (s.rot * Math.PI) / 2;
-    m.userData.sel = {t: 'stair', o: s, fi: fi};
-    grp.add(m);
-  }
+  const n = 14,
+    rise = flh(fi) / n,
+    tag = {t: 'stair', o: s, fi: fi},
+    sm = mat(s.color || '#b08a5a', s.tex || 'none');
+  stairParts(s).forEach((p) => {
+    if (p.k === 'spiral') {
+      for (let i = 0; i < p.n; i++) {
+        const h = rise * (i + 1),
+          pts = spStep(p, i),
+          sh = new THREE.Shape(pts.map((q) => new THREE.Vector2(q[0] - p.c[0], q[1] - p.c[1]))),
+          m = new THREE.Mesh(new THREE.ExtrudeGeometry(sh, {depth: h, bevelEnabled: false}), sm);
+        m.position.set(p.c[0], p.c[1], ZB);
+        m.userData.sel = tag;
+        grp.add(m);
+      }
+      const H = rise * n,
+        pole = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, H, 14), mat('#777777', 'none'));
+      pole.rotation.x = Math.PI / 2;
+      pole.position.set(p.c[0], p.c[1], ZB + H / 2);
+      pole.userData.sel = tag;
+      grp.add(pole);
+      return;
+    }
+    const rz = Math.atan2(p.d[1], p.d[0]);
+    if (p.k === 'land') {
+      const h = rise * (p.s0 + 1),
+        g = new THREE.BoxGeometry(p.a, p.b, h),
+        m = new THREE.Mesh(g, sm);
+      if (sm.map) uvBox(g, p.a, p.b, h, sm.userData.tile);
+      m.position.set(p.o[0], p.o[1], ZB + h / 2);
+      m.rotation.z = rz;
+      m.userData.sel = tag;
+      grp.add(m);
+      return;
+    }
+    const tr = p.len / p.n;
+    for (let k = 0; k < p.n; k++) {
+      const h = rise * (p.s0 + k + 1),
+        c = frP(p, tr * (k + 0.5), 0),
+        sg = new THREE.BoxGeometry(tr, p.w, h),
+        m = new THREE.Mesh(sg, sm);
+      if (sm.map) uvBox(sg, tr, p.w, h, sm.userData.tile);
+      m.position.set(c[0], c[1], ZB + h / 2);
+      m.rotation.z = rz;
+      m.userData.sel = tag;
+      grp.add(m);
+    }
+  });
   railing3(s, fi);
 }
 function roof3() {
+  if (!VW.roofs) return;
   if (allAt !== M.cf && roofAt !== M.cf) return;
   for (
     let i = allAt === M.cf || roofAt === M.cf ? 0 : M.cf,
@@ -8526,6 +9792,12 @@ function setTool(t) {
   jstart = null;
   dstart = null;
   cstart = null;
+  if (t === 'path' && (M.cf !== pathFloor() || allAt === M.cf || roofAt === M.cf)) {
+    M.cf = pathFloor();
+    allAt = -1;
+    roofAt = -1;
+    $('fl').value = M.cf;
+  }
   if (t === 'dormer' && allAt !== M.cf && roofAt !== M.cf) {
     roofAt = M.cf;
     $('fl').value = 'roof';
@@ -8544,9 +9816,11 @@ function setTool(t) {
       door: 'Door: click near a wall to place it.',
       window: 'Window: click near a wall to place it.',
       room: 'Room: click corners, Enter or double-click to finish.',
+      path: 'Path: pick Driveway or Walkway from the menu, click points along the route, then Enter or double-click to finish.',
       select:
         'Select: click to select, drag to move, drag a square handle to resize. Delete removes. Q rotates stairs.',
-      stairs: 'Stairs: click to place a straight stair (10 ft run). Select it and press Q to rotate.',
+      stairs:
+        'Stairs: pick a style from the menu (straight, L, U, spiral), then click to place it. Keep the green 3 ft landings at the top and bottom clear. Select it and press Q to rotate.',
       measure:
         'Measure: click two points; points snap to the edge of the wall under the pointer. Measurements stay until removed with the Delete tool.',
       roof: 'Roof: pick a roof type from the menu, then click two corners (or drag) to draw the roof area.',
@@ -8737,6 +10011,7 @@ $('new').onclick = () =>
     M.floors = [{walls: [], rooms: [], stairs: []}];
     M.cf = 0;
     M.bsmt = 0;
+    M.paths = [];
   });
 $('demo').onclick = () => mut(sample);
 function setLogo(u) {
@@ -8902,11 +10177,19 @@ function materials() {
     (F.stairs || []).forEach((s) => {
       if (s.hid) return;
       const R = flh(fi) * 12,
-        run = s.len * 12,
-        L = Math.hypot(R, run) / 12,
         ns = Math.max(2, Math.ceil((s.w * 12) / 16) + 1);
-      add(cs, 'Stair stringer', '2x12', L, ns);
-      add(cs, 'Stair tread', '2x12', s.w, 14);
+      stairParts(s).forEach((p) => {
+        if (p.k === 'spiral') {
+          add(cs, 'Spiral tread', '2x12', s.w, p.n);
+          add(cs, 'Spiral center post', '4x4', R / 12, 1);
+        } else if (p.k === 'land') {
+          add(cs, 'Landing joist', '2x8', p.b, Math.ceil((p.a * 12) / 16) + 1);
+          add(cs, 'Landing deck', '2x6', p.b, Math.ceil((p.a * 12) / 5.5));
+        } else {
+          add(cs, 'Stair stringer', '2x12', Math.hypot((R * p.n) / 14, p.len * 12) / 12, ns);
+          add(cs, 'Stair tread', '2x12', s.w, p.n);
+        }
+      });
     });
     /* decks and railings */
     const rail = (name, a, b, rh, c) => {
@@ -9206,6 +10489,7 @@ addEventListener('keydown', (e) => {
     d: 'door',
     n: 'window',
     r: 'room',
+    p: 'path',
     s: 'select',
     t: 'stairs',
     m: 'measure',
@@ -9243,6 +10527,7 @@ addEventListener('keydown', (e) => {
     draw2();
   }
   if (e.key === 'Enter' && tool === 'room') finishRoom();
+  if (e.key === 'Enter' && tool === 'path') finishPath();
 });
 new ResizeObserver(() => {
   size2();
