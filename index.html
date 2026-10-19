@@ -540,7 +540,7 @@ canvas {
 </head>
 <body>
 <div id="bar">
-<div id="logo" title="Click to add your logo. Right-click to remove it."><span>LOGO</span></div><input type="file" id="logofile" accept="image/*" style="display:none"><span id="filem"><button id="filebtn">File ▾</button><div id="filepop"><button id="save">Save</button><button id="saveas">Save As…</button><button id="load">Load</button><button id="new">Clear</button><button id="demo">Sample</button></div></span><span class='sep'></span>
+<div id="logo" title="Click to add your logo. Right-click to remove it."><span>LOGO</span></div><input type="file" id="logofile" accept="image/*" style="display:none"><span id="filem"><button id="filebtn">File ▾</button><div id="filepop"><button id="save">Save</button><button id="saveas">Save As…</button><button id="load">Load</button><button id="new">Clear</button><button id="demo">Sample</button><button id="exbp" title="Export the architectural drawing set as a PDF">Export Blueprint (PDF)</button><button id="exbh" title="Export the drawing set as a web page">Export Blueprint (web page)</button></div></span><span class='sep'></span>
   
   <select id='fl'></select><button id='flup' class='flb' title='Go up one floor'>▲</button><button id='fldn' class='flb' title='Go down one floor'>▼</button><span class='sep'></span>
   <span class="sep"></span>
@@ -550,7 +550,7 @@ canvas {
   <div class="pane" id="p2"><canvas id="c2"></canvas><div class="tag">2D plan · wheel zoom · right-click cancels · right-drag pans</div><div id="split" title="Drag to resize the split · double-click to reset"></div></div>
   <div class="pane" id="p3"><canvas id="c3"></canvas><div class="tag">3D view · drag orbit · wheel zoom</div></div>
 <div id='side'><details id='propd' open><summary>Properties</summary><div id='props'></div></details><details id='terrd'><summary>Terrain</summary><div id='terrBody'></div></details><details id='furnd'><summary>Furniture / Appliances</summary><div id='furnList'></div></details><details><summary>Floors</summary><div id='flList'></div><div class='r fb'><button id='addf2'>+ Add</button><button id='delf2'>− Remove</button></div></details><details><summary>Objects</summary><div class='r fb'><button id='frm' title='Show framing for all objects'>▦ Framing: all</button></div><div id='obList'></div></details></div></div>
-<div id='tb'><span>View</span><button data-vw='grid' title='Plan grid'>Grid</button><button data-vw='dims' title='Wall dimensions (zoom in to see them)'>Dimensions</button><button data-vw='labels' title='Room names and areas'>Room labels</button><button data-vw='land' title='3 ft stair landing zones'>Landings</button><button data-vw='roofs' title='Show roofs and dormers'>Roofs</button><button data-vw='fram' title='Show framing for all objects'>Framing</button><button data-vw='terr' title='Terrain and trees in 3D'>Terrain</button><button data-vw='sky' title='Sky in 3D'>Sky</button><span id='bld' title='Current program build'>CADieux v1.4.0 · build 279</span></div>
+<div id='tb'><span>View</span><button data-vw='grid' title='Plan grid'>Grid</button><button data-vw='dims' title='Wall dimensions (zoom in to see them)'>Dimensions</button><button data-vw='labels' title='Room names and areas'>Room labels</button><button data-vw='land' title='3 ft stair landing zones'>Landings</button><button data-vw='roofs' title='Show roofs and dormers'>Roofs</button><button data-vw='fram' title='Show framing for all objects'>Framing</button><button data-vw='terr' title='Terrain and trees in 3D'>Terrain</button><button data-vw='sky' title='Sky in 3D'>Sky</button><span id='bld' title='Current program build'>CADieux v1.4.0 · build 282</span></div>
 <div id='st'>Select: click to select, drag to move, drag a square handle to resize. Delete removes. Q rotates stairs.</div>
 <div id='fly'></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -12157,6 +12157,34 @@ $('new').onclick = () =>
     M.paths = [];
   });
 $('demo').onclick = () => mut(sample);
+const exportBlueprint = async (pdf) => {
+  $('filepop').classList.remove('open');
+  const base = fileName || 'cadieux-project',
+    nm = base.replace(/[-_]+/g, ' ');
+  try {
+    /* the Android app's save screen takes text only, so it gets the web-page version, which prints to PDF */
+    const asPdf = pdf && !window.cadieuxAndroid,
+      f = await saveFile(
+        base + '-blueprint.' + (asPdf ? 'pdf' : 'html'),
+        asPdf ? await bpPdf(nm) : bpBuild(nm),
+      );
+    status(
+      'Blueprint saved as ' +
+        f +
+        (asPdf || !pdf
+          ? '.'
+          : ' (PDF export is not available here; open it and choose Print / Save as PDF).'),
+    );
+  } catch (e) {
+    status(
+      e && e.code === 'declined'
+        ? 'Export cancelled.'
+        : 'Blueprint could not be saved: ' + ((e && e.message) || e),
+    );
+  }
+};
+$('exbp').onclick = () => exportBlueprint(true);
+$('exbh').onclick = () => exportBlueprint(false);
 function setLogo(u) {
   const L = $('logo');
   L.innerHTML = u ? '' : '<span>LOGO</span>';
@@ -12248,6 +12276,1040 @@ const doSave = async (nm) => {
     );
   }
 };
+/* ---------- Blueprint export ----------
+   A printable drawing set built from the model: cover sheet, a floor plan for every level, a roof plan, four elevations and a
+   door and window schedule. Each sheet is an SVG drawn in inches (17 x 11 in) at a true architectural scale, and the set is saved
+   as one HTML file that opens in any browser and prints to PDF. On screen it can switch between blueprint (white on blue) and
+   print (black on white) colours. */
+const BP = {
+  PW: 17,
+  PH: 11,
+  MG: 0.5,
+  TB: 2.4,
+  SCALES: [
+    [1 / 2, '1/2" = 1\'-0"'],
+    [3 / 8, '3/8" = 1\'-0"'],
+    [1 / 4, '1/4" = 1\'-0"'],
+    [3 / 16, '3/16" = 1\'-0"'],
+    [1 / 8, '1/8" = 1\'-0"'],
+    [3 / 32, '3/32" = 1\'-0"'],
+    [1 / 16, '1/16" = 1\'-0"'],
+    [1 / 32, '1/32" = 1\'-0"'],
+  ],
+};
+BP.DX0 = BP.MG + 0.15;
+BP.DX1 = BP.PW - BP.MG - BP.TB - 0.15;
+BP.DY0 = BP.MG + 0.15;
+BP.DY1 = BP.PH - BP.MG - 0.15;
+const bpN = (v) => Math.round(v * 1000) / 1000,
+  bpEsc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+/* feet and inches as drawn on plans: 12'-6" */
+function bpFt(v) {
+  const i = Math.round(Math.abs(v) * 12);
+  return (v < 0 ? '-' : '') + Math.floor(i / 12) + "'-" + (i % 12) + '"';
+}
+/* the largest standard scale (inches per foot) that does not exceed the one that fits */
+const bpScale = (fit) => BP.SCALES.find((s) => s[0] <= fit) || BP.SCALES[BP.SCALES.length - 1];
+/* a sheet collects SVG fragments; S.view() gives helpers that map world feet to sheet inches */
+function bpSheet(title) {
+  const S = {title, parts: [], defs: [], scale: ''};
+  S.add = (s) => S.parts.push(s);
+  S.sline = (x1, y1, x2, y2, w, c, d) =>
+    S.add(
+      `<line x1="${bpN(x1)}" y1="${bpN(y1)}" x2="${bpN(x2)}" y2="${bpN(y2)}" class="${c || 'k'}" stroke-width="${w || 0.012}"${d ? ` stroke-dasharray="${d}"` : ''}/>`,
+    );
+  S.srect = (x, y, w, h, c, sw, fill) =>
+    S.add(
+      `<rect x="${bpN(x)}" y="${bpN(y)}" width="${bpN(w)}" height="${bpN(h)}" class="${c || 'k'}" stroke-width="${sw || 0.012}"${fill ? ` fill="${fill}"` : ''}/>`,
+    );
+  S.stext = (x, y, str, size, anchor, rot) =>
+    S.add(
+      `<text x="${bpN(x)}" y="${bpN(y)}" font-size="${size || 0.12}" text-anchor="${anchor || 'start'}" class="tx"${rot ? ` transform="rotate(${bpN(rot)} ${bpN(x)} ${bpN(y)})"` : ''}>${str}</text>`,
+    );
+  /* dimension string between two sheet points, drawn off sideways by off inches */
+  S.dim = (a, b, off, label) => {
+    const dx = b[0] - a[0],
+      dy = b[1] - a[1],
+      L = Math.hypot(dx, dy) || 1,
+      ux = dx / L,
+      uy = dy / L,
+      sg = off < 0 ? -1 : 1,
+      nx = -uy * sg,
+      ny = ux * sg,
+      A = [a[0] - uy * off, a[1] + ux * off],
+      B = [b[0] - uy * off, b[1] + ux * off];
+    [
+      [a, A],
+      [b, B],
+    ].forEach(([p, q]) =>
+      S.sline(p[0] + nx * 0.05, p[1] + ny * 0.05, q[0] + nx * 0.07, q[1] + ny * 0.07, 0.006),
+    );
+    S.sline(A[0], A[1], B[0], B[1], 0.008);
+    [A, B].forEach((p) =>
+      S.sline(
+        p[0] - (ux + nx) * 0.04,
+        p[1] - (uy + ny) * 0.04,
+        p[0] + (ux + nx) * 0.04,
+        p[1] + (uy + ny) * 0.04,
+        0.012,
+      ),
+    );
+    let ang = (Math.atan2(dy, dx) * 180) / Math.PI;
+    if (ang > 90 || ang <= -90) ang += 180;
+    const th = (ang * Math.PI) / 180,
+      tx = (A[0] + B[0]) / 2 + Math.sin(th) * 0.035,
+      ty = (A[1] + B[1]) / 2 - Math.cos(th) * 0.035;
+    S.stext(tx, ty, label, 0.1, 'middle', ang);
+  };
+  S.view = (sc, ox, oy) => {
+    const X = (x) => bpN(ox + x * sc),
+      Y = (y) => bpN(oy - y * sc),
+      pts = (P) => P.map((p) => X(p[0]) + ',' + Y(p[1])).join(' ');
+    return {
+      sc,
+      X,
+      Y,
+      line: (a, b, w, c, d) => S.sline(X(a[0]), Y(a[1]), X(b[0]), Y(b[1]), w, c, d),
+      poly: (P, c, w, extra) =>
+        S.add(`<polygon points="${pts(P)}" class="${c || 'k'}" stroke-width="${w || 0.012}"${extra || ''}/>`),
+      path: (P, c, w, d) =>
+        S.add(
+          `<polyline points="${pts(P)}" class="${c || 'k'}" stroke-width="${w || 0.012}"${d ? ` stroke-dasharray="${d}"` : ''}/>`,
+        ),
+      text: (p, str, size, anchor) => S.stext(X(p[0]), Y(p[1]), str, size || 0.11, anchor || 'middle'),
+    };
+  };
+  return S;
+}
+/* every door and window, numbered D1.. and W1.. for the plans and the schedule */
+function bpOpenings() {
+  const out = [];
+  let nd = 0,
+    nw = 0;
+  M.floors.forEach((F, fi) =>
+    F.walls
+      .filter((w) => !w.hid)
+      .forEach((w) =>
+        [...w.open]
+          .filter((o) => !o.hid)
+          .sort((a, b) => a.t - b.t)
+          .forEach((o) => {
+            const win = o.kind === 'window';
+            out.push({
+              o,
+              w,
+              fi,
+              win,
+              sill: win ? WSILL[o.wt || 'dh'] : 0,
+              head: win ? OP.window[1] : o.dt === 'garage' ? 7 : OP.door[1],
+              mark: win ? 'W' + ++nw : 'D' + ++nd,
+              style: win ? WINN[o.wt || 'dh'] : DOORN[o.dt || 'hinged'],
+            });
+          }),
+      ),
+  );
+  return out;
+}
+/* plan symbol for one opening: the wall is cut, then jambs, glass lines or the door leaf and its swing are drawn */
+function bpOpenSym(V, w, o) {
+  const g = geom(w),
+    h = w.t / 2,
+    m = o.t * g.L,
+    s0 = m - o.w / 2,
+    s1 = m + o.w / 2,
+    P = (s, k) => [g.ax + g.d[0] * s + g.n[0] * k, g.ay + g.d[1] * s + g.n[1] * k];
+  V.poly([P(s0, h + 0.03), P(s1, h + 0.03), P(s1, -h - 0.03), P(s0, -h - 0.03)], 'pp', 0.001);
+  V.line(P(s0, h), P(s0, -h), 0.014);
+  V.line(P(s1, h), P(s1, -h), 0.014);
+  if (o.kind === 'window') {
+    [h * 0.6, 0, -h * 0.6].forEach((k, i) => V.line(P(s0, k), P(s1, k), i === 1 ? 0.006 : 0.012));
+    return;
+  }
+  const dt = o.dt || 'hinged';
+  if (dt === 'garage') return V.line(P(s0, 0), P(s1, 0), 0.01, 'k', '0.08 0.05');
+  if (dt !== 'hinged') {
+    V.line(P(s0, h * 0.4), P(m + o.w * 0.1, h * 0.4), 0.012);
+    V.line(P(m - o.w * 0.1, -h * 0.4), P(s1, -h * 0.4), 0.012);
+    return;
+  }
+  const sw = o.fv ? -1 : 1,
+    dir = o.fh ? -1 : 1,
+    hs = o.fh ? s1 : s0,
+    arc = [];
+  V.line(P(hs, 0), P(hs, sw * o.w), 0.014);
+  for (let i = 0; i <= 16; i++) {
+    const a = (i * Math.PI) / 32;
+    arc.push(P(hs + dir * o.w * Math.sin(a), sw * o.w * Math.cos(a)));
+  }
+  V.path(arc, 'k', 0.006, '0.05 0.04');
+}
+function bpNorth(S, x, y) {
+  S.add(`<circle cx="${x}" cy="${y}" r="0.28" class="k" stroke-width="0.01"/>`);
+  S.add(
+    `<polygon points="${x},${y - 0.28} ${x + 0.09},${y + 0.12} ${x},${y + 0.04} ${x - 0.09},${y + 0.12}" class="kf"/>`,
+  );
+  S.stext(x, y - 0.36, 'N', 0.13, 'middle');
+}
+/* overall dimensions plus a chain of wall-corner dimensions along the top and left side of a plan */
+function bpDims(S, V, b, walls) {
+  const chain = (vals, horiz) => {
+    const u = [...new Set(vals.map((v) => Math.round(v * 4) / 4))].sort((p, q) => p - q);
+    if (u.length < 3 || u.length > 14) return;
+    for (let i = 0; i < u.length - 1; i++)
+      if (u[i + 1] - u[i] > 0.9)
+        horiz
+          ? S.dim([V.X(u[i]), V.Y(b.y1)], [V.X(u[i + 1]), V.Y(b.y1)], -0.32, bpFt(u[i + 1] - u[i]))
+          : S.dim([V.X(b.x0), V.Y(u[i])], [V.X(b.x0), V.Y(u[i + 1])], -0.32, bpFt(u[i + 1] - u[i]));
+  };
+  if (walls) {
+    chain(
+      walls.flatMap((w) => [w.a[0], w.b[0]]),
+      true,
+    );
+    chain(
+      walls.flatMap((w) => [w.a[1], w.b[1]]),
+      false,
+    );
+  }
+  const off = walls ? -0.68 : -0.4;
+  S.dim([V.X(b.x0), V.Y(b.y1)], [V.X(b.x1), V.Y(b.y1)], off, bpFt(b.x1 - b.x0));
+  S.dim([V.X(b.x0), V.Y(b.y0)], [V.X(b.x0), V.Y(b.y1)], off, bpFt(b.y1 - b.y0));
+}
+function bpPlan(S, fi, g) {
+  const F = M.floors[fi],
+    V = S.view(g.sc, g.ox, g.oy),
+    ws = F.walls.filter((w) => !w.hid),
+    near = (p, q) => Math.hypot(p[0] - q[0], p[1] - q[1]) < 0.05,
+    outline = (w) => {
+      const gm = geom(w),
+        ex = [w.a, w.b].map((p) =>
+          Math.max(0, ...ws.filter((o) => o !== w && (near(o.a, p) || near(o.b, p))).map((o) => o.t / 2)),
+        ),
+        P = (s, k) => [gm.ax + gm.d[0] * s + gm.n[0] * k, gm.ay + gm.d[1] * s + gm.n[1] * k];
+      return [P(-ex[0], w.t / 2), P(gm.L + ex[1], w.t / 2), P(gm.L + ex[1], -w.t / 2), P(-ex[0], -w.t / 2)];
+    },
+    hid = 'hatch' + fi,
+    rect = (D) => [
+      [D.x0, D.y0],
+      [D.x1, D.y0],
+      [D.x1, D.y1],
+      [D.x0, D.y1],
+    ];
+  S.defs.push(
+    `<pattern id="${hid}" width="0.07" height="0.07" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="0.07" height="0.07" class="pp"/><line x1="0" y1="0" x2="0" y2="0.07" class="k" stroke-width="0.008" opacity="0.7"/></pattern>`,
+  );
+  (F.decks || []).forEach((D) => {
+    if (D.hid) return;
+    V.poly(rect(D), 'k', 0.01, ' stroke-dasharray="0.12 0.05"');
+    V.text([(D.x0 + D.x1) / 2, (D.y0 + D.y1) / 2], 'DECK', 0.12);
+  });
+  (F.cabs || []).forEach((c) => !c.hid && V.poly(cabPts(c), 'lt', 0.007));
+  (F.furn || []).forEach((o) => !o.hid && V.poly(furnPts(o), 'lt', 0.007));
+  (F.rails || []).forEach((r) => !r.hid && V.line(r.a, r.b, 0.02));
+  /* walls: an outline pass, then a hatched fill pass that hides the lines where walls join */
+  ws.forEach((w) => V.poly(outline(w), 'wk', 0.034));
+  ws.forEach((w) => V.poly(outline(w), 'wf', 0.001, ` fill="url(#${hid})"`));
+  ws.forEach((w) => w.open.filter((o) => !o.hid).forEach((o) => bpOpenSym(V, w, o)));
+  (F.stairs || []).forEach((s) => {
+    if (s.hid) return;
+    const pp = stairPolys(s);
+    pp.forEach((p) => V.poly(p, 'k', 0.01));
+    const c = pp[0].reduce((a, p) => [a[0] + p[0] / pp[0].length, a[1] + p[1] / pp[0].length], [0, 0]);
+    V.text(c, 'STAIR', 0.1);
+  });
+  const k = 1 / g.sc;
+  (F.rooms || []).forEach((r) => {
+    if (r.hid || !r.pts || r.pts.length < 3) return;
+    const c = r.pts.reduce((a, p) => [a[0] + p[0] / r.pts.length, a[1] + p[1] / r.pts.length], [0, 0]),
+      xs = r.pts.map((p) => p[0]),
+      ys = r.pts.map((p) => p[1]);
+    V.text([c[0], c[1] + 0.12 * k], bpEsc(r.name || 'ROOM').toUpperCase(), 0.13);
+    V.text(
+      [c[0], c[1] - 0.05 * k],
+      bpFt(Math.max(...xs) - Math.min(...xs)) + ' x ' + bpFt(Math.max(...ys) - Math.min(...ys)),
+      0.095,
+    );
+    V.text([c[0], c[1] - 0.2 * k], Math.round(area(r.pts)) + ' SF', 0.095);
+  });
+  /* door and window marks on the outside of each wall */
+  g.marks
+    .filter((m) => m.fi === fi)
+    .forEach((m) => {
+      const gm = geom(m.w),
+        side = extSide(m.w, F),
+        c = [
+          gm.ax + gm.d[0] * m.o.t * gm.L + gm.n[0] * side * (m.w.t / 2 + 0.42 * k),
+          gm.ay + gm.d[1] * m.o.t * gm.L + gm.n[1] * side * (m.w.t / 2 + 0.42 * k),
+        ],
+        x = V.X(c[0]),
+        y = V.Y(c[1]),
+        r = 0.11;
+      S.add(
+        m.win
+          ? `<polygon points="${x},${y - r} ${x + r},${y} ${x},${y + r} ${x - r},${y}" class="k" stroke-width="0.008"/>`
+          : `<circle cx="${x}" cy="${y}" r="${r}" class="k" stroke-width="0.008"/>`,
+      );
+      S.stext(x, y + 0.03, m.mark, 0.08, 'middle');
+    });
+  bpDims(S, V, g.bb, ws);
+  bpNorth(S, BP.DX1 - 0.4, BP.DY0 + 0.45);
+}
+/* roof outline, ridges, hips and valleys for one roof, in plan */
+function bpRoofLines(V, R) {
+  const pf = roofProfile(R),
+    W = (u, v) => (pf.lx ? [R.x0 + u, R.y0 + v] : [R.x0 + v, R.y0 + u]),
+    L = pf.Lu,
+    Sv = pf.Sv,
+    o = R.ro == null ? 1 : R.ro;
+  V.poly(
+    [
+      [R.x0 - o, R.y0 - o],
+      [R.x1 + o, R.y0 - o],
+      [R.x1 + o, R.y1 + o],
+      [R.x0 - o, R.y1 + o],
+    ],
+    'k',
+    0.008,
+    ' stroke-dasharray="0.12 0.05"',
+  );
+  V.poly(
+    [
+      [R.x0, R.y0],
+      [R.x1, R.y0],
+      [R.x1, R.y1],
+      [R.x0, R.y1],
+    ],
+    'k',
+    0.02,
+  );
+  if (R.type === 'flat') return;
+  if (PLT.includes(R.type)) {
+    const e = 0.01,
+      inR = (q) => q[0] > -e && q[0] < L + e && q[1] > -e && q[1] < Sv + e,
+      onB = (q) => [Math.abs(q[0]) < e, Math.abs(q[0] - L) < e, Math.abs(q[1]) < e, Math.abs(q[1] - Sv) < e];
+    planeFaces(planeCells(R)).forEach((f) =>
+      f.pts.forEach((a, i) => {
+        const b = f.pts[(i + 1) % f.pts.length];
+        if (inR(a) && inR(b) && !onB(a).some((t, j) => t && onB(b)[j]))
+          V.line(W(a[0], a[1]), W(b[0], b[1]), 0.012);
+      }),
+    );
+  } else if (R.type === 'hip') {
+    V.line(W(pf.r0, Sv / 2), W(L - pf.r0, Sv / 2), 0.012);
+    [
+      [0, 0, pf.r0],
+      [0, Sv, pf.r0],
+      [L, 0, L - pf.r0],
+      [L, Sv, L - pf.r0],
+    ].forEach((h) => V.line(W(h[0], h[1]), W(h[2], Sv / 2), 0.012));
+  } else
+    pf.pr
+      .slice(1, -1)
+      .forEach((q) =>
+        V.line(
+          W(0, q[0]),
+          W(L, q[0]),
+          0.012,
+          'k',
+          ['gambrel', 'barrel', 'bonnet'].includes(R.type) ? '0.08 0.05' : undefined,
+        ),
+      );
+}
+function bpRoofPlan(S, g) {
+  const V = S.view(g.sc, g.ox, g.oy);
+  M.floors.forEach((F) => F.walls.filter((w) => !w.hid).forEach((w) => V.line(w.a, w.b, 0.008, 'lt')));
+  M.floors.forEach((F) =>
+    (F.roofs || []).forEach((R) => {
+      if (R.hid || R.type === 'none') return;
+      bpRoofLines(V, R);
+      const c = [(R.x0 + R.x1) / 2, (R.y0 + R.y1) / 2],
+        pf = roofProfile(R);
+      if (R.type === 'flat') return V.text(c, 'FLAT ROOF', 0.11);
+      /* slope arrows point downhill from either side of the ridge */
+      [-0.25, 0.25].forEach((f) => {
+        const p = pf.lx ? [c[0], c[1] + f * pf.Sv] : [c[0] + f * pf.Sv, c[1]],
+          d = roofDown(R, p),
+          q = [p[0] + d[0] * 2.2, p[1] + d[1] * 2.2],
+          a = Math.atan2(q[1] - p[1], q[0] - p[0]);
+        V.line(p, q, 0.01);
+        V.line(q, [q[0] - 0.6 * Math.cos(a - 0.4), q[1] - 0.6 * Math.sin(a - 0.4)], 0.01);
+        V.line(q, [q[0] - 0.6 * Math.cos(a + 0.4), q[1] - 0.6 * Math.sin(a + 0.4)], 0.01);
+      });
+      V.text([c[0], c[1] + 0.2 / g.sc], bpEsc(ROOFN[R.type] + ' ' + R.pitch + ':12').toUpperCase(), 0.11);
+    }),
+  );
+  M.floors.forEach((F) => {
+    (F.skys || []).forEach((k) => {
+      if (k.hid) return;
+      const Q = skyPts(k);
+      V.poly(Q, 'k', 0.012);
+      V.line(Q[0], Q[2], 0.008);
+      V.line(Q[1], Q[3], 0.008);
+    });
+    (F.dormers || []).forEach((D) => !D.hid && V.poly(dormPts(D), 'k', 0.012));
+  });
+  bpDims(S, V, g.bb, null);
+  bpNorth(S, BP.DX1 - 0.4, BP.DY0 + 0.45);
+}
+const BPV = {
+  S: {v: [0, -1], hd: [1, 0], hx: true, nm: 'FRONT ELEVATION (SOUTH)'},
+  N: {v: [0, 1], hd: [-1, 0], hx: true, nm: 'REAR ELEVATION (NORTH)'},
+  W: {v: [-1, 0], hd: [0, -1], hx: false, nm: 'LEFT ELEVATION (WEST)'},
+  E: {v: [1, 0], hd: [0, 1], hx: false, nm: 'RIGHT ELEVATION (EAST)'},
+};
+/* roof as seen from one side: top edge height at each horizontal position, plus the lowest eave */
+function bpRoofSil(R, i, D) {
+  const o = R.ro == null ? 1 : R.ro,
+    h = (p) => p[0] * D.hd[0] + p[1] * D.hd[1],
+    a0 = D.hx ? R.x0 : R.y0,
+    a1 = D.hx ? R.x1 : R.y1,
+    d0 = D.hx ? R.y0 : R.x0,
+    d1 = D.hx ? R.y1 : R.x1,
+    pt = (a, d) => (D.hx ? [a, d] : [d, a]);
+  if (R.type === 'flat') {
+    const z = ZBof(i) + roofBase(R, i) + bmInfo(R, i, roofProfile(R)).rise + 0.4,
+      hh = [h(pt(a0, d0)), h(pt(a1, d0))].sort((p, q) => p - q);
+    return {flat: true, h0: hh[0] - o, h1: hh[1] + o, top: z, low: z - 0.4};
+  }
+  const nh = Math.max(4, Math.ceil((a1 - a0) / 0.5)),
+    nd = Math.max(4, Math.ceil(d1 - d0)),
+    pts = [];
+  let low = 1e9;
+  for (let k = 0; k <= nh; k++) {
+    const a = a0 + ((a1 - a0) * k) / nh;
+    let top = -1e9;
+    for (let q = 0; q <= nd; q++) {
+      const p = pt(a, d0 + ((d1 - d0) * q) / nd),
+        z = roofHz(R, i, p[0], p[1]);
+      top = Math.max(top, z);
+      low = Math.min(low, z);
+    }
+    pts.push([h(pt(a, d0)), top]);
+  }
+  pts.sort((p, q) => p[0] - q[0]);
+  /* the roof carries on past the end walls by the overhang, following the slope of its last stretch */
+  const e0 = pts[0],
+    e1 = pts[pts.length - 1],
+    s0 = (pts[1][1] - e0[1]) / (pts[1][0] - e0[0] || 1),
+    s1 = (e1[1] - pts[pts.length - 2][1]) / (e1[0] - pts[pts.length - 2][0] || 1);
+  return {
+    flat: false,
+    h0: e0[0] - o,
+    h1: e1[0] + o,
+    top: Math.max(...pts.map((p) => p[1])),
+    low,
+    pts: [[e0[0] - o, e0[1] - s0 * o], ...pts, [e1[0] + o, e1[1] + s1 * o]],
+  };
+}
+/* the bounds every elevation has to fit: widest horizontal run and tallest point above the ground line */
+function bpElevExtent() {
+  const fl = M.floors.map((F, i) => i).filter((i) => i >= (M.bsmt || 0) && !M.floors[i].hid),
+    ws = fl.flatMap((i) => M.floors[i].walls.filter((w) => !w.hid)),
+    b = bb(ws) || {x0: 0, x1: 10, y0: 0, y1: 10};
+  let zmax = 0,
+    ro = 0;
+  fl.forEach((i) => {
+    M.floors[i].walls.forEach((w) => (zmax = Math.max(zmax, ZBof(i) + (w.h || WH))));
+    (M.floors[i].roofs || []).forEach((R) => {
+      if (R.hid || R.type === 'none') return;
+      ro = Math.max(ro, R.ro == null ? 1 : R.ro);
+      for (const d of Object.values(BPV)) zmax = Math.max(zmax, bpRoofSil(R, i, d).top);
+    });
+  });
+  return {W: Math.max(b.x1 - b.x0, b.y1 - b.y0) + 2 * ro + 2, H: zmax + 1.5};
+}
+function bpElev(S, view, box, sc) {
+  const D = BPV[view],
+    hOf = (p) => p[0] * D.hd[0] + p[1] * D.hd[1],
+    dep = (p) => p[0] * D.v[0] + p[1] * D.v[1],
+    fl = M.floors.map((F, i) => i).filter((i) => i >= (M.bsmt || 0) && !M.floors[i].hid),
+    roofs = fl.flatMap((i) =>
+      (M.floors[i].roofs || [])
+        .filter((R) => !R.hid && R.type !== 'none')
+        .map((R) => ({R, i, s: bpRoofSil(R, i, D)})),
+    );
+  let h0 = 1e9,
+    h1 = -1e9,
+    zt = 0;
+  fl.forEach((i) =>
+    M.floors[i].walls
+      .filter((w) => !w.hid)
+      .forEach((w) => {
+        [w.a, w.b].forEach((p) => {
+          h0 = Math.min(h0, hOf(p) - w.t / 2);
+          h1 = Math.max(h1, hOf(p) + w.t / 2);
+        });
+        zt = Math.max(zt, ZBof(i) + (w.h || WH));
+      }),
+  );
+  roofs.forEach(({s}) => {
+    h0 = Math.min(h0, s.h0);
+    h1 = Math.max(h1, s.h1);
+    zt = Math.max(zt, s.top);
+  });
+  if (h0 > h1) return;
+  const ox = (box.x0 + box.x1) / 2 - ((h0 + h1) / 2) * sc,
+    gy = box.y1 - 1.0,
+    V = S.view(sc, ox, gy),
+    gid = 'gnd' + view;
+  S.defs.push(
+    `<pattern id="${gid}" width="0.12" height="0.12" patternUnits="userSpaceOnUse"><line x1="0" y1="0.12" x2="0.12" y2="0" class="k" stroke-width="0.008"/></pattern>`,
+  );
+  S.srect(V.X(h0 - 3), V.Y(0), (h1 - h0 + 6) * sc, 0.2, 'pp', 0.001, `url(#${gid})`);
+  V.line([h0 - 3, 0], [h1 + 3, 0], 0.025);
+  /* walls floor by floor, far ones first so near walls overlap them; openings go on the walls that face the viewer */
+  fl.forEach((i) => {
+    const F = M.floors[i],
+      z0 = ZBof(i),
+      ws = F.walls
+        .filter((w) => !w.hid)
+        .map((w) => {
+          const c = [(w.a[0] + w.b[0]) / 2, (w.a[1] + w.b[1]) / 2];
+          return {w, d: dep(c)};
+        })
+        .sort((p, q) => p.d - q.d);
+    ws.forEach(({w}) => {
+      const a = hOf(w.a),
+        b = hOf(w.b),
+        z1 = z0 + (w.h || WH),
+        lo = Math.min(a, b) - w.t / 2,
+        hi = Math.max(a, b) + w.t / 2;
+      V.poly(
+        [
+          [lo, z0],
+          [hi, z0],
+          [hi, z1],
+          [lo, z1],
+        ],
+        'pk',
+        0.01,
+      );
+    });
+    ws.forEach(({w}) => {
+      const g = geom(w);
+      if (extSide(w, F) * (g.n[0] * D.v[0] + g.n[1] * D.v[1]) < 0.5) return;
+      const proj = Math.abs(g.d[0] * D.hd[0] + g.d[1] * D.hd[1]);
+      w.open
+        .filter((o) => !o.hid)
+        .forEach((o) => {
+          const win = o.kind === 'window',
+            c = hOf([g.ax + g.d[0] * o.t * g.L, g.ay + g.d[1] * o.t * g.L]),
+            hw = (o.w * proj) / 2,
+            za = z0 + (win ? WSILL[o.wt || 'dh'] : 0),
+            zb = z0 + (win ? OP.window[1] : o.dt === 'garage' ? 7 : OP.door[1]),
+            zm = (za + zb) / 2,
+            r = (x0, x1, y0, y1) =>
+              V.poly(
+                [
+                  [x0, y0],
+                  [x1, y0],
+                  [x1, y1],
+                  [x0, y1],
+                ],
+                'k',
+                0.008,
+              );
+          r(c - hw, c + hw, za, zb);
+          r(c - hw + 0.12, c + hw - 0.12, za + 0.12, zb - 0.12);
+          const dt = o.dt || 'hinged',
+            wt = o.wt || 'dh';
+          if (win) {
+            if (wt === 'dh') V.line([c - hw, zm], [c + hw, zm], 0.012);
+            else if (wt === 'awning')
+              V.line([c - hw, za + (zb - za) * 0.7], [c + hw, za + (zb - za) * 0.7], 0.012);
+            else if (wt !== 'fixed') V.line([c, za], [c, zb], 0.012);
+          } else if (dt === 'garage')
+            for (let z = za + 1.75; z < zb - 0.2; z += 1.75) V.line([c - hw, z], [c + hw, z], 0.008);
+          else if (dt === 'hinged') {
+            r(c - hw + 0.3, c + hw - 0.3, za + 0.3, zm - 0.1);
+            r(c - hw + 0.3, c + hw - 0.3, zm + 0.1, zb - 0.3);
+            V.line([c + hw - 0.28, zm - 0.3], [c + hw - 0.28, zm - 0.3], 0.05);
+          } else V.line([c, za], [c, zb], 0.012);
+        });
+    });
+    roofs
+      .filter((q) => q.i === i)
+      .forEach(({s}) => {
+        if (s.flat)
+          return V.poly(
+            [
+              [s.h0, s.low],
+              [s.h1, s.low],
+              [s.h1, s.top],
+              [s.h0, s.top],
+            ],
+            'pk',
+            0.02,
+          );
+        const lowz = s.low - 0.5;
+        V.poly([...s.pts, [s.h1, lowz], [s.h0, lowz]], 'pk', 0.02);
+        V.line([s.h0, s.low], [s.h1, s.low], 0.008);
+      });
+  });
+  /* level marks on the left, overall height on the right, overall width under the ground line */
+  fl.forEach((i) => {
+    const z = ZBof(i),
+      x = V.X(h0) - 0.35;
+    V.line([h0 - 1.5, z], [h0, z], 0.008, 'k', '0.1 0.05');
+    S.stext(
+      x,
+      V.Y(z) - 0.05,
+      'LEVEL ' + (i + 1 - (M.bsmt || 0)) + '   ' + (z >= 0 ? '+' : '-') + bpFt(Math.abs(z)),
+      0.1,
+      'end',
+    );
+  });
+  S.dim([V.X(h1) + 0.2, V.Y(0)], [V.X(h1) + 0.2, V.Y(zt)], 0.5, bpFt(zt));
+  S.dim([V.X(h0), V.Y(0)], [V.X(h1), V.Y(0)], 0.45, bpFt(h1 - h0));
+  S.stext((box.x0 + box.x1) / 2, box.y1 - 0.12, D.nm, 0.16, 'middle');
+}
+function bpTitleBlock(S, no, total, logo, name) {
+  const x = BP.PW - BP.MG - BP.TB,
+    y = BP.MG,
+    w = BP.TB,
+    h = BP.PH - 2 * BP.MG,
+    lines = (str, n) => {
+      const out = [];
+      let cur = '';
+      str.split(' ').forEach((wd) => {
+        if ((cur + ' ' + wd).trim().length > n && cur) {
+          out.push(cur);
+          cur = wd;
+        } else cur = (cur + ' ' + wd).trim();
+      });
+      if (cur) out.push(cur);
+      return out;
+    };
+  S.srect(x, y, w, h, 'k', 0.02);
+  S.sline(x, y + 1.3, x + w, y + 1.3, 0.012);
+  if (logo)
+    S.add(
+      `<image href="${logo}" x="${x + 0.15}" y="${y + 0.12}" width="${w - 0.3}" height="1.06" preserveAspectRatio="xMidYMid meet"/>`,
+    );
+  else S.stext(x + w / 2, y + 0.78, 'CADieux', 0.3, 'middle');
+  S.stext(x + 0.12, y + 1.55, 'PROJECT', 0.085);
+  lines(name.toUpperCase(), 17)
+    .slice(0, 2)
+    .forEach((t, i) => S.stext(x + 0.12, y + 1.8 + i * 0.22, bpEsc(t), 0.17));
+  S.sline(x, y + 2.35, x + w, y + 2.35, 0.012);
+  S.stext(x + 0.12, y + 2.6, 'DATE', 0.085);
+  S.stext(x + 0.12, y + 2.82, new Date().toLocaleDateString('en-US'), 0.14);
+  S.stext(x + 0.12, y + 3.15, 'DRAWN BY', 0.085);
+  S.stext(x + 0.12, y + 3.37, 'CADieux', 0.14);
+  S.sline(x, y + 3.6, x + w, y + 3.6, 0.012);
+  S.stext(x + 0.12, y + 3.85, 'SHEET', 0.085);
+  lines(S.title.toUpperCase(), 17).forEach((t, i) => S.stext(x + 0.12, y + 4.1 + i * 0.24, bpEsc(t), 0.18));
+  S.sline(x, y + 5.9, x + w, y + 5.9, 0.012);
+  S.stext(x + 0.12, y + 6.15, 'SCALE', 0.085);
+  S.stext(x + 0.12, y + 6.4, S.scale || 'AS NOTED', 0.14);
+  S.sline(x, y + 6.7, x + w, y + 6.7, 0.012);
+  S.stext(x + w / 2, y + h - 1.55, 'SHEET NO.', 0.085, 'middle');
+  S.stext(x + w / 2, y + h - 0.95, 'A-' + no, 0.6, 'middle');
+  S.stext(x + w / 2, y + h - 0.55, no + ' of ' + total, 0.11, 'middle');
+  S.stext(x + w / 2, y + h - 0.25, 'Generated from the CADieux model.', 0.065, 'middle');
+  S.stext(x + w / 2, y + h - 0.14, 'Verify all dimensions before building.', 0.065, 'middle');
+}
+function bpCover(S, sheets, name) {
+  const x = BP.DX0 + 0.4;
+  let y = BP.DY0 + 1.0;
+  S.stext(x, y, bpEsc(name.toUpperCase()), 0.6);
+  y += 0.5;
+  S.stext(x, y, 'ARCHITECTURAL DRAWING SET', 0.22);
+  y += 0.9;
+  const fl = M.floors.filter((F, i) => i >= (M.bsmt || 0) && !F.hid),
+    sf = fl.map((F) =>
+      Math.round((F.rooms || []).filter((r) => !r.hid).reduce((s, r) => s + area(r.pts), 0)),
+    ),
+    ops = bpOpenings(),
+    roofs = M.floors.flatMap((F) => (F.roofs || []).filter((R) => !R.hid && R.type !== 'none')),
+    b = bb(fl.flatMap((F) => F.walls)) || {x0: 0, x1: 0, y0: 0, y1: 0},
+    rows = [
+      ['LEVELS', String(fl.length)],
+      ['FOOTPRINT', bpFt(b.x1 - b.x0) + ' x ' + bpFt(b.y1 - b.y0)],
+      ['FLOOR AREA', sf.reduce((s, v) => s + v, 0) + ' SF (' + sf.join(' + ') + ')'],
+      [
+        'ROOF',
+        roofs.length
+          ? [...new Set(roofs.map((R) => ROOFN[R.type] + ' ' + R.pitch + ':12'))].join(', ')
+          : 'NONE',
+      ],
+      ['DOORS / WINDOWS', ops.filter((o) => !o.win).length + ' / ' + ops.filter((o) => o.win).length],
+    ];
+  rows.forEach((r) => {
+    S.stext(x, y, r[0], 0.12);
+    S.stext(x + 2.2, y, bpEsc(r[1]).toUpperCase(), 0.14);
+    y += 0.34;
+  });
+  y += 0.5;
+  S.stext(x, y, 'SHEET INDEX', 0.2);
+  S.sline(x, y + 0.1, x + 7, y + 0.1, 0.012);
+  y += 0.5;
+  sheets.forEach((sh, i) => {
+    S.stext(x, y, 'A-' + (i + 1), 0.14);
+    S.stext(x + 0.9, y, bpEsc(sh.title).toUpperCase(), 0.14);
+    y += 0.3;
+  });
+}
+function bpSchedule(S, rows, startNo) {
+  const x0 = BP.DX0 + 0.3,
+    cols = [0, 0.9, 2.4, 4.6, 5.9, 7.2, 8.7],
+    heads = ['MARK', 'TYPE', 'STYLE', 'WIDTH', 'HEIGHT', 'SILL', 'LEVEL'],
+    rh = 0.26;
+  let y = BP.DY0 + 0.7;
+  S.stext(x0, y, bpEsc(S.title.toUpperCase()), 0.22);
+  y += 0.4;
+  S.srect(x0, y, 9.6, rh * (rows.length + 1), 'k', 0.014);
+  heads.forEach((t, i) => S.stext(x0 + cols[i] + 0.08, y + 0.18, t, 0.1));
+  S.sline(x0, y + rh, x0 + 9.6, y + rh, 0.012);
+  cols.slice(1).forEach((c) => S.sline(x0 + c, y, x0 + c, y + rh * (rows.length + 1), 0.008));
+  rows.forEach((r, k) => {
+    const yy = y + rh * (k + 1);
+    S.sline(x0, yy + rh, x0 + 9.6, yy + rh, 0.006);
+    [
+      r.mark,
+      r.win ? 'WINDOW' : 'DOOR',
+      r.style,
+      bpFt(r.o.w),
+      bpFt(r.head - r.sill),
+      r.win ? bpFt(r.sill) : '-',
+      bpEsc(fname(r.fi)),
+    ].forEach((t, i) => S.stext(x0 + cols[i] + 0.08, yy + 0.18, String(t).toUpperCase(), 0.1));
+  });
+  void startNo;
+}
+function bpBuild(name, raw) {
+  const fls = M.floors.map((F, i) => i).filter((i) => !M.floors[i].hid),
+    marks = bpOpenings(),
+    sheets = [],
+    all = M.floors.filter((F) => !F.hid).flatMap((F) => F.walls.filter((w) => !w.hid)),
+    deck = M.floors.flatMap((F) => (F.decks || []).filter((d) => !d.hid)),
+    b0 = bb(all) || {x0: 0, x1: 10, y0: 0, y1: 10},
+    bb2 = {
+      x0: Math.min(b0.x0, ...deck.map((d) => d.x0)) - 0.5,
+      x1: Math.max(b0.x1, ...deck.map((d) => d.x1)) + 0.5,
+      y0: Math.min(b0.y0, ...deck.map((d) => d.y0)) - 0.5,
+      y1: Math.max(b0.y1, ...deck.map((d) => d.y1)) + 0.5,
+    },
+    DW = BP.DX1 - BP.DX0,
+    DH = BP.DY1 - BP.DY0,
+    bw = bb2.x1 - bb2.x0,
+    bh = bb2.y1 - bb2.y0,
+    fit = bpScale(Math.min((DW - 2.0) / bw, (DH - 2.2) / bh)),
+    place = (sc) => ({
+      sc,
+      bb: b0,
+      marks,
+      ox: (BP.DX0 + BP.DX1) / 2 - (bw * sc) / 2 - bb2.x0 * sc,
+      oy: (BP.DY0 + BP.DY1) / 2 - 0.25 + (bh * sc) / 2 + bb2.y0 * sc,
+    });
+  sheets.push({title: 'Cover sheet', draw: (S, i) => bpCover(S, sheets, name, i)});
+  fls.forEach((i) =>
+    sheets.push({
+      title: 'Floor plan - ' + String(M.floors[i].name || dfn(i)),
+      scale: fit[1],
+      draw: (S) => bpPlan(S, i, place(fit[0])),
+    }),
+  );
+  if (M.floors.some((F) => (F.roofs || []).some((R) => !R.hid && R.type !== 'none')))
+    sheets.push({title: 'Roof plan', scale: fit[1], draw: (S) => bpRoofPlan(S, place(fit[0]))});
+  const ex = bpElevExtent(),
+    rw = DW / 2,
+    rh = DH / 2,
+    es = bpScale(Math.min((rw - 1.9) / ex.W, (rh - 1.7) / ex.H));
+  sheets.push({
+    title: 'Exterior elevations',
+    scale: es[1],
+    draw: (S) =>
+      ['S', 'N', 'W', 'E'].forEach((v, k) =>
+        bpElev(
+          S,
+          v,
+          {
+            x0: BP.DX0 + (k % 2) * rw,
+            x1: BP.DX0 + ((k % 2) + 1) * rw,
+            y0: BP.DY0 + Math.floor(k / 2) * rh,
+            y1: BP.DY0 + (Math.floor(k / 2) + 1) * rh,
+          },
+          es[0],
+        ),
+      ),
+  });
+  const per = 28;
+  for (let k = 0; k * per < marks.length || k === 0; k++)
+    sheets.push({
+      title: 'Door and window schedule' + (marks.length > per ? ' ' + (k + 1) : ''),
+      draw: (S) => bpSchedule(S, marks.slice(k * per, (k + 1) * per), k),
+    });
+  let logo = '';
+  try {
+    logo = localStorage.getItem('cadieux_logo') || '';
+  } catch (e) {
+    /* no stored logo */
+  }
+  const svgs = sheets.map((sh, i) => {
+    const S = bpSheet(sh.title);
+    S.scale = sh.scale || '';
+    sh.draw(S, i);
+    const frame = [`<rect x="0" y="0" width="${BP.PW}" height="${BP.PH}" class="pp"/>`];
+    const T = bpSheet(sh.title);
+    T.scale = sh.scale || '';
+    T.srect(BP.MG, BP.MG, BP.PW - 2 * BP.MG, BP.PH - 2 * BP.MG, 'k', 0.03);
+    bpTitleBlock(T, i + 1, sheets.length, logo, name);
+    return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${BP.PW} ${BP.PH}" width="${BP.PW}in" height="${BP.PH}in"><defs>${S.defs.join('')}</defs>${frame.join('')}${T.parts.join('')}${S.parts.join('')}</svg>`;
+  });
+  if (raw) return svgs;
+  const css =
+    ':root{--paper:#1b4a9a;--ink:#eaf2ff}body.pr{--paper:#fff;--ink:#111}' +
+    '@media print{:root,body.pr{--paper:#fff;--ink:#111}}' +
+    'body{margin:0;background:#0d2a5c;font-family:Arial,Helvetica,sans-serif}body.pr{background:#888}' +
+    '.bar{position:sticky;top:0;z-index:5;background:#111;color:#fff;padding:8px 14px;display:flex;gap:10px;align-items:center;font-size:14px}' +
+    '.bar button{padding:6px 12px;border:0;border-radius:6px;background:#3b82f6;color:#fff;cursor:pointer;font-size:14px}' +
+    '.sheet{margin:18px auto;max-width:17in;box-shadow:0 4px 24px rgba(0,0,0,.45)}.sheet svg{display:block;width:100%;height:auto}' +
+    '.k{fill:none;stroke:var(--ink);stroke-linejoin:round;stroke-linecap:round}.lt{fill:none;stroke:var(--ink);opacity:.4}' +
+    '.kf{fill:var(--ink);stroke:none}.pp{fill:var(--paper);stroke:none}.pk{fill:var(--paper);stroke:var(--ink);stroke-linejoin:round}' +
+    '.wk{fill:var(--ink);stroke:var(--ink);stroke-linejoin:miter}.wf{stroke:none}.tx{fill:var(--ink);stroke:none}' +
+    '@page{size:17in 11in;margin:0}@media print{body{background:#fff}.bar{display:none}.sheet{margin:0;max-width:none;box-shadow:none;page-break-after:always;break-after:page}.sheet svg{width:17in;height:11in}}';
+  const js =
+    "document.getElementById('tg').onclick=function(){document.body.classList.toggle('pr');this.textContent=document.body.classList.contains('pr')?'Show blueprint colours':'Show print colours'};" +
+    "document.getElementById('pr').onclick=function(){window.print()};";
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${bpEsc(name)} - Blueprint</title><style>${css}</style></head><body><div class="bar"><b>${bpEsc(name)}</b><span>${sheets.length} sheets</span><button id="tg">Show print colours</button><button id="pr">Print / Save as PDF</button></div>${svgs.map((v) => `<section class="sheet">${v}</section>`).join('')}<script>${js}<\/script></body></html>`;
+}
+/* ---------- Blueprint PDF ----------
+   Writes the drawing set as a real PDF (one 17 x 11 in page per sheet, black on white) straight from the sheet SVGs: lines,
+   polygons, circles, hatching and text become PDF drawing operators, with the standard Helvetica font, so no library is needed. */
+const BP_HELV = [
+  278, 278, 355, 556, 556, 889, 667, 191, 333, 333, 389, 584, 278, 333, 278, 278, 556, 556, 556, 556, 556,
+  556, 556, 556, 556, 556, 278, 278, 584, 584, 584, 556, 1015, 667, 667, 722, 722, 667, 611, 778, 722, 278,
+  500, 667, 556, 833, 722, 778, 667, 778, 722, 667, 611, 722, 667, 944, 667, 667, 611, 278, 278, 278, 469,
+  556, 333, 556, 556, 500, 556, 556, 278, 556, 556, 222, 222, 500, 222, 833, 556, 556, 556, 556, 333, 500,
+  278, 556, 500, 722, 500, 500, 500, 334, 260, 334, 584,
+];
+const bpTextW = (s, size) =>
+  (Array.from(s).reduce((w, c) => w + (BP_HELV[c.charCodeAt(0) - 32] || 556), 0) * size) / 1000;
+const bpPdfStr = (s) =>
+  '(' +
+  Array.from(s)
+    .map((c) => {
+      const k = c.charCodeAt(0);
+      return c === '(' || c === ')' || c === '\\' ? '\\' + c : k >= 32 && k < 256 ? c : '?';
+    })
+    .join('') +
+  ')';
+/* turns one sheet's SVG markup into PDF page content; logo is {w, h} when a picture XObject (/Im1) is available */
+function bpPdfPage(svg, logo) {
+  const doc = new DOMParser().parseFromString(svg, 'image/svg+xml'),
+    out = [],
+    f = (v) => (Math.round(v * 100) / 100).toString(),
+    X = (x) => x * 72,
+    Y = (y) => (BP.PH - y) * 72,
+    num = (e, a, d) => (e.hasAttribute(a) ? parseFloat(e.getAttribute(a)) : d || 0),
+    ST = {
+      k: {s: '0 G', w: 1},
+      lt: {s: '0.55 G', w: 1},
+      kf: {f: '0 g'},
+      pp: {f: '1 g'},
+      pk: {f: '1 g', s: '0 G', w: 1},
+      wk: {f: '0 g', s: '0 G', w: 1, miter: 1},
+      wf: {},
+      tx: {f: '0 g'},
+    },
+    pts = (e) =>
+      e
+        .getAttribute('points')
+        .trim()
+        .split(/\s+/)
+        .map((p) => p.split(',').map(Number));
+  doc.querySelectorAll('svg > *:not(defs)').forEach((e) => {
+    const tag = e.tagName,
+      cl = ST[e.getAttribute('class')] || {},
+      fillAttr = e.getAttribute('fill'),
+      hatch = fillAttr && /^url\(#(hatch|gnd)/.exec(fillAttr),
+      sw = num(e, 'stroke-width', 0.012) * 72,
+      dash = e.getAttribute('stroke-dasharray');
+    if (tag === 'image') {
+      if (!logo) return;
+      const x = num(e, 'x'),
+        y = num(e, 'y'),
+        w = num(e, 'width'),
+        h = num(e, 'height'),
+        r = Math.min(w / logo.w, h / logo.h),
+        dw = logo.w * r,
+        dh = logo.h * r;
+      out.push(
+        `q ${f(dw * 72)} 0 0 ${f(dh * 72)} ${f(X(x + (w - dw) / 2))} ${f(Y(y + (h + dh) / 2))} cm /Im1 Do Q`,
+      );
+      return;
+    }
+    if (tag === 'text') {
+      const size = num(e, 'font-size', 0.12),
+        str = e.textContent,
+        tr = /rotate\(([-\d.]+)/.exec(e.getAttribute('transform') || ''),
+        th = tr ? (parseFloat(tr[1]) * Math.PI) / 180 : 0,
+        anchor = e.getAttribute('text-anchor'),
+        wd = bpTextW(str, size),
+        sh = anchor === 'middle' ? wd / 2 : anchor === 'end' ? wd : 0,
+        x = num(e, 'x') - sh * Math.cos(th),
+        y = num(e, 'y') - sh * Math.sin(th),
+        c = Math.cos(-th),
+        s = Math.sin(-th);
+      out.push(
+        `BT 0 g /F1 ${f(size * 72)} Tf ${f(c * 1000) / 1000} ${f(s * 1000) / 1000} ${f(-s * 1000) / 1000} ${f(c * 1000) / 1000} ${f(X(x))} ${f(Y(y))} Tm ${bpPdfStr(str)} Tj ET`,
+      );
+      return;
+    }
+    let path,
+      closed = true;
+    if (tag === 'line') {
+      path = `${f(X(num(e, 'x1')))} ${f(Y(num(e, 'y1')))} m ${f(X(num(e, 'x2')))} ${f(Y(num(e, 'y2')))} l`;
+      closed = false;
+    } else if (tag === 'rect') {
+      const x = num(e, 'x'),
+        y = num(e, 'y');
+      path = `${f(X(x))} ${f(Y(y + num(e, 'height')))} ${f(num(e, 'width') * 72)} ${f(num(e, 'height') * 72)} re`;
+    } else if (tag === 'polygon' || tag === 'polyline') {
+      path = pts(e)
+        .map((p, i) => `${f(X(p[0]))} ${f(Y(p[1]))} ${i ? 'l' : 'm'}`)
+        .join(' ');
+      closed = tag === 'polygon';
+      if (closed) path += ' h';
+    } else if (tag === 'circle') {
+      const cx = X(num(e, 'cx')),
+        cy = Y(num(e, 'cy')),
+        r = num(e, 'r') * 72,
+        k = 0.5523 * r;
+      path = `${f(cx + r)} ${f(cy)} m ${f(cx + r)} ${f(cy + k)} ${f(cx + k)} ${f(cy + r)} ${f(cx)} ${f(cy + r)} c ${f(cx - k)} ${f(cy + r)} ${f(cx - r)} ${f(cy + k)} ${f(cx - r)} ${f(cy)} c ${f(cx - r)} ${f(cy - k)} ${f(cx - k)} ${f(cy - r)} ${f(cx)} ${f(cy - r)} c ${f(cx + k)} ${f(cy - r)} ${f(cx + r)} ${f(cy - k)} ${f(cx + r)} ${f(cy)} c h`;
+    } else return;
+    const line = tag === 'line' || tag === 'polyline';
+    let op = line ? 'S' : cl.f && cl.s ? 'B' : cl.f ? 'f' : cl.s ? 'S' : 'n';
+    if (hatch) op = 'f';
+    out.push('q');
+    if (cl.f) out.push(cl.f);
+    if (hatch) out.push('1 g');
+    if (cl.s) out.push(`${cl.s} ${f(sw)} w ${cl.miter ? '0' : '1'} j 1 J`);
+    if (dash)
+      out.push(
+        `[${dash
+          .split(/[\s,]+/)
+          .map((v) => f(v * 72))
+          .join(' ')}] 0 d`,
+      );
+    out.push(path + ' ' + (line && closed === false ? 'S' : op));
+    if (hatch) {
+      /* 45 degree hatching clipped to the shape: x + y = const lines in sheet inches */
+      const step = fillAttr.indexOf('gnd') >= 0 ? 0.12 : 0.099,
+        P =
+          tag === 'rect'
+            ? [
+                [num(e, 'x'), num(e, 'y')],
+                [num(e, 'x') + num(e, 'width'), num(e, 'y') + num(e, 'height')],
+              ]
+            : pts(e),
+        x0 = Math.min(...P.map((p) => p[0])),
+        x1 = Math.max(...P.map((p) => p[0])),
+        y0 = Math.min(...P.map((p) => p[1])),
+        y1 = Math.max(...P.map((p) => p[1]));
+      out.push(`${path} W n 0.3 G ${f(0.008 * 72)} w 0 J`);
+      for (let c = Math.floor((x0 + y0) / step) * step; c <= x1 + y1; c += step)
+        out.push(`${f(X(c - y0))} ${f(Y(y0))} m ${f(X(c - y1))} ${f(Y(y1))} l S`);
+    }
+    out.push('Q');
+  });
+  return out.join('\n');
+}
+/* assemble the PDF file: catalog, pages, Helvetica, an optional JPEG logo, and one content stream per sheet */
+function bpPdfFile(pages, logo) {
+  const chunks = [],
+    offs = [];
+  let len = 0;
+  const enc = (s) => {
+      const b = new Uint8Array(s.length);
+      for (let i = 0; i < s.length; i++) b[i] = s.charCodeAt(i) & 255;
+      return b;
+    },
+    put = (d) => {
+      const b = typeof d === 'string' ? enc(d) : d;
+      chunks.push(b);
+      len += b.length;
+    },
+    obj = (n, body) => {
+      offs[n] = len;
+      put(n + ' 0 obj\n');
+      body.forEach(put);
+      put('\nendobj\n');
+    },
+    np = pages.length,
+    first = logo ? 5 : 4;
+  put('%PDF-1.4\n%\xe2\xe3\xcf\xd3\n');
+  obj(1, ['<< /Type /Catalog /Pages 2 0 R >>']);
+  obj(2, [
+    `<< /Type /Pages /Count ${np} /Kids [${pages.map((p, i) => first + i * 2 + ' 0 R').join(' ')}] >>`,
+  ]);
+  obj(3, ['<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>']);
+  if (logo)
+    obj(4, [
+      `<< /Type /XObject /Subtype /Image /Width ${logo.pw} /Height ${logo.ph} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${logo.bytes.length} >>\nstream\n`,
+      logo.bytes,
+      '\nendstream',
+    ]);
+  pages.forEach((c, i) => {
+    const n = first + i * 2;
+    obj(n, [
+      `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${BP.PW * 72} ${BP.PH * 72}] /Contents ${n + 1} 0 R /Resources << /Font << /F1 3 0 R >>${logo ? ' /XObject << /Im1 4 0 R >>' : ''} >> >>`,
+    ]);
+    obj(n + 1, [`<< /Length ${c.length} >>\nstream\n`, c, '\nendstream']);
+  });
+  const total = first + np * 2,
+    xr = len;
+  put(`xref\n0 ${total}\n0000000000 65535 f \n`);
+  for (let i = 1; i < total; i++) put(String(offs[i]).padStart(10, '0') + ' 00000 n \n');
+  put(`trailer\n<< /Size ${total} /Root 1 0 R >>\nstartxref\n${xr}\n%%EOF\n`);
+  const all = new Uint8Array(len);
+  let p = 0;
+  chunks.forEach((b) => {
+    all.set(b, p);
+    p += b.length;
+  });
+  return all;
+}
+/* the logo, if one is set, becomes a JPEG on a white ground so the PDF can embed it */
+function bpLogoJpeg() {
+  let u = '';
+  try {
+    u = localStorage.getItem('cadieux_logo') || '';
+  } catch (e) {
+    /* no stored logo */
+  }
+  if (!u) return Promise.resolve(null);
+  return new Promise((res) => {
+    const im = new Image();
+    im.onload = () => {
+      try {
+        const cv = document.createElement('canvas');
+        cv.width = im.naturalWidth;
+        cv.height = im.naturalHeight;
+        const cx = cv.getContext('2d');
+        cx.fillStyle = '#fff';
+        cx.fillRect(0, 0, cv.width, cv.height);
+        cx.drawImage(im, 0, 0);
+        const b = atob(cv.toDataURL('image/jpeg', 0.92).split(',')[1]),
+          bytes = new Uint8Array(b.length);
+        for (let i = 0; i < b.length; i++) bytes[i] = b.charCodeAt(i);
+        res({bytes, pw: cv.width, ph: cv.height, w: cv.width, h: cv.height});
+      } catch (e) {
+        res(null);
+      }
+    };
+    im.onerror = () => res(null);
+    im.src = u;
+  });
+}
+async function bpPdf(name) {
+  const logo = await bpLogoJpeg();
+  return bpPdfFile(
+    bpBuild(name, true).map((s) => bpPdfPage(s, logo)),
+    logo,
+  );
+}
 /* ---------- Materials list ---------- */
 const STOCK = [8, 10, 12, 14, 16, 20];
 /* drywall: wall faces that look into a room (exterior walls count their inside face only) plus ceilings */
