@@ -544,13 +544,13 @@ canvas {
   
   <select id='fl'></select><button id='flup' class='flb' title='Go up one floor'>▲</button><button id='fldn' class='flb' title='Go down one floor'>▼</button><span class='sep'></span>
   <span class="sep"></span>
-  <button id="matbtn" title="List all framing materials required">Materials</button><input id="seedin" type="text" inputmode="numeric" placeholder="Seed" title="Seed for Random Build (leave blank for a new random seed)" style="margin-left:auto;width:72px"><button id="rnd" title="Generate a random building from a seed">Random Build</button><button id="undo" title="Undo (Ctrl+Z)">Undo</button><button id="redo" title="Redo (Ctrl+Y)">Redo</button><span id='vm' class='seg' title='View'><button data-v='both' class='on'>Split</button><button data-v='2d'>2D</button><button data-v='3d'>3D</button></span><button id='sidebtn'>Hide properties</button>
+  <button id="matbtn" title="Open the Material List">Material List</button><input id="seedin" type="text" inputmode="numeric" placeholder="Seed" title="Seed for Random Build (leave blank for a new random seed)" style="margin-left:auto;width:72px"><button id="rnd" title="Generate a random building from a seed">Random Build</button><button id="undo" title="Undo (Ctrl+Z)">Undo</button><button id="redo" title="Redo (Ctrl+Y)">Redo</button><span id='vm' class='seg' title='View'><button data-v='both' class='on'>Split</button><button data-v='2d'>2D</button><button data-v='3d'>3D</button></span><button id='sidebtn'>Hide properties</button>
 </div>
 <div id="main"><div id='rail'><button data-t='select' class='on' title='Select / move / resize (S)'><svg viewBox='0 0 24 24'><path d='M5 3l14 7-6 2-2 6z'/></svg>Select</button><button data-t='wall' title='Wall (W)'><svg viewBox='0 0 24 24'><path d='M4 19L20 5'/><circle cx='4' cy='19' r='2'/><circle cx='20' cy='5' r='2'/></svg>Wall</button><button data-t='door' title='Door (D)'><svg viewBox='0 0 24 24'><path d='M6 21V3h12v18M3 21h18'/><circle cx='15' cy='12' r='.9'/></svg>Door</button><button data-t='window' title='Window (N)'><svg viewBox='0 0 24 24'><rect x='4' y='4' width='16' height='16'/><path d='M12 4v16M4 12h16'/></svg>Window</button><button data-t='path' title='Path: driveways and walkways (P)'><svg viewBox='0 0 24 24'><path d='M5 21c0-7 7-5 7-10s-4-4-4-8M19 21c0-7-7-5-7-10'/></svg>Path</button><button data-t='stairs' title='Stairs (T)'><svg viewBox='0 0 24 24'><path d='M3 20h6v-5h6v-5h6'/></svg>Stairs</button><button data-t='roof' title='Roof (F)'><svg viewBox='0 0 24 24'><path d='M3 12l9-8 9 8M6 10v9h12v-9'/></svg>Roof</button><button data-t='dormer' title='Dormer'><svg viewBox='0 0 24 24'><path d='M3 20l9-9 9 9M8 20v-5l4-4 4 4v5M10 20v-3h4v3'/></svg>Dormer</button><button data-t='foundation' title='Foundation (G)'><svg viewBox='0 0 24 24'><path d='M3 20h18M5 20v-6h14v6M8 14V9h8v5'/></svg>Found.</button><button data-t='fsys' title='Floor System (J)'><svg viewBox='0 0 24 24'><path d='M3 6h18M3 18h18M7 6v12M12 6v12M17 6v12'/></svg>Joists</button><button data-t='deck' title='Deck (K)'><svg viewBox='0 0 24 24'><path d='M3 8h18M3 12h18M3 16h18M5 8v12M19 8v12M3 8l2-3h14l2 3'/></svg>Deck</button><button data-t='cabinet' title='Cabinet (C)'><svg viewBox='0 0 24 24'><rect x='3' y='5' width='18' height='14'/><path d='M12 5v14M9 12h.01M15 12h.01'/></svg>Cabinet</button><button data-t='measure' title='Measure (M)'><svg viewBox='0 0 24 24'><path d='M3 17l14-14 4 4L7 21z'/><path d='M7 13l2 2M10 10l2 2M13 7l2 2'/></svg>Measure</button><button id='snapbtn' title='Wall snap: Center'><svg viewBox='0 0 24 24'><rect x='9' y='3' width='6' height='18'/><circle cx='12' cy='12' r='2'/></svg><span id='snapl'>Snap: Center</span></button><button id='frm2' title='Show framing for all objects' style='margin-top:auto'><svg viewBox='0 0 24 24'><rect x='3' y='3' width='18' height='18'/><path d='M8 3v18M12 3v18M16 3v18M3 8h18'/></svg>Framing</button></div>
-  <div class="pane" id="p2"><canvas id="c2"></canvas><div class="tag">2D plan · wheel zoom · right-click cancels · right/middle-drag pans</div><div id="split" title="Drag to resize the split · double-click to reset"></div></div>
+  <div class="pane" id="p2"><canvas id="c2"></canvas><div class="tag">2D plan · wheel zoom · right-click cancels · right-drag pans</div><div id="split" title="Drag to resize the split · double-click to reset"></div></div>
   <div class="pane" id="p3"><canvas id="c3"></canvas><div class="tag">3D view · drag orbit · wheel zoom</div></div>
 <div id='side'><details id='propd' open><summary>Properties</summary><div id='props'></div></details><details id='terrd'><summary>Terrain</summary><div id='terrBody'></div></details><details id='furnd'><summary>Furniture / Appliances</summary><div id='furnList'></div></details><details><summary>Floors</summary><div id='flList'></div><div class='r fb'><button id='addf2'>+ Add</button><button id='delf2'>− Remove</button></div></details><details><summary>Objects</summary><div class='r fb'><button id='frm' title='Show framing for all objects'>▦ Framing: all</button></div><div id='obList'></div></details></div></div>
-<div id='tb'><span>View</span><button data-vw='grid' title='Plan grid'>Grid</button><button data-vw='dims' title='Wall dimensions (zoom in to see them)'>Dimensions</button><button data-vw='labels' title='Room names and areas'>Room labels</button><button data-vw='land' title='3 ft stair landing zones'>Landings</button><button data-vw='roofs' title='Show roofs and dormers'>Roofs</button><button data-vw='fram' title='Show framing for all objects'>Framing</button><button data-vw='terr' title='Terrain and trees in 3D'>Terrain</button><button data-vw='sky' title='Sky in 3D'>Sky</button><span id='bld' title='Current program build'>CADieux v1.4.0 · build 232</span></div>
+<div id='tb'><span>View</span><button data-vw='grid' title='Plan grid'>Grid</button><button data-vw='dims' title='Wall dimensions (zoom in to see them)'>Dimensions</button><button data-vw='labels' title='Room names and areas'>Room labels</button><button data-vw='land' title='3 ft stair landing zones'>Landings</button><button data-vw='roofs' title='Show roofs and dormers'>Roofs</button><button data-vw='fram' title='Show framing for all objects'>Framing</button><button data-vw='terr' title='Terrain and trees in 3D'>Terrain</button><button data-vw='sky' title='Sky in 3D'>Sky</button><span id='bld' title='Current program build'>CADieux v1.4.0 · build 279</span></div>
 <div id='st'>Select: click to select, drag to move, drag a square handle to resize. Delete removes. Q rotates stairs.</div>
 <div id='fly'></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -655,7 +655,38 @@ const area = (P) =>
       return a + p[0] * q[1] - q[0] * p[1];
     }, 0),
   ) / 2;
+/* mitred corner: where exactly two walls meet end to end at an angle, both are cut on the bisector so the outer
+   corner comes to a point. Returns the wall-local s of the cut on its left (+n) and right (-n) face, or null. */
+function miterEnd(w, list, atEnd) {
+  const p = atEnd ? w.b : w.a,
+    eq = (u, v) => u[0] === v[0] && u[1] === v[1],
+    at = list.filter((v) => !v.hid && (eq(v.a, p) || eq(v.b, p)));
+  if (at.length !== 2 || !at.includes(w)) return null;
+  const o = at.find((v) => v !== w),
+    g = geom(w),
+    q = geom(o),
+    u1 = atEnd ? g.d : [-g.d[0], -g.d[1]],
+    u2 = eq(o.a, p) ? q.d : [-q.d[0], -q.d[1]],
+    cr = u1[0] * u2[1] - u1[1] * u2[0];
+  if (Math.abs(cr) < 0.17 || u1[0] * u2[0] + u1[1] * u2[1] < -0.985) return null;
+  const n1 = [-u1[1], u1[0]],
+    n2 = [-u2[1], u2[0]],
+    h1 = w.t / 2,
+    h2 = o.t / 2,
+    lim = 3 * Math.max(w.t, o.t),
+    cross = (sg) => {
+      /* along u1 from p to where the faces on side sg (+1 left of the heading, -1 right) of both walls cross */
+      const dx = sg * (n2[0] * h2 - n1[0] * h1),
+        dy = sg * (n2[1] * h2 - n1[1] * h1);
+      return Math.max(-lim, Math.min(lim, (dx * u2[1] - dy * u2[0]) / cr));
+    },
+    aL = cross(1),
+    aR = cross(-1);
+  /* s on this wall: at the end the heading is +d (left = +n); at the start the heading is -d (left = -n) */
+  return atEnd ? [g.L + aL, g.L + aR] : [-aR, -aL];
+}
 function endExt(w, list, atEnd) {
+  if (miterEnd(w, list, atEnd)) return 0;
   const p = atEnd ? w.b : w.a,
     eq = (u, v) => u[0] === v[0] && u[1] === v[1],
     o = list.find((v) => v !== w && (eq(v.a, p) || eq(v.b, p)));
@@ -674,6 +705,37 @@ function endExt(w, list, atEnd) {
 function lumber(w) {
   const n = w.sz || (w.t >= 0.5 ? '2x6' : '2x4');
   return {n: n, d: n === '2x6' ? 5.5 / 12 : 3.5 / 12};
+}
+/* a wall rests on a foundation when it belongs to the first above-grade floor and lies within a stem wall, slab or
+   basement; those walls get a pressure-treated sill plate under the bottom plate */
+function onFoundation(w) {
+  const fi = M.floors.findIndex((F) => F.walls.includes(w));
+  if (fi < 0 || fi !== (M.bsmt ? 1 : 0)) return false;
+  const e = w.t + 0.75,
+    mid = [(w.a[0] + w.b[0]) / 2, (w.a[1] + w.b[1]) / 2],
+    inside = (f, p) => p[0] >= f.x0 - e && p[0] <= f.x1 + e && p[1] >= f.y0 - e && p[1] <= f.y1 + e,
+    /* on a stem wall or basement only perimeter walls bear on the concrete; on a slab every wall does */
+    rim = (f, p) => Math.min(p[0] - f.x0, f.x1 - p[0], p[1] - f.y0, f.y1 - p[1]) <= e;
+  return (M.floors[0].foundations || []).some(
+    (f) =>
+      !f.hid &&
+      f.type !== 'sono' &&
+      [w.a, w.b].every((p) => inside(f, p)) &&
+      (f.type === 'slab' || [w.a, w.b, mid].every((p) => rim(f, p))),
+  );
+}
+/* square corner where exactly two walls meet end to end: the earlier wall runs through to the outer face, the other butts
+   against its inner face. ho is half the other wall's thickness. */
+function cornerInfo(w, e) {
+  const F = M.floors.find((f) => f.walls.includes(w));
+  if (!F || !miterEnd(w, F.walls, e)) return null;
+  const p = e ? w.b : w.a,
+    eq = (u, v) => u[0] === v[0] && u[1] === v[1],
+    o = F.walls.find((v) => v !== w && !v.hid && (eq(v.a, p) || eq(v.b, p))),
+    g = geom(w),
+    q = geom(o);
+  if (Math.abs(g.d[0] * q.d[0] + g.d[1] * q.d[1]) > 0.05) return null;
+  return {through: F.walls.indexOf(w) < F.walls.indexOf(o), ho: o.t / 2};
 }
 function framing(w) {
   const g = geom(w),
@@ -694,36 +756,79 @@ function framing(w) {
           sill: win ? WSILL[o.wt || 'dh'] : 0,
           head: win ? OP.window[1] : o.dt === 'garage' ? 7 : OP.door[1],
           win,
+          hs: o.hs || '2x8',
         };
       }),
-    add = (s0, s1, z0, z1, k) => {
-      if (s1 - s0 > 1e-6 && z1 - z0 > 1e-6) m.push({s0, s1, z0, z1, k});
+    add = (s0, s1, z0, z1, k, hs) => {
+      if (s1 - s0 > 1e-6 && z1 - z0 > 1e-6) m.push(hs ? {s0, s1, z0, z1, k, hs} : {s0, s1, z0, z1, k});
     };
-  add(0, L, H - 0.25, H, 'p');
-  let c = 0;
+  /* on a foundation a pressure-treated sill plate (k 't') lies under the bottom plate, and everything stands 1.5 in higher */
+  const pt = onFoundation(w),
+    bz = pt ? T : 0,
+    fz = bz + T,
+    bp = (s0, s1) => {
+      add(s0, s1, bz, fz, 'p');
+      if (pt) add(s0, s1, 0, T, 't');
+    };
+  /* double top plate: two 2x layers */
+  /* corners: plates and studs follow the standard layout. The through wall's plates run to the outer face and the
+     butting wall's stop at its inner face; the upper top plate swaps them so the plates lap and tie the corner.
+     Each corner has three studs: two on the through wall (outer end and at the butting wall's face, with spacer
+     blocks between) and the butting wall's end stud, which gives a nailing surface for the interior finish. */
+  const cr = [cornerInfo(w, 0), cornerInfo(w, 1)],
+    reach = (e, flip) => (cr[e] ? (cr[e].through !== flip ? cr[e].ho : -cr[e].ho) : 0),
+    a0 = (flip) => -reach(0, flip),
+    b0 = (flip) => L + reach(1, flip);
+  add(a0(false), b0(false), H - 2 * T, H - T, 'p');
+  add(a0(true), b0(true), H - T, H, 'p');
+  let c = a0(false);
   ops.forEach((o) => {
     if (!o.win) {
-      add(c, o.a, 0, T, 'p');
+      bp(c, o.a);
       c = o.b;
     }
   });
-  add(c, L, 0, T, 'p');
-  const inZ = (x) => ops.some((o) => x > o.a - 3 * T && x < o.b + 3 * T);
-  for (let p = 0; p < L - T; p += S) if (!inZ(p + T / 2)) add(p, p + T, T, H - 0.25, 's');
-  if (!inZ(L - T / 2)) add(L - T, L, T, H - 0.25, 's');
+  bp(c, b0(false));
+  const inZ = (x) => ops.some((o) => x > o.a - 3 * T && x < o.b + 3 * T),
+    lo = cr[0] ? cr[0].ho + T : 0,
+    hi = cr[1] ? L - cr[1].ho - T : L;
+  for (let p = 0; p < L - T; p += S)
+    if (p >= lo - 1e-9 && p + T <= hi + 1e-9 && !inZ(p + T / 2)) add(p, p + T, fz, H - 0.25, 's');
+  if (!cr[1] && !inZ(L - T / 2)) add(L - T, L, fz, H - 0.25, 's');
+  cr.forEach((k, e) => {
+    if (!k) return;
+    const sg = e ? 1 : -1,
+      end = e ? L : 0,
+      st = (s) => add(e ? s - T : s, e ? s : s + T, fz, H - 0.25, 's');
+    if (k.through) {
+      const s1 = end + sg * k.ho,
+        s2 = end - sg * k.ho + sg * T;
+      st(s1);
+      st(s2);
+      [2, 4, 6].forEach((z) => add(Math.min(s1 - sg * T, s2), Math.max(s1 - sg * T, s2), z, z + 0.3, 'x'));
+    } else st(end - sg * k.ho);
+  });
   ops.forEach((o) => {
-    add(o.a - 2 * T, o.a - T, T, H - 0.25, 'k');
-    add(o.b + T, o.b + 2 * T, T, H - 0.25, 'k');
-    add(o.a - T, o.a, T, o.head, 'j');
-    add(o.b, o.b + T, T, o.head, 'j');
-    add(o.a - 2 * T, o.b + 2 * T, o.head, o.head + 0.5, 'h');
+    add(o.a - 2 * T, o.a - T, fz, H - 0.25, 'k');
+    add(o.b + T, o.b + 2 * T, fz, H - 0.25, 'k');
+    add(o.a - T, o.a, fz, o.head, 'j');
+    add(o.b, o.b + T, fz, o.head, 'j');
+    /* header: doubled 2x on edge, 2x8 unless the opening says otherwise */
+    const hz = Math.min(o.head + HDRD[o.hs], H - 0.25);
+    add(o.a - 2 * T, o.b + 2 * T, o.head, hz, 'h', o.hs);
     let ps = [];
     for (let p = 0; p < L; p += S) if (p > o.a + T && p < o.b - 2 * T) ps.push(p);
     if (!ps.length && o.b - o.a > 3 * T) ps = [(o.a + o.b) / 2 - T / 2];
-    if (o.head + 0.5 < H - 0.25) ps.forEach((p) => add(p, p + T, o.head + 0.5, H - 0.25, 'c'));
+    if (hz < H - 0.25) ps.forEach((p) => add(p, p + T, hz, H - 0.25, 'c'));
     if (o.win && o.sill > 0.5) {
+      /* rough sill: doubled 2x between the jack studs, with cripples under it 16 in o.c. and one at each end */
+      add(o.a, o.b, o.sill - 2 * T, o.sill - T, 'h');
       add(o.a, o.b, o.sill - T, o.sill, 'h');
-      ps.forEach((p) => add(p, p + T, T, o.sill - T, 'c'));
+      const cs = ps.slice();
+      [o.a, o.b - T].forEach((p) => {
+        if (!cs.some((q) => Math.abs(q - p) < 0.3)) cs.push(p);
+      });
+      cs.forEach((p) => add(p, p + T, fz, o.sill - 2 * T, 'c'));
     }
   });
   return m;
@@ -750,9 +855,17 @@ function pieces(w, list) {
       c = s1;
     });
   if (c < g.L) out.push([c, g.L, 0, w.h]);
+  const M0 = list ? miterEnd(w, list, 0) : null,
+    M1 = list ? miterEnd(w, list, 1) : null;
   out.forEach((p) => {
-    if (p[1] >= g.L - 1e-9) p[1] += E;
-    if (p[0] <= 1e-9) p[0] -= E0;
+    if (p[1] >= g.L - 1e-9) {
+      p[1] += E;
+      if (M1) p[5] = M1;
+    }
+    if (p[0] <= 1e-9) {
+      p[0] -= E0;
+      if (M0) p[4] = M0;
+    }
   });
   return out;
 }
@@ -796,7 +909,9 @@ function objOf(fi, k, i, j) {
                       ? (F.furn || [])[i]
                       : k === 'dm'
                         ? (F.dormers || [])[i]
-                        : (F.foundations || [])[i];
+                        : k === 'sk'
+                          ? (F.skys || [])[i]
+                          : (F.foundations || [])[i];
 }
 function objW(fi, i) {
   return M.floors[fi].walls[i];
@@ -822,9 +937,9 @@ function renderLists() {
         esc(l) +
         '</span><span class=m>' +
         v +
-        (k === 'wall' || k === 'open' || k === 'roof'
+        (k === 'wall' || k === 'open' || k === 'roof' || k === 'dm' || k === 'stair'
           ? ' <b class=frm title="Show framing" style="cursor:pointer;opacity:' +
-            ((k === 'wall' || k === 'roof' ? o : objW(fi, i)).frm ? 1 : 0.4) +
+            ((k === 'wall' || k === 'roof' || k === 'dm' || k === 'stair' ? o : objW(fi, i)).frm ? 1 : 0.4) +
             '">▦</b>'
           : '') +
         ' <b class=eye title=Hide/show style=cursor:pointer>' +
@@ -953,6 +1068,17 @@ function renderLists() {
           sel && sel.o === r,
         );
       });
+      (F.skys || []).forEach((r, i) => {
+        h += item(
+          fi,
+          'sk',
+          i,
+          0,
+          r.name || 'Skylight ' + (i + 1),
+          fmt(r.w) + ' × ' + fmt(r.l),
+          sel && sel.o === r,
+        );
+      });
       (F.furn || []).forEach((r, i) => {
         h += item(
           fi,
@@ -998,7 +1124,15 @@ function renderLists() {
         );
       });
       (F.foundations || []).forEach((r, i) => {
-        h += item(fi, 'fnd', i, 0, r.name || FNDN[r.type] + ' ' + (i + 1), r.d + ' ft', sel && sel.o === r);
+        h += item(
+          fi,
+          'fnd',
+          i,
+          0,
+          r.name || FNDN[r.type] + ' ' + (i + 1),
+          r.type === 'sono' ? r.dia + ' in tube' : r.d + ' ft',
+          sel && sel.o === r,
+        );
       });
       return h;
     })
@@ -1081,7 +1215,7 @@ $('obList').onclick = (e) => {
     j = +d.dataset.j,
     k = d.dataset.k;
   if (e.target.closest('.frm')) {
-    const w = k === 'roof' ? objOf(fi, k, i, j) : objW(fi, i);
+    const w = k === 'roof' || k === 'dm' || k === 'stair' ? objOf(fi, k, i, j) : objW(fi, i);
     mut(() => {
       w.frm = !w.frm;
     });
@@ -1109,6 +1243,7 @@ $('obList').onclick = (e) => {
   else if (k === 'cb') sel = {t: 'cb', o: F.cabs[i]};
   else if (k === 'fu') sel = {t: 'fu', o: F.furn[i]};
   else if (k === 'dm') sel = {t: 'dm', o: F.dormers[i]};
+  else if (k === 'sk') sel = {t: 'sk', o: F.skys[i]};
   else if (k === 'fsa') {
     const R = fsRegion(F);
     undo.push(JSON.stringify(M));
@@ -1133,11 +1268,14 @@ function renderTerr() {
     row('Flat margin (ft)', num('t_pad', T.pad == null ? 8 : T.pad)) +
     row('Blend (ft)', num('t_bl', T.blend == null ? 34 : T.blend)) +
     row('Trees', '<select id=t_tr><option value=1>On</option><option value=0>Off</option></select>') +
+    row('Grass', '<select id=t_gr><option value=1>On</option><option value=0>Off</option></select>') +
     row('Number of trees', num('t_tn', T.tn == null ? 45 : T.tn)) +
     row('Distance from house (ft)', num('t_td', T.td == null ? 100 : T.td)) +
     '<div class="r fb"><button id=t_rnd>New random seed</button></div>';
   $('t_on').value = T.on ? 1 : 0;
   $('t_tr').value = T.trees === false ? 0 : 1;
+  $('t_gr').value = T.grass === false ? 0 : 1;
+  $('t_gr').onchange = () => mut(() => (T.grass = $('t_gr').value === '1'));
   $('t_tr').onchange = () => mut(() => (T.trees = $('t_tr').value === '1'));
   const B = (id, fn) => ($(id).onchange = () => fn($(id).value));
   B('t_on', (v) => mut(() => (T.on = v === '1')));
@@ -1223,7 +1361,7 @@ function renderSide() {
             top = f.filter((q) => q.z0 > 1),
             bot = f.filter((q) => q.z0 < 1),
             c = (q) => Math.ceil((q.s1 - q.s0) / 16 - 1e-6),
-            t = top.reduce((n, q) => n + 2 * c(q), 0),
+            t = top.reduce((n, q) => n + c(q), 0),
             b = bot.reduce((n, q) => n + c(q), 0);
           return t + b + ' <small>x 16 ft (' + t + ' top, ' + b + ' bottom)</small>';
         })(),
@@ -1327,6 +1465,22 @@ function renderSide() {
       row('Center (ft)', num('p_pos', o.t * g.L, 0.5)) +
       ro('Sill height', fmt(o.kind === 'window' ? WSILL[o.wt || 'dh'] : sh[0])) +
       ro('Head height', fmt(sh[1])) +
+      row(
+        'Header (doubled)',
+        '<select id=p_hs><option>2x8</option><option>2x10</option><option>2x12</option></select>',
+      ) +
+      row(
+        'Interior trim',
+        '<select id=p_ti><option value=0>None</option><option value=1>Casing</option></select>',
+      ) +
+      row(
+        'Exterior trim',
+        '<select id=p_te><option value=0>None</option><option value=1>Casing</option></select>',
+      ) +
+      (o.trimIn || o.trimEx
+        ? row('Trim width (in)', num('p_tw', o.trimW || 3.5, 0.25)) +
+          row('Trim color', '<input id=p_tc type=color value=' + (o.trimCol || '#f4f2ec') + '>')
+        : '') +
       sty(
         o,
         o.kind === 'door' ? '#8a5a2b' : '#8fbfee',
@@ -1336,6 +1490,14 @@ function renderSide() {
     S.innerHTML = h;
     bsty(o);
     $('p_k').value = o.kind;
+    $('p_hs').value = o.hs || '2x8';
+    B('p_hs', (v) => mut(() => (o.hs = v)));
+    $('p_ti').value = o.trimIn ? 1 : 0;
+    $('p_te').value = o.trimEx ? 1 : 0;
+    B('p_ti', (v) => mut(() => (o.trimIn = v === '1')));
+    B('p_te', (v) => mut(() => (o.trimEx = v === '1')));
+    B('p_tw', (v) => mut(() => (o.trimW = Math.max(1, Math.min(12, +v || 3.5)))));
+    B('p_tc', (v) => mut(() => (o.trimCol = v)));
     if (o.kind === 'door') $('p_dt').value = o.dt || 'hinged';
     if (o.kind === 'window') $('p_wt').value = o.wt || 'dh';
     B('p_k', (v) =>
@@ -1475,13 +1637,63 @@ function renderSide() {
         T.seed = Math.floor(Math.random() * 1000);
         T.on = true;
       });
+  } else if (sel.t === 'fnd' && sel.o.type === 'sono') {
+    const R = sel.o,
+      cx = (R.x0 + R.x1) / 2,
+      cy = (R.y0 + R.y1) / 2,
+      opt = (v, c) => '<option value=' + v + (+v === +c ? ' selected' : '') + '>' + v + '</option>';
+    h =
+      '<h3>SonoTube footing</h3>' +
+      row(
+        'Type',
+        '<select id=p_ft><option value=slab>Slab</option><option value=stem>Stem wall</option><option value=basement>Basement</option><option value=sono>SonoTube footing</option></select>',
+      ) +
+      row(
+        'Tube diameter (in)',
+        '<select id=p_sd>' + SONO_DIA.map((v) => opt(v, R.dia)).join('') + '</select>',
+      ) +
+      row('Footing diameter (in)', num('p_sp', R.pad, 1)) +
+      row('Footing thickness (in)', num('p_st', R.padT, 1)) +
+      row('Tube depth below grade (ft)', num('p_fd', R.d, 0.25)) +
+      row('Elevation (ft)', num('p_fe', R.el || 0, 0.5)) +
+      row('Center X (ft)', num('p_fx', cx, 0.5)) +
+      row('Center Y (ft)', num('p_fy', cy, 0.5)) +
+      ro('Concrete (cu ft)', Math.round(sonoVol(R) * 100) / 100) +
+      sty(R, '#9a9a95', 'none', 1);
+    S.innerHTML = h;
+    $('p_ft').value = 'sono';
+    bsty(R);
+    B('p_ft', (v) =>
+      mut(() => {
+        R.type = v;
+        R.d = FDEF[v];
+        if (v === 'basement') addBasement(R);
+      }),
+    );
+    B('p_sd', (v) =>
+      mut(() => {
+        R.dia = +v;
+        sonoBox(R, cx, cy);
+      }),
+    );
+    B('p_sp', (v) =>
+      mut(() => {
+        R.pad = Math.max(R.dia, +v || R.pad);
+        sonoBox(R, cx, cy);
+      }),
+    );
+    B('p_st', (v) => mut(() => (R.padT = Math.max(4, +v || 8))));
+    B('p_fd', (v) => mut(() => (R.d = Math.max(0.5, +v || 3.5))));
+    B('p_fe', (v) => mut(() => (R.el = Math.max(-20, Math.min(10, +v || 0)))));
+    B('p_fx', (v) => mut(() => sonoBox(R, +v, cy)));
+    B('p_fy', (v) => mut(() => sonoBox(R, cx, +v)));
   } else if (sel.t === 'fnd') {
     const R = sel.o;
     h =
       '<h3>Foundation</h3>' +
       row(
         'Type',
-        '<select id=p_ft><option value=slab>Slab</option><option value=stem>Stem wall</option><option value=basement>Basement</option></select>',
+        '<select id=p_ft><option value=slab>Slab</option><option value=stem>Stem wall</option><option value=basement>Basement</option><option value=sono>SonoTube footing</option></select>',
       ) +
       row('Depth (ft)', num('p_fd', R.d, 0.5)) +
       row('Elevation (ft)', num('p_fe', R.el || 0, 0.5)) +
@@ -1497,6 +1709,10 @@ function renderSide() {
       mut(() => {
         R.type = v;
         R.d = FDEF[v];
+        if (v === 'sono') {
+          Object.assign(R, {dia: 12, pad: 24, padT: 8});
+          sonoBox(R, (R.x0 + R.x1) / 2, (R.y0 + R.y1) / 2);
+        }
         if (v === 'basement') addBasement(R);
       }),
     );
@@ -1528,7 +1744,7 @@ function renderSide() {
         : '') +
       row(
         'Type',
-        '<select id=p_rt><option value=none>None</option><option value=gable>Gable</option><option value=hip>Hip</option><option value=shed>Shed</option><option value=gambrel>Gambrel</option><option value=flat>Flat</option></select>',
+        '<select id=p_rt><option value=none>None</option><option value=gable>Gable</option><option value=hip>Hip</option><option value=shed>Shed</option><option value=gambrel>Gambrel</option><option value=saltbox>Saltbox</option><option value=mansard>Mansard</option><option value=jerkin>Jerkinhead (clipped gable)</option><option value=halfhip>Half-hip</option><option value=dutch>Dutch gable</option><option value=aframe>A-frame</option><option value=barrel>Barrel (arched)</option><option value=bonnet>Bonnet (kicked eave)</option><option value=butterfly>Butterfly</option><option value=flat>Flat</option></select>',
       ) +
       row(
         'Pitch (/12)',
@@ -1588,7 +1804,7 @@ function renderSide() {
             );
           })()) +
       '</details>' +
-      (['gable', 'hip', 'gambrel'].includes(R.type)
+      (RT_COLLAR.includes(R.type)
         ? (() => {
             const C = collarTies(R);
             return (
@@ -1609,7 +1825,7 @@ function renderSide() {
             );
           })()
         : '') +
-      (['gable', 'hip', 'gambrel', 'shed'].includes(R.type)
+      (RT_FASCIA.includes(R.type)
         ? '<details id=fsd' +
           (window.fsOpen ? ' open' : '') +
           '><summary>Fascia &amp; Soffit</summary>' +
@@ -1625,6 +1841,13 @@ function renderSide() {
             'Gable end returns',
             '<select id=p_gr><option value=no>None</option><option value=yes>Boxed return</option></select>',
           ) +
+          row(
+            'Gutters',
+            '<select id=p_gu><option value=none>None</option><option value=k>K-style</option><option value=half>Half-round</option></select>',
+          ) +
+          (R.gu && R.gu !== 'none'
+            ? row('Gutter color', '<input id=p_guc type=color value=' + (R.guc || '#e8e8e8') + '>')
+            : '') +
           ro('Overhang', fmt(R.ro == null ? 1 : R.ro)) +
           '</details>'
         : '');
@@ -1641,6 +1864,7 @@ function renderSide() {
       $('p_fa').value = R.fa || 'none';
       $('p_so').value = R.so || 'none';
       $('p_gr').value = R.gr || 'no';
+      $('p_gu').value = R.gu || 'none';
     }
     if ($('ctd')) {
       $('ctd').ontoggle = () => {
@@ -1663,6 +1887,8 @@ function renderSide() {
     B('p_fa', (v) => mut(() => (R.fa = v)));
     B('p_so', (v) => mut(() => (R.so = v)));
     B('p_gr', (v) => mut(() => (R.gr = v)));
+    B('p_gu', (v) => mut(() => (R.gu = v)));
+    if ($('p_guc')) B('p_guc', (v) => mut(() => (R.guc = v)));
     B('p_tl', (v) => mut(() => (R.rt = v)));
     B('p_bm', (v) => mut(() => (R.bm = v)));
     B('p_ov', (v) => mut(() => (R.ro = Math.max(0, +v))));
@@ -1694,12 +1920,38 @@ function renderSide() {
     h =
       '<h3>Room</h3>' +
       row('Name', '<input id=p_n>') +
+      '<details id=trmd' +
+      (window.trimOpen ? ' open' : '') +
+      '><summary>Trim</summary>' +
+      row('Baseboard', '<select id=p_bb><option value=0>None</option><option value=1>Add</option></select>') +
+      (r.base
+        ? row('Baseboard height (in)', num('p_bbh', r.baseH || 5.25, 0.25)) +
+          row('Baseboard color', '<input id=p_bbc type=color value=' + (r.baseCol || '#f4f2ec') + '>')
+        : '') +
+      row(
+        'Crown trim',
+        '<select id=p_ct><option value=0>None</option><option value=1>Add</option></select>',
+      ) +
+      (r.crown
+        ? row('Crown height (in)', num('p_cth', r.crownH || 4.5, 0.25)) +
+          row('Crown color', '<input id=p_ctc type=color value=' + (r.crownCol || '#f4f2ec') + '>')
+        : '') +
+      '</details>' +
       ro('Area', r2(area(P)) + ' sq ft') +
       ro('Perimeter', fmt(per)) +
       ro('Corners', P.length) +
       sty(r, '#d1bd9e', 'none', 1, FLOORN, 'Flooring');
     S.innerHTML = h;
     bsty(r);
+    if ($('trmd')) $('trmd').ontoggle = () => (window.trimOpen = $('trmd').open);
+    $('p_bb').value = r.base ? 1 : 0;
+    $('p_ct').value = r.crown ? 1 : 0;
+    B('p_bb', (v) => mut(() => (r.base = v === '1')));
+    B('p_bbh', (v) => mut(() => (r.baseH = Math.max(1, Math.min(24, +v || 5.25)))));
+    B('p_bbc', (v) => mut(() => (r.baseCol = v)));
+    B('p_ct', (v) => mut(() => (r.crown = v === '1')));
+    B('p_cth', (v) => mut(() => (r.crownH = Math.max(1, Math.min(24, +v || 4.5)))));
+    B('p_ctc', (v) => mut(() => (r.crownCol = v)));
     if ($('p_x'))
       $('p_x').onchange = () =>
         mut(() => {
@@ -1763,6 +2015,29 @@ function renderSide() {
     B('p_dmwin', (v) => mut(() => (D.win = v === '1')));
     $('p_dml').onclick = () => mut(() => (D.rot = (D.rot - 90) % 360));
     $('p_dmq').onclick = () => mut(() => (D.rot = (D.rot + 90) % 360));
+    return;
+  } else if (sel.t === 'sk') {
+    const K = sel.o;
+    h =
+      '<h3>Skylight</h3>' +
+      row('Name', '<input id=p_n>') +
+      row('Width across slope (ft)', num('p_kw', K.w, 0.25)) +
+      row('Length up slope (ft)', num('p_kl', K.l, 0.25)) +
+      row('Curb height (in)', num('p_kh', Math.round((K.ch == null ? 0.25 : K.ch) * 12 * 10) / 10, 0.5)) +
+      row('Center X (ft)', num('p_kx', K.c[0], 0.25)) +
+      row('Center Y (ft)', num('p_ky', K.c[1], 0.25)) +
+      row('Glass color', '<input id=p_kc type=color value=' + (K.color || '#8fbfee') + '>') +
+      swatches('p_kc') +
+      (skyRoof(K.c) ? '' : ro('Warning', 'Not on a roof — drag it onto one'));
+    S.innerHTML = h;
+    $('p_n').value = K.name || '';
+    B('p_n', (v) => mut(() => (K.name = v)));
+    B('p_kw', (v) => mut(() => (K.w = Math.max(1, +v))));
+    B('p_kl', (v) => mut(() => (K.l = Math.max(1, +v))));
+    B('p_kh', (v) => mut(() => (K.ch = Math.max(0, +v) / 12)));
+    B('p_kx', (v) => mut(() => (K.c[0] = +v)));
+    B('p_ky', (v) => mut(() => (K.c[1] = +v)));
+    $('p_kc').onchange = () => mut(() => (K.color = $('p_kc').value));
     return;
   } else if (sel.t === 'fu') {
     const U = sel.o,
@@ -2144,6 +2419,10 @@ function sample() {
     rooms: [
       {
         name: 'Living',
+        tex: 'hardwood',
+        color: '#b98a58',
+        base: true,
+        crown: true,
         pts: [
           [0, 0],
           [15, 0],
@@ -2153,6 +2432,9 @@ function sample() {
       },
       {
         name: 'Kitchen',
+        tex: 'tile',
+        color: '#d9d4c7',
+        base: true,
         pts: [
           [15, 0],
           [30, 0],
@@ -2177,7 +2459,7 @@ function sample() {
   });
   /* openings keep clear of the partition (x = 15) and of the stair */
   f0.walls[0].open.push(
-    {t: 0.2, w: 3, kind: 'door', dt: 'hinged', name: 'Front door'},
+    {t: 0.2, w: 3, kind: 'door', dt: 'hinged', name: 'Front door', trimIn: true, trimEx: true},
     {t: 0.4, w: 3, kind: 'window', wt: 'dh'},
     {t: 0.62, w: 3, kind: 'window', wt: 'dh'},
     {t: 0.85, w: 3, kind: 'window', wt: 'dh'},
@@ -2188,9 +2470,14 @@ function sample() {
     {t: 0.75, w: 6, kind: 'door', dt: 'slider', name: 'Patio door'},
   );
   f0.walls[3].open.push({t: 0.5, w: 3, kind: 'window', wt: 'awning'});
+  f0.walls.forEach((w) =>
+    w.open.forEach((o) => o.kind === 'window' && ((o.trimIn = true), (o.trimEx = true))),
+  );
   const f1 = {
     walls: ext(),
-    rooms: [{name: 'Bedroom', pts: P.map((p) => [...p])}],
+    rooms: [
+      {name: 'Bedroom', tex: 'carpet', color: '#9a8f86', base: true, crown: true, pts: P.map((p) => [...p])},
+    ],
     stairs: [],
     roofs: [
       {
@@ -2224,7 +2511,7 @@ function sample() {
   M.cf = 0;
   M.bsmt = 0;
   M.framing = false;
-  M.terr = {on: true, seed: 7};
+  M.terr = {on: true, seed: 7, grass: true};
   /* a walkway from the front door and a driveway to the street */
   M.paths = [
     {
@@ -2287,6 +2574,8 @@ function sample() {
     ['night', [12, 19]],
     ['night', [18, 19]],
     ['dresser', [15, 1]],
+    ['desk', [4, 2]],
+    ['monitor', [4, 1.5]],
   ]);
   /* two gable dormers on the front slope of the roof */
   [
@@ -2363,8 +2652,8 @@ function randomBuild(seed) {
     D = ri(20, 32),
     L = rnd() < 0.4,
     left = rnd() < 0.5,
-    W2 = L ? ri(10, Math.max(10, W - 10)) : 0,
-    D2 = L ? ri(8, 14) : 0,
+    W2 = L ? ri(10, Math.max(10, Math.min(W - 10, D - 6))) : 0,
+    D2 = L ? ri(10, 14) : 0,
     T6 = WALLT['2x6'],
     T4 = WALLT['2x4'];
   let P = [
@@ -2393,7 +2682,7 @@ function randomBuild(seed) {
         ];
   const stories = rnd() < 0.55 ? 2 : 1,
     bsm = rnd() < 0.25,
-    xs = ri(Math.ceil(W * 0.35), Math.floor(W * 0.5)),
+    xs = ri(Math.max(10, Math.ceil(W * 0.35)), Math.floor(W * 0.5)),
     splitR = D >= 20 && rnd() < 0.6,
     ys = ri(13, Math.max(13, D - 6)),
     ecs = ['#ece9e0', '#d8c9a8', '#b8c4cc', '#c9b79c', '#a9b8a0', '#cdb4a0', '#8f9aa6'],
@@ -2401,7 +2690,27 @@ function randomBuild(seed) {
     ec = pick(ecs),
     et = pick(ets),
     roofCol = pick(['#5c5c5c', '#6b4a3a', '#3f4a52', '#7a4b36', '#444']),
-    roofT = rnd() < 0.1 ? 'shed' : pick(['gable', 'gable', 'hip']),
+    roofT0 =
+      rnd() < 0.1
+        ? 'shed'
+        : pick([
+            'gable',
+            'gable',
+            'gable',
+            'hip',
+            'hip',
+            'gambrel',
+            'saltbox',
+            'mansard',
+            'jerkin',
+            'halfhip',
+            'dutch',
+            'bonnet',
+            'barrel',
+            'aframe',
+            'butterfly',
+          ]),
+    roofT = L ? 'gable' : roofT0,
     pitch = ri(4, 10),
     ext = () =>
       P.map((p, i) => ({
@@ -2527,6 +2836,7 @@ function randomBuild(seed) {
               );
             });
           if (!q) continue;
+          if (/^Bedroom/.test(q.name) && area(q.pts) - bwid * bdep < 100) continue;
           const bad = F.walls.some((w) => {
             if (!/^Exterior/.test(w.name || '')) {
               const x0 = Math.min(w.a[0], w.b[0]),
@@ -2604,7 +2914,16 @@ function randomBuild(seed) {
     const need = stories === 2 ? ['Kitchen'] : ['Kitchen', 'Bedroom'];
     need.forEach((nm) => {
       if (f0.rooms.some((r) => r.name === nm)) return;
-      const c = f0.rooms.filter((r) => !need.includes(r.name));
+      const big = (r) => {
+          const px = r.pts.map((p) => p[0]),
+            py = r.pts.map((p) => p[1]);
+          return (
+            Math.min(Math.max(...px) - Math.min(...px), Math.max(...py) - Math.min(...py)) >= 10 &&
+            area(r.pts) >= 100
+          );
+        },
+        c0 = f0.rooms.filter((r) => !need.includes(r.name)),
+        c = nm === 'Bedroom' && c0.some(big) ? c0.filter(big) : c0;
       if (c.length) (L && nm === 'Bedroom' ? c[c.length - 1] : pick(c)).name = nm;
     });
   }
@@ -2675,15 +2994,36 @@ function randomBuild(seed) {
       gr: 'yes',
       cs: '2x4',
       cn: 2,
-      rr: rnd() < 0.5,
+      rr: rnd() < 0.5 && !['hip', 'mansard', 'jerkin', 'halfhip', 'dutch'].includes(roofT), // hip-ended ridges must run along the longer side or the ends cross past the vertex
     });
   if (L) {
     const wx = left ? [0, W2] : [W - W2, W];
-    top.roofs.push(rf(0, 0, W, D, 'Main roof'));
-    top.roofs.push(
-      Object.assign(rf(wx[0], D, wx[1], D + D2, 'Wing roof'), {type: roofT === 'shed' ? 'gable' : roofT}),
-    );
-  } else top.roofs.push(rf(0, 0, W, D, 'Main roof'));
+    /* cross gable: the main ridge runs along x and the wing ridge runs along y, so the ridges are never parallel;
+       the wing roof is carried back under the main slope (plus a margin) so its end and overhang stay hidden, and the wing
+       ridge stays lower than the main ridge so nothing comes out through the far slope */
+    const main = rf(0, 0, W, D, 'Main roof'),
+      wing = rf(wx[0], D - W2 / 2 - 1.5, wx[1], D + D2, 'Wing roof');
+    main.rr = !(main.x1 - main.x0 >= main.y1 - main.y0);
+    wing.rr = wing.x1 - wing.x0 >= wing.y1 - wing.y0;
+    top.roofs.push(main, wing);
+  } else {
+    const R = rf(0, 0, W, D, 'Main roof');
+    /* a shed roof's high edge stays within 16 ft of its base: rise = span x pitch / 12 */
+    if (R.type === 'shed') {
+      const Sv = roofProfile(R).Sv;
+      R.pitch = Math.max(1, Math.min(R.pitch, Math.floor(((16 * 12) / Sv) * 2) / 2));
+    }
+    /* butterfly valleys stay shallow; no roof peaks more than 16 ft above its walls */
+    if (R.type === 'butterfly') R.pitch = Math.min(R.pitch, ri(1, 3));
+    for (let g = 0; g < 12 && R.pitch > 1; g++) {
+      const pk = Math.max(...roofProfile(R).pr.map((q) => q[1]));
+      if (R.type === 'aframe' ? pk <= 16 : pk <= 16 || R.type === 'butterfly') break;
+      R.pitch -= 1;
+    }
+    if (R.type === 'aframe' && Math.max(...roofProfile(R).pr.map((q) => q[1])) > 18) R.type = 'gable';
+    if (PLT.includes(R.type)) R.rr = false;
+    top.roofs.push(R);
+  }
   const bx0 = 0,
     bx1 = W,
     by0 = 0,
@@ -3009,6 +3349,12 @@ function draw2() {
         if (!o.hid) drawDorm2(o, sel && sel.o === o);
       }),
     );
+  if (roofAt === M.cf)
+    M.floors.forEach((F) =>
+      (F.skys || []).forEach((o) => {
+        if (!o.hid) drawSky2(o, sel && sel.o === o);
+      }),
+    );
   (M.floors[M.cf].rails || []).forEach((r) => {
     if (!r.hid) {
       const on = sel && sel.o === r;
@@ -3037,7 +3383,17 @@ function draw2() {
       pt = (s, k) => [g.ax + g.d[0] * s + g.n[0] * k, g.ay + g.d[1] * s + g.n[1] * k];
     const E = endExt(w, M.walls, 1),
       E0 = endExt(w, M.walls, 0);
-    poly([pt(-E0, h), pt(g.L + E, h), pt(g.L + E, -h), pt(-E0, -h)], css('--wall'));
+    const m0 = miterEnd(w, M.walls, 0),
+      m1 = miterEnd(w, M.walls, 1);
+    poly(
+      [
+        pt(m0 ? m0[0] : -E0, h),
+        pt(m1 ? m1[0] : g.L + E, h),
+        pt(m1 ? m1[1] : g.L + E, -h),
+        pt(m0 ? m0[1] : -E0, -h),
+      ],
+      css('--wall'),
+    );
     if (M.framing || w.frm)
       framing(w).forEach((q) => {
         if (q.k === 's' || q.k === 'k' || q.k === 'j')
@@ -3843,6 +4199,8 @@ function drawSel() {
     handle(sel.o.a);
     handle(sel.o.b);
   } else if (sel.t === 'fs' || sel.t === 'dk') {
+  } else if (sel.t === 'fnd' && sel.o.type === 'sono') {
+    circ([(sel.o.x0 + sel.o.x1) / 2, (sel.o.y0 + sel.o.y1) / 2], sel.o.pad / 24, null, A, 3, [8, 5]);
   } else if (sel.t === 'fnd') {
     const r = sel.o,
       Q = [
@@ -3866,7 +4224,7 @@ function drawSel() {
             ];
       Q.forEach((p, i) => line(p, Q[(i + 1) % 4], A, 3, [8, 5]));
     }
-  } else if (sel.t === 'terr' || sel.t === 'dm' || sel.t === 'fu') {
+  } else if (sel.t === 'terr' || sel.t === 'dm' || sel.t === 'fu' || sel.t === 'sk') {
   } else {
     const g = geom(sel.w),
       m = sel.o.t * g.L,
@@ -3948,6 +4306,14 @@ function pick(x, y) {
         return begin('pts', [o.f]);
       }
     }
+  for (const F of M.floors)
+    for (const o of F.skys || []) {
+      if (o.hid || roofAt !== M.cf) continue;
+      if (inside(raw, skyPts(o))) {
+        sel = {t: 'sk', o};
+        return begin('pts', [o.c]);
+      }
+    }
   for (const w of M.walls) {
     const g = geom(w);
     for (const o of w.open) {
@@ -3996,6 +4362,13 @@ function pick(x, y) {
   if (M.cf === 0)
     for (const r of M.floors[0].foundations || []) {
       if (r.hid) continue;
+      if (r.type === 'sono') {
+        if (Math.hypot(raw[0] - (r.x0 + r.x1) / 2, raw[1] - (r.y0 + r.y1) / 2) <= r.pad / 24 + e2) {
+          sel = {t: 'fnd', o: r};
+          return begin('roof', null, {o: r, orig: [r.x0, r.y0, r.x1, r.y1]});
+        }
+        continue;
+      }
       const ox = raw[0] >= r.x0 - e2 && raw[0] <= r.x1 + e2 && raw[1] >= r.y0 - e2 && raw[1] <= r.y1 + e2,
         ix = raw[0] > r.x0 + e2 && raw[0] < r.x1 - e2 && raw[1] > r.y0 + e2 && raw[1] < r.y1 - e2;
       if (ox && !ix) {
@@ -4095,6 +4468,10 @@ function delSel() {
       A.splice(A.indexOf(s.o), 1);
     } else if (s.t === 'dm') {
       const A = M.floors[dormFi(s.o)].dormers;
+      A.splice(A.indexOf(s.o), 1);
+    } else if (s.t === 'sk') {
+      const F = M.floors.find((F) => (F.skys || []).includes(s.o)),
+        A = F.skys;
       A.splice(A.indexOf(s.o), 1);
     } else if (s.t === 'fu') {
       const A = M.floors[M.cf].furn;
@@ -4516,7 +4893,10 @@ function showFly(t) {
         .map(
           (k) => '<button data-wt=' + k + (k === windowType ? ' class=on' : '') + '>' + WINN[k] + '</button>',
         )
-        .join('')
+        .join('') +
+      '<button data-wt=skylight' +
+      (windowType === 'skylight' ? ' class=on' : '') +
+      '>Skylight</button>'
     : '<div>Door style</div>' +
       Object.keys(DOORN)
         .map(
@@ -4606,7 +4986,11 @@ $('fly').onclick = (e) => {
   if (ft) {
     showFly(false);
     fdnType = ft.dataset.ft;
-    status(FNDN[fdnType] + ' foundation: click one corner, then the opposite corner (or drag).');
+    status(
+      fdnType === 'sono'
+        ? 'SonoTube footing: click to place a round pier tube (repeat for more, right-click to stop).'
+        : FNDN[fdnType] + ' foundation: click one corner, then the opposite corner (or drag).',
+    );
     return;
   }
   const rt = e.target.closest('[data-rt]');
@@ -4635,7 +5019,16 @@ $('fly').onclick = (e) => {
   if (wb) {
     windowType = wb.dataset.wt;
     showFly(false);
-    status(WINN[windowType] + ' window selected. Click near a wall to place it.');
+    if (windowType === 'skylight') {
+      if (roofAt !== M.cf) {
+        roofAt = M.cf;
+        allAt = -1;
+        $('fl').value = 'roof';
+        sel = null;
+        changed();
+      }
+      status('Skylight selected. Click on a roof to place it.');
+    } else status(WINN[windowType] + ' window selected. Click near a wall to place it.');
     return;
   }
   const d = e.target.closest('[data-dt]');
@@ -4935,9 +5328,25 @@ var selMode = 'select',
     island: {d: 3, h: 2.875, el: 0},
   },
   fdnType = 'slab',
-  FDEF = {slab: 0.5, stem: 3, basement: 8},
-  FNDN = {slab: 'Slab', stem: 'Stem wall', basement: 'Basement'},
-  ROOFN = {gable: 'Gable', hip: 'Hip', shed: 'Shed', gambrel: 'Gambrel', flat: 'Flat'};
+  FDEF = {slab: 0.5, stem: 3, basement: 8, sono: 3.5},
+  FNDN = {slab: 'Slab', stem: 'Stem wall', basement: 'Basement', sono: 'SonoTube footing'},
+  SONO_DIA = [8, 10, 12, 14, 16, 18, 20, 24, 30, 36],
+  ROOFN = {
+    gable: 'Gable',
+    hip: 'Hip',
+    shed: 'Shed',
+    gambrel: 'Gambrel',
+    saltbox: 'Saltbox',
+    mansard: 'Mansard',
+    jerkin: 'Jerkinhead (clipped gable)',
+    halfhip: 'Half-hip',
+    dutch: 'Dutch gable',
+    aframe: 'A-frame',
+    barrel: 'Barrel (arched)',
+    bonnet: 'Bonnet (kicked eave)',
+    butterfly: 'Butterfly',
+    flat: 'Flat',
+  };
 function dimTag(pt, txt, col) {
   const q = w2s(pt);
   x2.save();
@@ -4966,11 +5375,52 @@ function deckDims(x0, y0, x1, y1, col) {
   dimTag([x1 >= x0 ? x1 : x0, ly + H / 2], fmt(H), col);
   dimTag([lx + W / 2, ly + H / 2], Math.round(W * H * 10) / 10 + ' sq ft', col);
 }
+/* SonoTube footing: a round concrete pier tube on a round spread footing. The record keeps a square
+   x0..y1 box (the footing pad) so it moves, snaps and lists like the other foundations. */
+function sonoVol(R) {
+  const a = (dm) => Math.PI * (dm / 24) ** 2;
+  return a(R.dia) * R.d + a(R.pad) * (R.padT / 12);
+}
+function sonoBox(R, cx, cy) {
+  const h = Math.max(R.pad, R.dia) / 24;
+  R.x0 = cx - h;
+  R.x1 = cx + h;
+  R.y0 = cy - h;
+  R.y1 = cy + h;
+}
+function newSono(c) {
+  const R = {type: 'sono', d: FDEF.sono, dia: 12, pad: 24, padT: 8};
+  sonoBox(R, c[0], c[1]);
+  return R;
+}
+function circ(c, r, fill, stroke, w, dash) {
+  const p = w2s(c);
+  x2.save();
+  x2.beginPath();
+  x2.arc(p[0], p[1], r * sc, 0, Math.PI * 2);
+  if (fill) {
+    x2.fillStyle = fill;
+    x2.fill();
+  }
+  if (stroke) {
+    x2.setLineDash(dash || []);
+    x2.strokeStyle = stroke;
+    x2.lineWidth = w || 1;
+    x2.stroke();
+  }
+  x2.restore();
+}
 function drawFnds() {
   const F = M.floors[0].foundations || [],
     on = M.cf === 0;
   F.forEach((r) => {
     if (r.hid) return;
+    if (r.type === 'sono') {
+      const c = [(r.x0 + r.x1) / 2, (r.y0 + r.y1) / 2];
+      circ(c, r.pad / 24, on ? 'rgba(120,120,110,.13)' : null, on ? '#8a8a80' : css('--grid5'), 1.2, [2, 3]);
+      circ(c, r.dia / 24, on ? 'rgba(150,150,140,.45)' : null, on ? '#6f6f66' : css('--grid5'), 1.6);
+      return;
+    }
     const Q = [
       [r.x0, r.y0],
       [r.x1, r.y0],
@@ -5053,7 +5503,11 @@ function drawFnds() {
         ' — click the opposite corner (or release the drag).',
     );
   }
-  if (fstart && tool === 'foundation') {
+  if (tool === 'foundation' && fdnType === 'sono') {
+    circ(cur, 1, 'rgba(150,150,140,.45)', '#dc3c3c', 1.6, [4, 3]);
+    circ(cur, 0.5, null, '#dc3c3c', 1.2);
+  }
+  if (fstart && tool === 'foundation' && fdnType !== 'sono') {
     const a = fstart,
       b = cur,
       Q = [
@@ -5161,7 +5615,22 @@ function found3() {
           e.position.copy(b.position);
           grp.add(e);
         };
-      if (r.type === 'basement' && M.bsmt) {
+      if (r.type === 'sono') {
+        const cyl = (rad, h, z) => {
+          const g = new THREE.CylinderGeometry(rad, rad, h, 28),
+            b = new THREE.Mesh(g, m);
+          b.rotation.x = Math.PI / 2;
+          b.position.set(cx, cy, z + (r.el || 0));
+          b.userData.sel = tag;
+          grp.add(b);
+          const e = new THREE.LineSegments(new THREE.EdgesGeometry(g, 30), lineMat);
+          e.rotation.copy(b.rotation);
+          e.position.copy(b.position);
+          grp.add(e);
+        };
+        cyl(r.dia / 24, r.d, -r.d / 2);
+        cyl(r.pad / 24, r.padT / 12, -r.d - r.padT / 24);
+      } else if (r.type === 'basement' && M.bsmt) {
         add(W, D, 0.5, cx, cy, ZBof(0) - 0.25);
       } else if (r.type === 'slab') add(W, D, r.d, cx, cy, -r.d / 2);
       else {
@@ -5205,10 +5674,14 @@ function terrain3() {
       T.trees,
       T.tn,
       T.td,
+      T.grass,
       bx.map((v) => Math.round(v)),
+      (M.paths || []).map((o) => [o.w, o.pts]),
+      (M.floors[0].foundations || []).map((r) => [r.x0, r.y0, r.x1, r.y1]),
     ]);
   gh.visible = !T.on;
   treeG.visible = !!T.on && T.trees !== false;
+  grassG.visible = !!T.on && T.grass !== false;
   if (key === terrKey) return;
   terrKey = key;
   const pos = gr.geometry.attributes.position,
@@ -5258,7 +5731,53 @@ function terrain3() {
   col.needsUpdate = true;
   gr.geometry.computeVertexNormals();
   buildTrees(T, bx);
+  buildGrass(T, bx);
 }
+/* simple grass: small green blades scattered over the lawn around the building, clear of the foundation and paths */
+function buildGrass(T, bx) {
+  while (grassG.children.length) {
+    const o = grassG.children[grassG.children.length - 1];
+    grassG.remove(o);
+    o.geometry && o.geometry.dispose();
+  }
+  if (!T.on || T.grass === false) return;
+  const R = 42,
+    x0 = bx[0] - R,
+    x1 = bx[1] + R,
+    y0 = bx[2] - R,
+    y1 = bx[3] + R,
+    n = Math.round(Math.min(9000, (x1 - x0) * (y1 - y0) * 0.55)),
+    fnds = (M.floors[0].foundations || []).filter((r) => !r.hid),
+    paths = (M.paths || []).filter((o) => !o.hid);
+  let s = ((T.seed || 7) * 7919 + 13) % 233280;
+  const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280,
+    g = new THREE.ConeGeometry(0.1, 0.8, 3),
+    mesh = new THREE.InstancedMesh(g, new THREE.MeshLambertMaterial({color: 0xffffff}), n),
+    dummy = new THREE.Object3D(),
+    tones = [0x4f9a3a, 0x5aa83f, 0x3f8a33, 0x68b348].map((c) => new THREE.Color(c));
+  g.rotateX(Math.PI / 2);
+  let k = 0;
+  for (let tries = 0; k < n && tries < n * 2; tries++) {
+    const x = x0 + rnd() * (x1 - x0),
+      y = y0 + rnd() * (y1 - y0);
+    if (fnds.some((r) => x > r.x0 - 1.5 && x < r.x1 + 1.5 && y > r.y0 - 1.5 && y < r.y1 + 1.5)) continue;
+    if (!fnds.length && x > bx[0] - 1.5 && x < bx[1] + 1.5 && y > bx[2] - 1.5 && y < bx[3] + 1.5) continue;
+    if (paths.some((o) => pathDist(o, [x, y]) < o.w / 2 + 0.8)) continue;
+    const sc = 0.6 + rnd() * 0.9;
+    dummy.position.set(x, y, terrZ(x, y) - 0.05 + 0.3 * sc);
+    dummy.rotation.set((rnd() - 0.5) * 0.5, (rnd() - 0.5) * 0.5, rnd() * 6.28);
+    dummy.scale.set(sc, sc, sc);
+    dummy.updateMatrix();
+    mesh.setMatrixAt(k, dummy.matrix);
+    mesh.setColorAt(k, tones[Math.floor(rnd() * tones.length)]);
+    k++;
+  }
+  mesh.count = k;
+  mesh.instanceMatrix.needsUpdate = true;
+  if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
+  grassG.add(mesh);
+}
+
 /* trees: scattered over the terrain, never closer to the building than T.td feet (default 100) */
 function buildTrees(T, bx) {
   while (treeG.children.length) treeG.remove(treeG.children[treeG.children.length - 1]);
@@ -5411,6 +5930,9 @@ function drawRoofPlan(r) {
     L = pf.Lu,
     ln = (a, b, d) => line(a, b, ink, 1.2, d);
   if (r.type === 'gable') ln(W(0, S / 2), W(L, S / 2));
+  else if (r.type === 'saltbox') ln(W(0, pf.pr[1][0]), W(L, pf.pr[1][0]));
+  else if (['butterfly', 'aframe', 'barrel', 'bonnet'].includes(r.type))
+    ln(W(0, S / 2), W(L, S / 2), r.type === 'butterfly' ? [5, 3] : null);
   else if (r.type === 'hip') {
     ln(W(pf.r0, S / 2), W(L - pf.r0, S / 2));
     [
@@ -5421,6 +5943,21 @@ function drawRoofPlan(r) {
     ].forEach((h) => ln(W(h[0], h[1]), W(h[2], S / 2)));
   } else if (r.type === 'gambrel') {
     [0.25, 0.5, 0.75].forEach((f) => ln(W(0, S * f), W(L, S * f), f === 0.5 ? null : [5, 3]));
+  } else if (PLT.includes(r.type)) {
+    const eps = 0.01,
+      onB = (q) => [
+        Math.abs(q[0]) < eps,
+        Math.abs(q[0] - L) < eps,
+        Math.abs(q[1]) < eps,
+        Math.abs(q[1] - S) < eps,
+      ],
+      inR = (q) => q[0] > -eps && q[0] < L + eps && q[1] > -eps && q[1] < S + eps;
+    planeFaces(planeCells(r)).forEach((f) =>
+      f.pts.forEach((a, i) => {
+        const b = f.pts[(i + 1) % f.pts.length];
+        if (inR(a) && inR(b) && !onB(a).some((v, j) => v && onB(b)[j])) ln(W(a[0], a[1]), W(b[0], b[1]));
+      }),
+    );
   } else if (r.type === 'shed') {
     const dn = pf.pr[0][1] > pf.pr[1][1] ? 1 : -1,
       a = W(L / 2, S / 2 - dn * S * 0.25),
@@ -5472,7 +6009,12 @@ function drawRoofs() {
         line(W(uu, 0), W(uu, pf.Sv), '#c9954f', 1);
       }
       if (r.type !== 'flat' && r.type !== 'shed')
-        line(W(pf.r0, pf.Sv / 2), W(pf.Lu - pf.r0, pf.Sv / 2), '#8a6a3a', 2);
+        line(
+          W(pf.r0, r.type === 'saltbox' ? pf.pr[1][0] : pf.Sv / 2),
+          W(pf.Lu - pf.r0, r.type === 'saltbox' ? pf.pr[1][0] : pf.Sv / 2),
+          '#8a6a3a',
+          2,
+        );
     }
   });
   if (rstart && tool === 'roof') {
@@ -7104,14 +7646,18 @@ function cancelAct0() {
   draw2();
 }
 c2.addEventListener('contextmenu', (e) => e.preventDefault());
+/* the middle mouse button does nothing (no pan, no autoscroll, no click) */
+c2.addEventListener('auxclick', (e) => e.button === 1 && e.preventDefault());
+c2.addEventListener('mousedown', (e) => e.button === 1 && e.preventDefault());
 c2.addEventListener('pointerdown', (e) => {
+  if (e.button === 1) return;
   c2.setPointerCapture(e.pointerId);
   const r = c2.getBoundingClientRect(),
     x = e.clientX - r.left,
     y = e.clientY - r.top;
-  if (e.button === 1 || e.button === 2) {
+  if (e.button === 2) {
     pan = [x, y];
-    rc = e.button === 2 ? [x, y] : null;
+    rc = [x, y];
     return;
   }
   if (M.floors[M.cf].hid) {
@@ -7128,14 +7674,20 @@ c2.addEventListener('pointerdown', (e) => {
       prevW = nw;
     }
     start = [...cur];
-  } else if (tool === 'door' || tool === 'window') place(cur);
+  } else if (tool === 'window' && windowType === 'skylight') placeSky(cur);
+  else if (tool === 'door' || tool === 'window') place(cur);
   else if (tool === 'room' || tool === 'path') roomPts.push([...cur]);
   else if (tool === 'dormer') placeDormer(cur);
   else if (tool === 'roof') {
     if (rstart) finishRoof();
     else rstart = [...cur];
   } else if (tool === 'foundation') {
-    if (fstart) finishFnd();
+    if (fdnType === 'sono')
+      mut(() => {
+        const F = M.floors[0];
+        (F.foundations = F.foundations || []).push(newSono(cur));
+      });
+    else if (fstart) finishFnd();
     else fstart = [...cur];
   } else if (tool === 'furn') {
     if (furnPick) {
@@ -7248,7 +7800,8 @@ c2.addEventListener('pointermove', (e) => {
   }
   draw2();
 });
-c2.addEventListener('pointerup', () => {
+c2.addEventListener('pointerup', (e) => {
+  if (e.button === 1) return;
   if (rc) {
     rc = null;
     pan = null;
@@ -7439,6 +7992,8 @@ gr.geometry.setAttribute(
 let terrKey = '';
 const treeG = new THREE.Group();
 scene.add(treeG);
+const grassG = new THREE.Group();
+scene.add(grassG);
 gr.position.z = -0.05;
 scene.add(gr);
 const gh = new THREE.GridHelper(120, 24, 0x6f8a66, 0x84a07a);
@@ -7487,10 +8042,62 @@ function wallMats(F, w) {
     pyIn = (cx - mx) * g.n[0] + (cy - my) * g.n[1] > 0;
   return [ex, ex, pyIn ? it : ex, pyIn ? ex : it, ex, ex];
 }
-function box(g, s0, s1, z0, z1, t, mat) {
+/* a wall piece with one or both ends cut on a mitre: same face layout as a box (+x, -x, +y, -y, +z, -z, four vertices
+   each) so the per-face materials and the world texture mapping work unchanged */
+function mitreGeo(s0, s1, z0, z1, t, mit) {
+  const h = t / 2,
+    sm = (s0 + s1) / 2,
+    zc = (z0 + z1) / 2,
+    hz = (z1 - z0) / 2,
+    a = mit[0] || [s0, s0],
+    b = mit[1] || [s1, s1],
+    V = [
+      [a[0] - sm, h],
+      [b[0] - sm, h],
+      [b[1] - sm, -h],
+      [a[1] - sm, -h],
+    ],
+    P = [],
+    I = [],
+    G = [],
+    face = (q, out) => {
+      const k = P.length / 3;
+      q.forEach((v) => P.push(v[0], v[1], v[2]));
+      /* wind counter-clockwise as seen from outside */
+      const A = q[0],
+        B = q[1],
+        C = q[2],
+        nx = (B[1] - A[1]) * (C[2] - A[2]) - (B[2] - A[2]) * (C[1] - A[1]),
+        ny = (B[2] - A[2]) * (C[0] - A[0]) - (B[0] - A[0]) * (C[2] - A[2]),
+        nz = (B[0] - A[0]) * (C[1] - A[1]) - (B[1] - A[1]) * (C[0] - A[0]),
+        ok = nx * out[0] + ny * out[1] + nz * out[2] >= 0;
+      G.push([I.length, 6]);
+      I.push(...(ok ? [k, k + 1, k + 2, k, k + 2, k + 3] : [k, k + 2, k + 1, k, k + 3, k + 2]));
+    },
+    T = (v) => [v[0], v[1], hz],
+    B = (v) => [v[0], v[1], -hz];
+  face([B(V[1]), B(V[2]), T(V[2]), T(V[1])], [1, 0, 0]);
+  face([B(V[3]), B(V[0]), T(V[0]), T(V[3])], [-1, 0, 0]);
+  face([B(V[0]), B(V[1]), T(V[1]), T(V[0])], [0, 1, 0]);
+  face([B(V[2]), B(V[3]), T(V[3]), T(V[2])], [0, -1, 0]);
+  face([T(V[0]), T(V[3]), T(V[2]), T(V[1])], [0, 0, 1]);
+  face([B(V[0]), B(V[1]), B(V[2]), B(V[3])], [0, 0, -1]);
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(P, 3));
+  geo.setAttribute('uv', new THREE.Float32BufferAttribute(new Array((P.length / 3) * 2).fill(0), 2));
+  geo.setIndex(I);
+  G.forEach((q, i) => geo.addGroup(q[0], q[1], i));
+  geo.computeVertexNormals();
+  geo.userData = {V, zc, sm};
+  return geo;
+}
+function box(g, s0, s1, z0, z1, t, mat, mit) {
   const MA = Array.isArray(mat),
     m0 = MA ? mat.find((x) => x.map) || mat[0] : mat,
-    geo = new THREE.BoxGeometry(s1 - s0, t, z1 - z0),
+    geo =
+      mit && (mit[0] || mit[1])
+        ? mitreGeo(s0, s1, z0, z1, t, mit)
+        : new THREE.BoxGeometry(s1 - s0, t, z1 - z0),
     m = new THREE.Mesh(geo, mat),
     sm = (s0 + s1) / 2,
     ang = Math.atan2(g.d[1], g.d[0]);
@@ -7500,7 +8107,24 @@ function box(g, s0, s1, z0, z1, t, mat) {
   m.rotation.z = ang;
   m.userData.sel = TAG;
   grp.add(m);
-  if (!m0.transparent) {
+  if (!m0.transparent && mit && (mit[0] || mit[1])) {
+    /* outline without the seam across the mitre joint */
+    const V = geo.userData.V,
+      hz = (z1 - z0) / 2,
+      pts = [];
+    [-hz, hz].forEach((z) => {
+      pts.push(V[0][0], V[0][1], z, V[1][0], V[1][1], z, V[3][0], V[3][1], z, V[2][0], V[2][1], z);
+      if (!mit[0]) pts.push(V[0][0], V[0][1], z, V[3][0], V[3][1], z);
+      if (!mit[1]) pts.push(V[1][0], V[1][1], z, V[2][0], V[2][1], z);
+    });
+    V.forEach((v) => pts.push(v[0], v[1], -hz, v[0], v[1], hz));
+    const lg = new THREE.BufferGeometry();
+    lg.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3));
+    const e = new THREE.LineSegments(lg, lineMat);
+    e.position.copy(m.position);
+    e.rotation.copy(m.rotation);
+    grp.add(e);
+  } else if (!m0.transparent) {
     if (
       TAG &&
       TAG.t === 'wall' &&
@@ -7838,6 +8462,28 @@ function build3() {
   render();
 }
 /* windows and doors in 3D: built from frames, sashes, panels and hardware so each type reads as itself */
+/* casing around a door or window opening, on the interior and/or exterior face of the wall */
+function openTrim3(g, o, w, F, m) {
+  if (!o.trimIn && !o.trimEx) return;
+  const ext = extSide(w, F),
+    cw = (o.trimW || 3.5) / 12,
+    tt = 0.06,
+    mt = mat(o.trimCol || '#f4f2ec', 'none'),
+    x0 = m - o.w / 2,
+    x1 = m + o.w / 2,
+    z0 = o.kind === 'window' ? WSILL[o.wt || 'dh'] : 0,
+    z1 = OP[o.kind][1],
+    face = (k) => {
+      const gg = {...g, ax: g.ax + g.n[0] * k * ext, ay: g.ay + g.n[1] * k * ext},
+        B = (s0, s1, a, b) => box(gg, s0, s1, a, b, tt, mt);
+      B(x0 - cw, x0, z0, z1 + cw);
+      B(x1, x1 + cw, z0, z1 + cw);
+      B(x0 - cw, x1 + cw, z1, z1 + cw);
+      if (o.kind === 'window') B(x0 - cw, x1 + cw, z0 - cw * 0.7, z0);
+    };
+  if (o.trimEx) face(w.t / 2 + tt / 2);
+  if (o.trimIn) face(-(w.t / 2 + tt / 2));
+}
 function openDetail3(g, o, w, F, m) {
   const out = extSide(w, F) * (o.fv ? -1 : 1),
     sd = o.fh ? -1 : 1,
@@ -8055,6 +8701,101 @@ function openDetail3(g, o, w, F, m) {
     B(b - pw + 0.12, b - pw + 0.2, 2.8, 3.6, 0.04, metal, 0.1);
   }
 }
+/* baseboard / crown trim runs for a room: inward-offset wall faces, mitred at the corners.
+   Baseboard stops at door openings. Returns [[a, b, inwardNormal], ...] in plan feet. */
+function trimSegs(F, r, base) {
+  const P = r.pts,
+    n = P.length;
+  if (n < 3) return [];
+  let sa = 0;
+  P.forEach((p, i) => {
+    const q = P[(i + 1) % n];
+    sa += p[0] * q[1] - q[0] * p[1];
+  });
+  const E = P.map((a, i) => {
+    const b = P[(i + 1) % n],
+      L = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1e-9,
+      d = [(b[0] - a[0]) / L, (b[1] - a[1]) / L],
+      nm = sa > 0 ? [-d[1], d[0]] : [d[1], -d[0]];
+    let h = 0;
+    const wl = F.walls.filter((w) => {
+      if (w.hid) return false;
+      const dist = (q) => Math.abs((q[0] - a[0]) * d[1] - (q[1] - a[1]) * d[0]);
+      return dist(w.a) < 0.35 && dist(w.b) < 0.35;
+    });
+    wl.forEach((w) => (h = Math.max(h, w.t / 2)));
+    return {a, b, L, d, nm, h, wl};
+  });
+  const off = (e) => [e.a[0] + e.nm[0] * e.h, e.a[1] + e.nm[1] * e.h],
+    V = E.map((e, i) => {
+      const pe = E[(i + n - 1) % n],
+        p0 = off(pe),
+        p1 = off(e),
+        den = pe.d[0] * e.d[1] - pe.d[1] * e.d[0];
+      if (Math.abs(den) < 1e-6) return p1;
+      const u = ((p1[0] - p0[0]) * e.d[1] - (p1[1] - p0[1]) * e.d[0]) / den;
+      return [p0[0] + pe.d[0] * u, p0[1] + pe.d[1] * u];
+    }),
+    out = [];
+  E.forEach((e, i) => {
+    const A = V[i],
+      B = V[(i + 1) % n],
+      L = Math.hypot(B[0] - A[0], B[1] - A[1]);
+    if (L < 0.05) return;
+    const d = [(B[0] - A[0]) / L, (B[1] - A[1]) / L];
+    let gaps = [];
+    if (base)
+      e.wl.forEach((w) => {
+        const g = geom(w);
+        w.open.forEach((o) => {
+          if (o.hid || o.kind !== 'door') return;
+          const m = o.t * g.L,
+            c = [g.ax + g.d[0] * m, g.ay + g.d[1] * m],
+            u = (c[0] - A[0]) * d[0] + (c[1] - A[1]) * d[1];
+          gaps.push([u - o.w / 2, u + o.w / 2]);
+        });
+      });
+    gaps.sort((p, q) => p[0] - q[0]);
+    let u0 = 0;
+    const seg = (s, t) => {
+      if (t - s > 0.1)
+        out.push([[A[0] + d[0] * s, A[1] + d[1] * s], [A[0] + d[0] * t, A[1] + d[1] * t], e.nm]);
+    };
+    gaps.forEach((g) => {
+      seg(u0, Math.min(L, g[0]));
+      u0 = Math.max(u0, g[1]);
+    });
+    seg(u0, L);
+  });
+  return out;
+}
+function trim3(F, r, i) {
+  const tag = {t: 'room', o: r, fi: i},
+    run = (segs, hgt, depth, z0, col) => {
+      const m = mat(col, 'none');
+      segs.forEach(([a, b, nm]) => {
+        const L = Math.hypot(b[0] - a[0], b[1] - a[1]),
+          g = new THREE.BoxGeometry(L, depth, hgt),
+          q = new THREE.Mesh(g, m);
+        q.position.set(
+          (a[0] + b[0]) / 2 + nm[0] * (depth / 2),
+          (a[1] + b[1]) / 2 + nm[1] * (depth / 2),
+          ZB + z0 + hgt / 2,
+        );
+        q.rotation.z = Math.atan2(b[1] - a[1], b[0] - a[0]);
+        q.userData.sel = tag;
+        grp.add(q);
+      });
+    };
+  if (r.base) {
+    const h = (r.baseH || 5.25) / 12;
+    run(trimSegs(F, r, true), h, 0.045, 0.02, r.baseCol || '#f4f2ec');
+  }
+  if (r.crown) {
+    const h = (r.crownH || 4.5) / 12;
+    run(trimSegs(F, r, false), h, h * 0.6, WH - h, r.crownCol || '#f4f2ec');
+  }
+}
 function build3f(F, i) {
   F.rooms.forEach((r) => {
     if (r.hid || (M.framing && hasFS(F, i))) return;
@@ -8068,6 +8809,7 @@ function build3f(F, i) {
     m.userData.sel = {t: 'room', o: r, fi: i};
     m.position.z = 0.02 + ZB;
     grp.add(m);
+    if ((r.base || r.crown) && !M.framing) trim3(F, r, i);
   });
   F.walls.forEach((w) => {
     if (w.hid) return;
@@ -8084,6 +8826,7 @@ function build3f(F, i) {
         M.framing || w.frm
           ? mat(w.color || '#ece9e0', 'none', {transparent: true, opacity: 0.15, depthWrite: false})
           : wallMats(F, w),
+        [p[4], p[5]],
       ),
     );
     if (i > 0 && !(M.framing || w.frm))
@@ -8097,12 +8840,15 @@ function build3f(F, i) {
         wallMats(F, w),
       );
     if (M.framing || w.frm)
-      framing(w).forEach((q) => box(g, q.s0, q.s1, q.z0, q.z1, lumber(w).d, mat('#d9b27c', 'none')));
+      framing(w).forEach((q) =>
+        box(g, q.s0, q.s1, q.z0, q.z1, lumber(w).d, mat(q.k === 't' ? '#8fa36e' : '#d9b27c', 'none')),
+      );
     w.open.forEach((o) => {
       if (o.hid) return;
       TAG = {t: 'open', o: o, w: w, fi: i};
       const m = o.t * g.L;
       openDetail3(g, o, w, F, m);
+      if (!(M.framing || w.frm)) openTrim3(g, o, w, F, m);
     });
   });
   floorSys3(F, i) || slab3(F, i);
@@ -8513,16 +9259,6 @@ function flipSel(ax) {
       const q2 = sd(o);
       o.x = c[0] - q2.d[0] * stairHalf(o);
       o.y = c[1] - q2.d[1] * stairHalf(o);
-    } else if (s.t === 'room') {
-      const P = o.pts,
-        xs = P.map((p) => p[0]),
-        ys = P.map((p) => p[1]),
-        cx = (Math.min(...xs) + Math.max(...xs)) / 2,
-        cy = (Math.min(...ys) + Math.max(...ys)) / 2;
-      P.forEach((p) => {
-        if (ax === 'h') p[0] = 2 * cx - p[0];
-        else p[1] = 2 * cy - p[1];
-      });
     } else if (s.t === 'roof') o.rr = !o.rr;
   });
 }
@@ -8564,7 +9300,7 @@ function bsty(o) {
   const c = $('p_c'),
     x = $('p_x');
   titleRename(o);
-  flipRow();
+  if (!(sel && sel.t === 'room')) flipRow();
   if (c) c.onchange = () => mut(() => (o.color = c.value));
   if (x) x.onchange = () => mut(() => (o.tex = x.value));
 }
@@ -9240,14 +9976,35 @@ function stair3(s, fi) {
   const n = 14,
     rise = flh(fi) / n,
     tag = {t: 'stair', o: s, fi: fi},
-    sm = mat(s.color || '#b08a5a', s.tex || 'none');
+    FRS = !!(M.framing || s.frm),
+    sm = FRS
+      ? mat(s.color || '#b08a5a', 'none', {
+          side: THREE.DoubleSide,
+          flatShading: true,
+          transparent: true,
+          opacity: 0.15,
+          depthWrite: false,
+        })
+      : mat(s.color || '#b08a5a', s.tex || 'none'),
+    wood = '#d9b27c',
+    fs = (a, b, sd, dep, th) => stick(a, b, null, fi, dep, sd, wood, th, tag),
+    tb = (cx, cy, cz, sx, sy, sz, rz) => {
+      const m = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz), mat(wood, 'none'));
+      m.position.set(cx, cy, cz);
+      m.rotation.z = rz;
+      m.userData.sel = tag;
+      grp.add(m);
+    };
   stairParts(s).forEach((p) => {
     if (p.k === 'spiral') {
       for (let i = 0; i < p.n; i++) {
         const h = rise * (i + 1),
           pts = spStep(p, i),
           sh = new THREE.Shape(pts.map((q) => new THREE.Vector2(q[0] - p.c[0], q[1] - p.c[1]))),
-          m = new THREE.Mesh(new THREE.ExtrudeGeometry(sh, {depth: h, bevelEnabled: false}), sm);
+          m = new THREE.Mesh(
+            new THREE.ExtrudeGeometry(sh, {depth: h, bevelEnabled: false}),
+            mat(s.color || '#b08a5a', s.tex || 'none'),
+          );
         m.position.set(p.c[0], p.c[1], ZB);
         m.userData.sel = tag;
         grp.add(m);
@@ -9261,6 +10018,25 @@ function stair3(s, fi) {
       return;
     }
     const rz = Math.atan2(p.d[1], p.d[0]);
+    if (FRS && p.k === 'land') {
+      /* landing: joists 16 in o.c. across the landing under a deck */
+      const h = rise * (p.s0 + 1),
+        dp = 7.25 / 12,
+        nrm = [-p.d[1], p.d[0], 0],
+        at = (x, y) => [p.o[0] + p.d[0] * x + nrm[0] * y, p.o[1] + p.d[1] * x + nrm[1] * y];
+      for (let x = -p.a / 2 + 0.1; x <= p.a / 2 - 0.1 + 1e-6; x += 4 / 3) {
+        const a = at(x, -p.b / 2 + 0.1),
+          b = at(x, p.b / 2 - 0.1);
+        fs(
+          [a[0], a[1], ZB + h - 0.125 - dp / 2],
+          [b[0], b[1], ZB + h - 0.125 - dp / 2],
+          [p.d[0], p.d[1], 0],
+          dp,
+          1.5 / 12,
+        );
+      }
+      tb(p.o[0], p.o[1], ZB + h - 0.0625, p.a, p.b, 0.125, rz);
+    }
     if (p.k === 'land') {
       const h = rise * (p.s0 + 1),
         g = new THREE.BoxGeometry(p.a, p.b, h),
@@ -9273,6 +10049,25 @@ function stair3(s, fi) {
       return;
     }
     const tr = p.len / p.n;
+    if (FRS) {
+      /* flight: 2x12 stringers 16 in o.c. and tread boards */
+      const dp = 11.25 / 12,
+        ns = Math.max(2, Math.ceil((p.w * 12) / 16) + 1),
+        sdv = [-p.d[1], p.d[0], 0],
+        sl = Math.hypot(tr, rise) / tr,
+        z0 = ZB + rise * p.s0 - (dp / 2) * sl + 0.05,
+        z1 = ZB + rise * (p.s0 + p.n) - (dp / 2) * sl + 0.05;
+      for (let q = 0; q < ns; q++) {
+        const v = -p.w / 2 + 0.06 + ((p.w - 0.12) * q) / (ns - 1),
+          a = frP(p, 0, v),
+          b = frP(p, p.len, v);
+        fs([a[0], a[1], z0], [b[0], b[1], z1], sdv, dp, 1.5 / 12);
+      }
+      for (let k = 0; k < p.n; k++) {
+        const c = frP(p, tr * (k + 0.5), 0);
+        tb(c[0], c[1], ZB + rise * (p.s0 + k + 1) - 0.0625, tr, p.w, 0.125, rz);
+      }
+    }
     for (let k = 0; k < p.n; k++) {
       const h = rise * (p.s0 + k + 1),
         c = frP(p, tr * (k + 0.5), 0),
@@ -9303,26 +10098,70 @@ function roof3() {
         const n0 = grp.children.length;
         roof3r(r, i);
         if (r.dq || r.rk) warpRoofMeshes(r, n0, i);
+        clipUnderMain(r, i, n0);
       });
     (M.floors[i].dormers || []).forEach((D) => {
       if (!D.hid) dorm3(D, i, {t: 'dm', o: D, fi: i});
     });
+    (M.floors[i].skys || []).forEach((K) => {
+      if (!K.hid) sky3(K, {t: 'sk', o: K, fi: i});
+    });
+  }
+}
+/* a roof that runs into a larger gable roof on the same floor is cut off below that roof's slope plane, so its sheathing,
+   fascia, soffit and rafters never come out through the main roof */
+function clipUnderMain(R, fi, n0) {
+  if (R.type === 'flat' || R.type === 'none') return;
+  const ar = (q) => (q.x1 - q.x0) * (q.y1 - q.y0),
+    Q = (M.floors[fi].roofs || []).find(
+      (q) =>
+        q !== R &&
+        !q.hid &&
+        q.type === 'gable' &&
+        ar(q) > ar(R) &&
+        R.x0 < q.x1 &&
+        R.x1 > q.x0 &&
+        R.y0 < q.y1 &&
+        R.y1 > q.y0,
+    );
+  if (!Q) return;
+  const pf = roofProfile(Q),
+    k = Q.pitch / 12,
+    zq = ZBof(fi) + roofBase(Q, fi) + bmInfo(Q, fi, pf).rise,
+    lo = pf.lx ? Q.y0 : Q.x0,
+    hi = pf.lx ? Q.y1 : Q.x1,
+    rc = pf.lx ? (R.y0 + R.y1) / 2 : (R.x0 + R.x1) / 2,
+    up = rc > (lo + hi) / 2,
+    nv = (up ? k : -k) / Math.sqrt(1 + k * k),
+    nz = 1 / Math.sqrt(1 + k * k),
+    c = (up ? -(zq + k * hi) : k * lo - zq) / Math.sqrt(1 + k * k);
+  try {
+    const pl = new THREE.Plane(pf.lx ? new THREE.Vector3(0, nv, nz) : new THREE.Vector3(nv, 0, nz), c);
+    for (let j = n0; j < grp.children.length; j++) {
+      const o = grp.children[j];
+      if (o.material && typeof o.material.clone === 'function') {
+        o.material = o.material.clone();
+        o.material.clippingPlanes = [pl];
+      }
+    }
+  } catch (e) {
+    /* clipping is cosmetic only */
   }
 }
 function collarTies(R) {
-  if (!['gable', 'hip', 'gambrel'].includes(R.type)) return [];
+  if (!RT_COLLAR.includes(R.type)) return [];
   const pf = roofProfile(R),
     pr = pf.pr,
     t = 2 / 3;
   let z, v1;
-  if (R.type === 'gambrel') {
+  if (R.type === 'gambrel' || R.type === 'bonnet') {
     z = pr[1][1] + (pr[2][1] - pr[1][1]) * t;
     v1 = pr[1][0] + (pr[2][0] - pr[1][0]) * t;
   } else {
     z = pr[1][1] * t;
     v1 = pr[1][0] * t;
   }
-  const v2 = pf.Sv - v1;
+  const v2 = pf.Sv - (R.type === 'saltbox' ? (pf.Sv - pr[1][0]) * t : v1);
   return rafPos(pf)
     .filter((u, i) => i % (R.cn || 2) === 0)
     .map((u) => ({u: u, v1: v1, v2: v2, z: z, L: v2 - v1}));
@@ -9358,14 +10197,20 @@ function tail3(R0, fi, pf, zt, dep, u, side) {
   mesh.userData.sel = {t: 'roof', o: R0, fi: fi};
   grp.add(mesh);
 }
+/* top of the foundation (where downspouts end): the ground-storey floor level plus any foundation elevation */
+function foundTop() {
+  const f = (M.floors[0].foundations || []).filter((r) => !r.hid && r.type !== 'sono');
+  return ZBof(M.bsmt ? 1 : 0) + (f.length ? Math.max(...f.map((r) => r.el || 0)) : 0);
+}
 function fascia3(R0, fi, zt, pf) {
   const fa = R0.fa,
     so = R0.so,
     hasF = fa && fa !== 'none',
     hasS = so && so !== 'none',
     o = R0.ro == null ? 1 : R0.ro;
-  if ((!hasF && !hasS) || o <= 0) return;
-  const Lw = pf.Lu + 2 * (R0.type === 'hip' ? 0 : o),
+  const hasG = !!R0.gu && R0.gu !== 'none';
+  if ((!hasF && !hasS && !hasG) || o <= 0) return;
+  const Lw = pf.Lu + 2 * o,
     dep = RSZ[R0.rs || '2x8'],
     pr = pf.pr,
     add = (sx, sy, sz, cx, cy, cz, col) => {
@@ -9377,6 +10222,143 @@ function fascia3(R0, fi, zt, pf) {
       e.position.copy(m.position);
       grp.add(e);
     };
+  /* gutter along an eave run: a real section (K-style ogee or half-round) extruded along the run, hangers every
+     2 ft and a downspout with an offset at the top and a kick at the bottom.
+     run0..run1 = extent along the run, perp0 = outer face of the fascia, out = +1/-1 away from the roof,
+     swap = the run lies along v (hip ends) instead of u, zb = bottom of the gutter, wallPerp = wall face */
+  const gW = 0.42,
+    half = R0.gu === 'half',
+    gH = half ? gW / 2 : 0.35,
+    gCol = R0.guc || '#e8e8e8',
+    gTag = {t: 'roof', o: R0, fi: fi},
+    gutterRun = (run0, run1, perp0, out, swap, zb, wallPerp) => {
+      if (run1 - run0 < 0.3) return;
+      const cx0 = R0.x0,
+        cy0 = R0.y0,
+        runX = swap ? !pf.lx : pf.lx,
+        W3 = (r, pp, z) => (runX ? [cx0 + r, cy0 + pp, z] : [cx0 + pp, cy0 + r, z]),
+        Rv = runX ? new THREE.Vector3(1, 0, 0) : new THREE.Vector3(0, 1, 0),
+        Ov = runX ? new THREE.Vector3(0, out, 0) : new THREE.Vector3(out, 0, 0),
+        wl = 0.03,
+        pts = [];
+      if (half) {
+        const r = gW / 2;
+        for (let k = 0; k <= 12; k++) {
+          const an = Math.PI + (k * Math.PI) / 12;
+          pts.push([r + r * Math.cos(an), gH + r * Math.sin(an)]);
+        }
+        for (let k = 12; k >= 0; k--) {
+          const an = Math.PI + (k * Math.PI) / 12;
+          pts.push([r + (r - wl) * Math.cos(an), gH + (r - wl) * Math.sin(an)]);
+        }
+      } else
+        pts.push(
+          [0, gH],
+          [0, 0],
+          [gW, 0],
+          [gW, gH * 0.5],
+          [gW * 0.86, gH * 0.72],
+          [gW, gH],
+          [gW - wl, gH],
+          [gW * 0.86 - wl, gH * 0.72],
+          [gW - wl, gH * 0.5],
+          [gW - wl, wl],
+          [wl, wl],
+          [wl, gH],
+        );
+      const geo = new THREE.ExtrudeGeometry(new THREE.Shape(pts.map((q) => new THREE.Vector2(q[0], q[1]))), {
+          depth: run1 - run0,
+          bevelEnabled: false,
+        }),
+        o3 = W3(run0, perp0, zb);
+      geo.applyMatrix4(
+        new THREE.Matrix4()
+          .makeBasis(Ov, new THREE.Vector3(0, 0, 1), Rv)
+          .setPosition(new THREE.Vector3(o3[0], o3[1], o3[2])),
+      );
+      const gm = new THREE.Mesh(geo, mat(gCol, 'none', {side: THREE.DoubleSide, flatShading: true}));
+      gm.userData.sel = gTag;
+      grp.add(gm);
+      grp.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo, 30), lineMat));
+      /* hangers */
+      for (let r = run0 + 1; r < run1 - 0.4; r += 2) {
+        const c = W3(r, perp0 + (out * gW) / 2, zb + gH),
+          hm = new THREE.Mesh(
+            runX
+              ? new THREE.BoxGeometry(0.05, gW + 0.06, 0.03)
+              : new THREE.BoxGeometry(gW + 0.06, 0.05, 0.03),
+            mat('#8d8d8d', 'none'),
+          );
+        hm.position.set(c[0], c[1], c[2]);
+        hm.userData.sel = gTag;
+        grp.add(hm);
+      }
+      /* downspout */
+      const gz = foundTop(),
+        sr = run0 + 0.6,
+        pw = half ? 0.26 : 0.17,
+        pl = half ? 0.26 : 0.25,
+        pperp = wallPerp + out * (pw / 2 + 0.02),
+        zTop = zb - 0.55,
+        zBot = gz + 0.75;
+      if (zTop - zBot > 0.5) {
+        const pipe = (len) => {
+          const g3 = half
+            ? new THREE.CylinderGeometry(0.13, 0.13, len, 12)
+            : runX
+              ? new THREE.BoxGeometry(pl, pw, len)
+              : new THREE.BoxGeometry(pw, pl, len);
+          const m3 = new THREE.Mesh(g3, mat(gCol, 'none'));
+          if (half) m3.rotation.x = Math.PI / 2;
+          m3.userData.sel = gTag;
+          return m3;
+        };
+        const v = pipe(zTop - zBot),
+          vc = W3(sr, pperp, (zTop + zBot) / 2);
+        v.position.set(vc[0], vc[1], vc[2]);
+        grp.add(v);
+        const sdv = [Rv.x, Rv.y, 0],
+          gp = perp0 + (out * gW) / 2;
+        stick(W3(sr, gp, zb), W3(sr, pperp, zTop), R0, fi, 0.2, sdv, gCol, 0.2, gTag);
+        stick(W3(sr, pperp, zBot), W3(sr, pperp + out * 0.5, gz + 0.3), R0, fi, 0.2, sdv, gCol, 0.2, gTag);
+        const sb = new THREE.Mesh(
+          runX ? new THREE.BoxGeometry(0.9, 0.8, 0.1) : new THREE.BoxGeometry(0.8, 0.9, 0.1),
+          mat('#a8a8a2', 'none'),
+        );
+        const sc = W3(sr, pperp + out * 0.8, gz + 0.05);
+        sb.position.set(sc[0], sc[1], sc[2]);
+        sb.userData.sel = gTag;
+        grp.add(sb);
+      }
+    };
+  /* where a smaller roof joins this eave, leave a gap in the fascia and soffit: the joining roof's own boards
+     meet this roof's boards at its outer eave lines, so the two blend instead of crossing */
+  const joins = (side) =>
+      (M.floors[fi].roofs || [])
+        .filter(
+          (q) =>
+            q !== R0 &&
+            !q.hid &&
+            q.type !== 'none' &&
+            (q.x1 - q.x0) * (q.y1 - q.y0) < (R0.x1 - R0.x0) * (R0.y1 - R0.y0) &&
+            q.x0 < R0.x1 &&
+            q.x1 > R0.x0 &&
+            q.y0 < R0.y1 &&
+            q.y1 > R0.y0 &&
+            (pf.lx ? (side ? q.y1 > R0.y1 : q.y0 < R0.y0) : side ? q.x1 > R0.x1 : q.x0 < R0.x0),
+        )
+        .map((q) => (pf.lx ? [q.x0 - R0.x0 - o, q.x1 - R0.x0 + o] : [q.y0 - R0.y0 - o, q.y1 - R0.y0 + o]))
+        .sort((m, n) => m[0] - n[0]),
+    pieces = (u0, u1, cuts) => {
+      const out = [];
+      let s = u0;
+      cuts.forEach((c) => {
+        if (c[0] > s) out.push([s, Math.min(c[0], u1)]);
+        s = Math.max(s, c[1]);
+      });
+      if (s < u1) out.push([s, u1]);
+      return out.filter((q) => q[1] - q[0] > 0.05);
+    };
   [0, 1].forEach((side) => {
     const a = side ? pr[pr.length - 1] : pr[0],
       b = side ? pr[pr.length - 2] : pr[1],
@@ -9387,26 +10369,66 @@ function fascia3(R0, fi, zt, pf) {
       ze = a[1] + sm * d * o,
       cx = R0.x0,
       cy = R0.y0,
-      Lu = pf.Lu;
+      Lu = pf.Lu,
+      cuts = joins(side);
     if (hasF) {
       const H = Math.max(({'1x6': 5.5, '1x8': 7.25, '2x6': 5.5}[fa] || 5.5) / 12, dz + 0.04),
         th = (fa === '2x6' ? 1.5 : 0.75) / 12,
         col = '#f3f3f3',
         vv = vE + (d * th) / 2,
         zz = ze + dz / 2 - H / 2;
-      pf.lx
-        ? add(Lw + (R0.type === 'hip' ? 0 : 2 * th), th, H, cx + Lu / 2, cy + vv, zt + zz, col)
-        : add(th, Lw + (R0.type === 'hip' ? 0 : 2 * th), H, cx + vv, cy + Lu / 2, zt + zz, col);
+      const fl = Lw + 2 * th;
+      pieces(Lu / 2 - fl / 2, Lu / 2 + fl / 2, cuts).forEach((q) => {
+        const ln = q[1] - q[0],
+          ce = (q[0] + q[1]) / 2;
+        pf.lx
+          ? add(ln, th, H, cx + ce, cy + vv, zt + zz, col)
+          : add(th, ln, H, cx + vv, cy + ce, zt + zz, col);
+      });
+    }
+    if (hasG && a[1] === 0) {
+      const th0 = hasF ? (fa === '2x6' ? 1.5 : 0.75) / 12 : 0.05;
+      pieces(Lu / 2 - Lw / 2, Lu / 2 + Lw / 2, cuts).forEach((q) => {
+        gutterRun(q[0], q[1], vE + d * th0, d, false, zt + ze + dz / 2 - 0.08 - gH, a[0]);
+      });
     }
     if (hasS) {
       const col = so === 'vented' ? '#d6d6d6' : '#f3f3f3',
         vv = (a[0] + vE) / 2,
         zz = ze - dz / 2 - 0.02;
-      pf.lx
-        ? add(Lw, o, 0.04, cx + Lu / 2, cy + vv, zt + zz, col)
-        : add(o, Lw, 0.04, cx + vv, cy + Lu / 2, zt + zz, col);
+      pieces(Lu / 2 - Lw / 2, Lu / 2 + Lw / 2, cuts).forEach((q) => {
+        const ln = q[1] - q[0],
+          ce = (q[0] + q[1]) / 2;
+        pf.lx
+          ? add(ln, o, 0.04, cx + ce, cy + vv, zt + zz, col)
+          : add(o, ln, 0.04, cx + vv, cy + ce, zt + zz, col);
+      });
     }
   });
+  if (R0.type === 'hip') {
+    /* the two hip-end eaves: same boards as the sides, wrapped around the corners without overlapping them */
+    const k = pr[1][1] / pr[1][0],
+      dz = dep * Math.sqrt(1 + k * k),
+      ze = -k * o,
+      Sv = pf.Sv,
+      th = hasF ? (R0.fa === '2x6' ? 1.5 : 0.75) / 12 : 0;
+    [0, 1].forEach((end) => {
+      const sg = end ? 1 : -1,
+        u0 = end ? pf.Lu : 0,
+        wp = (u, v, z) => (pf.lx ? [R0.x0 + u, R0.y0 + v, z] : [R0.x0 + v, R0.y0 + u, z]);
+      if (hasF) {
+        const H = Math.max(({'1x6': 5.5, '1x8': 7.25, '2x6': 5.5}[R0.fa] || 5.5) / 12, dz + 0.04),
+          c = wp(u0 + sg * (o + th / 2), Sv / 2, zt + ze + dz / 2 - H / 2);
+        add(pf.lx ? th : Sv + 2 * o, pf.lx ? Sv + 2 * o : th, H, c[0], c[1], c[2], '#f3f3f3');
+      }
+      if (hasG)
+        gutterRun(-o, Sv + o, u0 + sg * (o + (hasF ? th : 0.05)), sg, true, zt + ze + dz / 2 - 0.08 - gH, u0);
+      if (hasS) {
+        const c = wp(u0 + sg * (o / 2), Sv / 2, zt + ze - dz / 2 - 0.02);
+        add(pf.lx ? o : Sv, pf.lx ? Sv : o, 0.04, c[0], c[1], c[2], so === 'vented' ? '#d6d6d6' : '#f3f3f3');
+      }
+    });
+  }
   if (R0.type !== 'hip') {
     rake3(R0, fi, zt, pf, o, hasF, hasS);
     if (R0.gr === 'yes' && (hasF || hasS))
@@ -9494,6 +10516,33 @@ function rake3(R0, fi, zt, pf, o, hasF, hasS) {
     }
   });
 }
+/* gable-end overhang framing: a barge rafter along each rake with 2x4 lookouts tying it back to the end rafter */
+function rakeFrame3(R0, fi, pf, zt) {
+  const o = R0.ro == null ? 1 : R0.ro;
+  if (o <= 0 || R0.type === 'flat' || R0.type === 'none') return;
+  const pr = pf.pr,
+    n = pr.length,
+    dep = RSZ[R0.rs || '2x8'],
+    f = (a, b, d) => [a[0] + d * o, a[1] + ((b[1] - a[1]) / (b[0] - a[0])) * d * o],
+    pe = [f(pr[0], pr[1], -1), ...pr.slice(1, n - 1), f(pr[n - 1], pr[n - 2], 1)],
+    Wd = (u, v, z) => (pf.lx ? [R0.x0 + u, R0.y0 + v, zt + z] : [R0.x0 + v, R0.y0 + u, zt + z]),
+    ua = pf.lx ? [1, 0, 0] : [0, 1, 0],
+    sp = pf.lx ? [0, 1, 0] : [1, 0, 0];
+  [0, 1].forEach((si) => {
+    const uR = si ? pf.Lu + o : -o,
+      u0 = si ? pf.Lu : 0;
+    for (let i = 0; i < pe.length - 1; i++) {
+      const p = pe[i],
+        q = pe[i + 1];
+      stick(Wd(uR, p[0], p[1]), Wd(uR, q[0], q[1]), R0, fi, dep, ua);
+      const run = q[0] - p[0];
+      for (let v = p[0] + 0.5; v < q[0] - 0.2; v += 2) {
+        const z = p[1] + ((q[1] - p[1]) * (v - p[0])) / run - dep / 2;
+        stick(Wd(u0, v, z), Wd(uR, v, z), R0, fi, 3.5 / 12, sp);
+      }
+    }
+  });
+}
 function bmInfo(R0, fi, pf) {
   const Z = {lift: 0, dn: 0, rise: 0};
   if (R0.type === 'flat' || R0.type === 'none') return Z;
@@ -9556,7 +10605,7 @@ function notch3(R0, fi, pf, zt, u, side, bi) {
   ]);
 }
 function gable3(R0, fi, pf, W0, bi) {
-  if (!['gable', 'gambrel'].includes(R0.type)) return;
+  if (!RT_GABLED.includes(R0.type)) return;
   const F = M.floors[fi],
     pr = pf.pr,
     lx = pf.lx,
@@ -9599,7 +10648,7 @@ function gable3(R0, fi, pf, W0, bi) {
   });
 }
 function gableWalls(R0, fi, pf) {
-  if (!['gable', 'gambrel'].includes(R0.type)) return null;
+  if (!RT_GABLED.includes(R0.type)) return null;
   const F = M.floors[fi];
   if (!F) return null;
   const ax = pf.lx ? 0 : 1,
@@ -9671,6 +10720,12 @@ function rafPos(pf) {
   a.push(pf.Lu - pf.r0);
   return a;
 }
+/* jack rafter positions in a hip end: 16 in o.c. from the corner; run = horizontal run to the hip rafter */
+function hipJacks(pf, k) {
+  const a = [];
+  for (let u = 4 / 3; u < pf.r0 - 0.3; u += 4 / 3) a.push({u: u, run: u, len: u * Math.sqrt(1 + k * k)});
+  return a;
+}
 function rafters(R) {
   if (R.type === 'none') return {n: 0, lens: []};
   const pf = roofProfile(R);
@@ -9691,11 +10746,273 @@ function rafters(R) {
   }
   return {n: c * segs.length, lens: segs};
 }
+const HDRD = {'2x8': 7.25 / 12, '2x10': 9.25 / 12, '2x12': 11.25 / 12};
 const RSZ = {'2x4': 3.5 / 12, '2x6': 5.5 / 12, '2x8': 7.25 / 12, '2x10': 9.25 / 12, '2x12': 11.25 / 12};
 
 /* ---------- Dormers ---------- */
 var DORMN = {gable: 'Gable dormer', shed: 'Shed dormer'};
+
+/* plane-built roofs (mansard, jerkinhead, half-hip, Dutch gable): the roof height is the lowest of several planes, z = a*u + b*v + c,
+   with u along the ridge and v across it; every face is the footprint clipped to where its plane is the lowest */
+var PLT = ['mansard', 'jerkin', 'halfhip', 'dutch'];
+/* roof types by how they are built: RT_PROF are extruded along the ridge from a cross-section profile; RT_GABLED are those
+   (plus gable) that have gable-end walls; RT_COLLAR have collar ties; RT_FASCIA have the fascia, soffit and gutter options */
+var RT_PROF = ['gambrel', 'saltbox', 'butterfly', 'aframe', 'barrel', 'bonnet'],
+  RT_GABLED = ['gable', 'gambrel', 'saltbox', 'aframe', 'barrel', 'bonnet'],
+  RT_COLLAR = ['gable', 'hip', 'gambrel', 'saltbox', 'aframe', 'bonnet'],
+  RT_FASCIA = ['gable', 'hip', 'shed', ...RT_PROF];
+function rdims(R0) {
+  const lx = R0.x1 - R0.x0 >= R0.y1 - R0.y0 !== !!R0.rr;
+  return {lx, Lu: lx ? R0.x1 - R0.x0 : R0.y1 - R0.y0, Sv: lx ? R0.y1 - R0.y0 : R0.x1 - R0.x0};
+}
+function planeCells(R0) {
+  const {Lu, Sv} = rdims(R0),
+    k = Math.max(0.05, R0.pitch / 12),
+    oe = R0.ro == null ? 1 : R0.ro,
+    t = R0.type,
+    S = [0, k, 0],
+    N = [0, -k, k * Sv];
+  let OE = oe,
+    cells,
+    walls = [],
+    band = Sv / 2,
+    pl;
+  if (t === 'mansard') {
+    OE = Math.min(oe, 0.5);
+    const ks = 2,
+      d = Math.max(0.5, Math.min(Sv * 0.12, 4, Lu * 0.12)),
+      zb = ks * d;
+    pl = [];
+    [
+      [1, 0, 0],
+      [-1, 0, Lu],
+      [0, 1, 0],
+      [0, -1, Sv],
+    ].forEach((e) => {
+      pl.push([ks * e[0], ks * e[1], ks * e[2]]);
+      pl.push([k * e[0], k * e[1], k * e[2] + zb - k * d]);
+    });
+    band = Math.min(Lu, Sv) / 2;
+  } else if (t === 'jerkin' || t === 'halfhip') {
+    const ru = t === 'jerkin' ? Math.min(Sv * 0.2, Lu * 0.3) : Math.min(Sv * 0.45, Lu * 0.35),
+      h = (k * Sv) / 2,
+      zc = h * (t === 'jerkin' ? 0.6 : 0.35),
+      kc = (h - zc) / Math.max(0.5, ru);
+    pl = [S, N, [kc, 0, zc], [-kc, 0, zc + kc * Lu]];
+    band = ru;
+  }
+  const dom = (u0, u1) => ({u0, u1, v0: -OE, v1: Sv + OE});
+  if (t === 'dutch') {
+    const ug = Math.min(Sv * 0.28, Lu * 0.3),
+      A = {...dom(-OE, ug), pl: [S, N, [k, 0, 0]]},
+      B = {...dom(ug, Lu - ug), pl: [S, N]},
+      C = {...dom(Lu - ug, Lu + OE), pl: [S, N, [-k, 0, k * Lu]]};
+    cells = [A, B, C];
+    walls = [
+      {u: ug, lo: A, hi: B},
+      {u: Lu - ug, lo: C, hi: B},
+    ];
+    band = ug;
+  } else {
+    const C0 = {
+      ...dom(-OE, Lu + OE),
+      pl: pl.filter((q, i) => !pl.slice(0, i).some((r) => r.every((v, j) => Math.abs(v - q[j]) < 1e-9))),
+    };
+    cells = [C0];
+    if (t === 'jerkin' || t === 'halfhip')
+      walls = [
+        {u: 0, lo: null, hi: C0},
+        {u: Lu, lo: null, hi: C0},
+      ];
+  }
+  return {Lu, Sv, OE, cells, walls, band};
+}
+function cellZ(c, u, v) {
+  let z = 1e9;
+  for (const q of c.pl) z = Math.min(z, q[0] * u + q[1] * v + q[2]);
+  return z;
+}
+function zOf(PC, u, v) {
+  const c =
+    PC.cells.find((q) => u >= q.u0 - 1e-9 && u <= q.u1 + 1e-9) ||
+    PC.cells[u < PC.cells[0].u0 ? 0 : PC.cells.length - 1];
+  return cellZ(c, u, v);
+}
+function clipHP(poly, a, b, c) {
+  const out = [];
+  for (let i = 0; i < poly.length; i++) {
+    const p = poly[i],
+      q = poly[(i + 1) % poly.length],
+      fp = a * p[0] + b * p[1] + c,
+      fq = a * q[0] + b * q[1] + c;
+    if (fp <= 1e-9) out.push(p);
+    if ((fp < -1e-9 && fq > 1e-9) || (fp > 1e-9 && fq < -1e-9)) {
+      const t = fp / (fp - fq);
+      out.push([p[0] + (q[0] - p[0]) * t, p[1] + (q[1] - p[1]) * t]);
+    }
+  }
+  return out;
+}
+function planeFaces(PC) {
+  const out = [];
+  PC.cells.forEach((c) =>
+    c.pl.forEach((q, i) => {
+      let poly = [
+        [c.u0, c.v0],
+        [c.u1, c.v0],
+        [c.u1, c.v1],
+        [c.u0, c.v1],
+      ];
+      c.pl.forEach((r, j) => {
+        if (j !== i && poly.length) poly = clipHP(poly, q[0] - r[0], q[1] - r[1], q[2] - r[2]);
+      });
+      if (poly.length < 3) return;
+      let ar = 0;
+      poly.forEach((p, n) => {
+        const o = poly[(n + 1) % poly.length];
+        ar += p[0] * o[1] - o[0] * p[1];
+      });
+      ar = Math.abs(ar) / 2;
+      if (ar < 1e-4) return;
+      out.push({
+        pts: poly.map((p) => [p[0], p[1], q[0] * p[0] + q[1] * p[1] + q[2]]),
+        area: ar * Math.sqrt(1 + q[0] * q[0] + q[1] * q[1]),
+      });
+    }),
+  );
+  return out;
+}
+/* roof height along the middle of the ridge, as a profile polyline */
+function planeSection(R0) {
+  const PC = planeCells(R0),
+    Sv = PC.Sv,
+    n = Math.max(40, Math.ceil(Sv * 10)),
+    u = PC.Lu / 2,
+    pts = [];
+  for (let i = 0; i <= n; i++) {
+    const v = (Sv * i) / n;
+    pts.push([v, Math.max(0, zOf(PC, u, v))]);
+  }
+  const out = [pts[0]];
+  for (let i = 1; i < pts.length - 1; i++) {
+    const a = out[out.length - 1],
+      b = pts[i],
+      c = pts[i + 1];
+    if (Math.abs((b[1] - a[1]) * (c[0] - a[0]) - (c[1] - a[1]) * (b[0] - a[0])) > 0.02) out.push(b);
+  }
+  out.push(pts[pts.length - 1]);
+  return out;
+}
+function planeRoof3(R0, fi, zt, rm, FR) {
+  const {lx, Lu, Sv} = rdims(R0),
+    PC = planeCells(R0),
+    OE = PC.OE,
+    pf = roofProfile(R0),
+    P = (u, v, z) => (lx ? [R0.x0 + u, R0.y0 + v, zt + z] : [R0.x0 + v, R0.y0 + u, zt + z]),
+    tag = {t: 'roof', o: R0, fi: fi},
+    tris = (T, V) => {
+      for (let i = 1; i < V.length - 1; i++) T.push(V[0], V[i], V[i + 1]);
+    },
+    mk = (T, m, edges) => {
+      if (!T.length) return;
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(T.flat(), 3));
+      geo.computeVertexNormals();
+      if (m.map) {
+        const pa = geo.attributes.position,
+          uv = [];
+        for (let i = 0; i < pa.count; i++)
+          uv.push(pa.getX(i) / m.userData.tile, (pa.getY(i) + pa.getZ(i) * 1.2) / m.userData.tile);
+        geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+      }
+      const me = new THREE.Mesh(geo, m);
+      me.userData.sel = tag;
+      if (edges) me.userData.roofSheet = true;
+      grp.add(me);
+      if (edges) grp.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo, 20), lineMat));
+    },
+    T = [],
+    TW = [],
+    TF = [];
+  planeFaces(PC).forEach((f) =>
+    tris(
+      T,
+      f.pts.map((q) => P(q[0], q[1], q[2])),
+    ),
+  );
+  const nv = Math.max(8, Math.ceil(Sv / 0.5));
+  PC.walls.forEach((w) => {
+    for (let i = 0; i < nv; i++) {
+      const v0 = (Sv * i) / nv,
+        v1 = (Sv * (i + 1)) / nv,
+        l0 = w.lo ? cellZ(w.lo, w.u, v0) : 0,
+        l1 = w.lo ? cellZ(w.lo, w.u, v1) : 0,
+        h0 = cellZ(w.hi, w.u, v0),
+        h1 = cellZ(w.hi, w.u, v1);
+      if (h0 - l0 > 1e-3 || h1 - l1 > 1e-3)
+        tris(TW, [P(w.u, v0, l0), P(w.u, v1, l1), P(w.u, v1, h1), P(w.u, v0, h0)]);
+    }
+  });
+  mk(T, rm, true);
+  const wc = {side: THREE.DoubleSide};
+  mk(
+    TW,
+    FR
+      ? mat('#e6e0d2', 'none', {...wc, transparent: true, opacity: 0.15, depthWrite: false})
+      : mat('#e6e0d2', 'none', wc),
+    false,
+  );
+  if (!FR && R0.fa !== 'none') {
+    /* fascia board around the eave line */
+    const u0 = PC.cells[0].u0,
+      u1 = PC.cells[PC.cells.length - 1].u1,
+      v0 = -OE,
+      v1 = Sv + OE,
+      fh = 0.5,
+      band = (a, b) => {
+        const n = Math.max(1, Math.ceil(Math.hypot(b[0] - a[0], b[1] - a[1]) / 0.5));
+        for (let i = 0; i < n; i++) {
+          const p = [a[0] + ((b[0] - a[0]) * i) / n, a[1] + ((b[1] - a[1]) * i) / n],
+            q = [a[0] + ((b[0] - a[0]) * (i + 1)) / n, a[1] + ((b[1] - a[1]) * (i + 1)) / n],
+            zp = zOf(PC, p[0], p[1]),
+            zq = zOf(PC, q[0], q[1]);
+          tris(TF, [P(p[0], p[1], zp - fh), P(q[0], q[1], zq - fh), P(q[0], q[1], zq), P(p[0], p[1], zp)]);
+        }
+      };
+    band([u0, v0], [u1, v0]);
+    band([u1, v0], [u1, v1]);
+    band([u1, v1], [u0, v1]);
+    band([u0, v1], [u0, v0]);
+    mk(TF, mat('#f4f2ec', 'none', wc), false);
+  }
+  if (FR) {
+    const dp = RSZ[R0.rs || '2x8'],
+      sdv = lx ? [1, 0, 0] : [0, 1, 0],
+      sdu = lx ? [0, 1, 0] : [1, 0, 0],
+      nsv = Math.max(2, Math.ceil((Sv + 2 * OE) / 1.5));
+    for (const uu of rafPos(pf))
+      for (let i = 0; i < nsv; i++) {
+        const va = -OE + ((Sv + 2 * OE) * i) / nsv,
+          vb = -OE + ((Sv + 2 * OE) * (i + 1)) / nsv;
+        stick(P(uu, va, zOf(PC, uu, va)), P(uu, vb, zOf(PC, uu, vb)), R0, fi, dp, sdv);
+      }
+    const nsu = Math.max(1, Math.ceil((PC.band + OE) / 1.5));
+    for (let v = 4 / 3 / 2; v < Sv; v += 4 / 3)
+      for (const e of [0, 1])
+        for (let i = 0; i < nsu; i++) {
+          const ua = -OE + ((PC.band + OE) * i) / nsu,
+            ub = -OE + ((PC.band + OE) * (i + 1)) / nsu,
+            f = (x) => (e ? Lu - x : x);
+          stick(P(f(ua), v, zOf(PC, f(ua), v)), P(f(ub), v, zOf(PC, f(ub), v)), R0, fi, dp, sdu);
+        }
+  }
+}
 function roofHz(R, fi, x, y) {
+  if (PLT.includes(R.type)) {
+    const pf0 = roofProfile(R),
+      z = Math.max(0, zOf(planeCells(R), pf0.lx ? x - R.x0 : y - R.y0, pf0.lx ? y - R.y0 : x - R.x0));
+    return ZBof(fi) + roofBase(R, fi) + bmInfo(R, fi, pf0).rise + z;
+  }
   const pf = roofProfile(R),
     s = Math.max(0, Math.min(pf.Sv, pf.lx ? y - R.y0 : x - R.x0)),
     pr = pf.pr;
@@ -9721,9 +11038,22 @@ function roofAtPt(p, fi) {
   );
 }
 function roofDown(R, p) {
+  if (PLT.includes(R.type)) {
+    const f = roofProfile(R),
+      PC = planeCells(R),
+      u = f.lx ? p[0] - R.x0 : p[1] - R.y0,
+      v = f.lx ? p[1] - R.y0 : p[0] - R.x0,
+      du = zOf(PC, u + 0.5, v) - zOf(PC, u - 0.5, v),
+      dv = zOf(PC, u, v + 0.5) - zOf(PC, u, v - 0.5);
+    if (Math.abs(du) > Math.abs(dv)) return f.lx ? [du > 0 ? -1 : 1, 0] : [0, du > 0 ? -1 : 1];
+    return f.lx ? [0, dv > 0 ? -1 : 1] : [dv > 0 ? -1 : 1, 0];
+  }
   const pf = roofProfile(R),
     s = pf.lx ? p[1] - R.y0 : p[0] - R.x0,
-    sg = R.type === 'shed' ? (pf.pr[0][1] > pf.pr[1][1] ? 1 : -1) : s < pf.Sv / 2 ? -1 : 1;
+    pr = pf.pr;
+  let i = 0;
+  while (i < pr.length - 2 && s > pr[i + 1][0]) i++;
+  const sg = pr[i + 1][1] > pr[i][1] ? -1 : 1;
   return pf.lx ? [0, sg] : [sg, 0];
 }
 /* topmost roof (on any floor) under plan point p */
@@ -9822,6 +11152,110 @@ function dormInfo(D, fi) {
   }
   return {R, zf, sl, rh, te, tr, sp, he, tmax};
 }
+/* skylights: a glazed unit set on a curb on the roof surface; width runs across the slope, length up it */
+/* topmost roof of any kind (flat roofs included) under a plan point */
+function skyRoof(p) {
+  for (let i = M.floors.length - 1; i >= 0; i--) {
+    const R = ((M.floors[i] || {}).roofs || []).find(
+      (q) => !q.hid && q.type !== 'none' && p[0] >= q.x0 && p[0] <= q.x1 && p[1] >= q.y0 && p[1] <= q.y1,
+    );
+    if (R) return {R, fi: i};
+  }
+  return null;
+}
+function skyFrame(K) {
+  const f = skyRoof(K.c),
+    lx = f ? roofProfile(f.R).lx : true,
+    hw = K.w / 2,
+    hl = K.l / 2,
+    hx = lx ? hw : hl,
+    hy = lx ? hl : hw;
+  return {f, hx, hy};
+}
+function skyPts(K) {
+  const {hx, hy} = skyFrame(K);
+  return [
+    [K.c[0] - hx, K.c[1] - hy],
+    [K.c[0] + hx, K.c[1] - hy],
+    [K.c[0] + hx, K.c[1] + hy],
+    [K.c[0] - hx, K.c[1] + hy],
+  ];
+}
+function placeSky(p) {
+  const f = skyRoof(p);
+  if (!f) {
+    status('Skylight: click on a roof (draw a gable, hip, shed or gambrel roof first).');
+    return;
+  }
+  const K = {c: [...p], w: 2, l: 4};
+  mut(() => {
+    const F = M.floors[f.fi];
+    (F.skys = F.skys || []).push(K);
+    sel = {t: 'sk', o: K};
+  });
+}
+function drawSky2(K, on) {
+  const Q = skyPts(K),
+    col = on ? '#2f6fdb' : '#3c78d8';
+  poly(Q, on ? 'rgba(47,111,219,.25)' : 'rgba(143,191,238,.45)');
+  Q.forEach((p, k) => line(p, Q[(k + 1) % 4], col, on ? 2.5 : 1.6));
+  line(Q[0], Q[2], col, 1);
+  line(Q[1], Q[3], col, 1);
+}
+function sky3(K, tag) {
+  const {f, hx, hy} = skyFrame(K);
+  if (!f) return;
+  const ch = K.ch == null ? 0.25 : K.ch,
+    fw = Math.min(0.2, Math.min(hx, hy) * 0.5),
+    flatZ = ZBof(f.fi) + roofBase(f.R, f.fi) + bmInfo(f.R, f.fi, roofProfile(f.R)).rise + 0.4,
+    zr = (x, y) => (f.R.type === 'flat' ? flatZ : roofHz(f.R, f.fi, x, y)),
+    cx = K.c[0],
+    cy = K.c[1],
+    O = [
+      [cx - hx, cy - hy],
+      [cx + hx, cy - hy],
+      [cx + hx, cy + hy],
+      [cx - hx, cy + hy],
+    ],
+    I = [
+      [cx - hx + fw, cy - hy + fw],
+      [cx + hx - fw, cy - hy + fw],
+      [cx + hx - fw, cy + hy - fw],
+      [cx - hx + fw, cy + hy - fw],
+    ],
+    top = (q) => [q[0], q[1], zr(q[0], q[1]) + ch],
+    base = (q) => [q[0], q[1], zr(q[0], q[1]) - 0.05],
+    fm = mat('#f4f2ec', 'none', {side: THREE.DoubleSide}),
+    gm = mat(K.color || '#8fbfee', 'none', {transparent: true, opacity: 0.55, side: THREE.DoubleSide}),
+    quad = (V, m) => {
+      const g = new THREE.BufferGeometry();
+      g.setAttribute(
+        'position',
+        new THREE.Float32BufferAttribute([V[0], V[1], V[2], V[0], V[2], V[3]].flat(), 3),
+      );
+      g.computeVertexNormals();
+      const me = new THREE.Mesh(g, m);
+      me.userData.sel = tag;
+      grp.add(me);
+    };
+  for (let i = 0; i < 4; i++) {
+    const j = (i + 1) % 4;
+    quad([base(O[i]), base(O[j]), top(O[j]), top(O[i])], fm);
+    quad([top(O[i]), top(O[j]), top(I[j]), top(I[i])], fm);
+  }
+  quad(
+    I.map((q) => top(q)).map((v) => [v[0], v[1], v[2] - 0.02]),
+    gm,
+  );
+  /* glazing bar down the middle */
+  const m0 = [(I[0][0] + I[1][0]) / 2, (I[0][1] + I[1][1]) / 2],
+    m1 = [(I[3][0] + I[2][0]) / 2, (I[3][1] + I[2][1]) / 2],
+    bw = 0.03;
+  quad(
+    [top([m0[0] - bw, m0[1]]), top([m0[0] + bw, m0[1]]), top([m1[0] + bw, m1[1]]), top([m1[0] - bw, m1[1]])],
+    fm,
+  );
+}
 function dormPts(D) {
   const F = dormFrame(D),
     I = dormInfo(D, dormFi(D)),
@@ -9855,9 +11289,15 @@ function dorm3(D, fi, tag) {
     hw = w / 2,
     ze = I.zf + I.he,
     ov = 0.5,
-    wm = mat(D.color || '#e6dfd0', D.tex || 'siding'),
-    wf = mat(D.color || '#e6dfd0', 'none', {side: THREE.DoubleSide}),
-    rm = mat(dormRoofCol(D, I.R), (I.R && I.R.tex) || 'none', {side: THREE.DoubleSide, flatShading: true}),
+    FRD = !!(M.framing || D.frm),
+    ghost = {side: THREE.DoubleSide, flatShading: true, transparent: true, opacity: 0.15, depthWrite: false},
+    wm = FRD ? mat(D.color || '#e6dfd0', 'none', ghost) : mat(D.color || '#e6dfd0', D.tex || 'siding'),
+    wf = FRD
+      ? mat(D.color || '#e6dfd0', 'none', ghost)
+      : mat(D.color || '#e6dfd0', 'none', {side: THREE.DoubleSide}),
+    rm = FRD
+      ? mat(dormRoofCol(D, I.R), 'none', ghost)
+      : mat(dormRoofCol(D, I.R), (I.R && I.R.tex) || 'none', {side: THREE.DoubleSide, flatShading: true}),
     tm = mat('#f2efe8', 'none'),
     add = (m) => {
       m.userData.sel = tag;
@@ -9917,6 +11357,48 @@ function dorm3(D, fi, tag) {
     lbox(ww / 2, ww / 2 + 0.1, -0.04, 0.02, wz0, wz1, tm);
     lbox(-ww / 2 - 0.1, ww / 2 + 0.1, -0.04, 0.02, wz1, wz1 + 0.15, tm);
   } else lbox(-hw, hw, 0, wt, I.zf - sink, ze, wm);
+  if (FRD) {
+    /* dormer framing: studs on the front and cheek walls, gable-end studs, rafters and ridge */
+    const e0 = F.W(0, 0),
+      eu = [F.W(1, 0)[0] - e0[0], F.W(1, 0)[1] - e0[1], 0],
+      ed = [F.W(0, 1)[0] - e0[0], F.W(0, 1)[1] - e0[1], 0],
+      dp = 3.5 / 12,
+      S = 4 / 3,
+      fs = (a, b, sd, dd) => stick(a, b, null, fi, dd || dp, sd, null, null, tag),
+      tc2 = Math.max(0.5, I.te),
+      zr = ze + I.rh,
+      sl = I.rh / hw,
+      sp2 = I.sp,
+      ww2 = hasW ? ww : 0;
+    for (let u = -hw + 0.1; u <= hw - 0.1 + 1e-6; u += S)
+      if (!(hasW && Math.abs(u) < ww2 / 2 + 0.1)) fs(P(u, wt / 2, I.zf - sink), P(u, wt / 2, ze), ed);
+    if (hasW) {
+      [-1, 1].forEach((sg) =>
+        fs(P(sg * (ww2 / 2 + 0.1), wt / 2, I.zf - sink), P(sg * (ww2 / 2 + 0.1), wt / 2, ze), ed),
+      );
+      fs(P(-ww2 / 2, wt / 2, wz1), P(ww2 / 2, wt / 2, wz1), ed);
+      fs(P(-ww2 / 2, wt / 2, wz0), P(ww2 / 2, wt / 2, wz0), ed);
+    }
+    const top3 = ze + (D.type === 'shed' ? sp2 * tc2 : 0);
+    [-hw + 0.1, hw - 0.1].forEach((u) => {
+      for (let d = 0.1; d <= tc2 - 0.1 + 1e-6; d += S) {
+        const lo = I.zf + ((top3 - I.zf) * d) / tc2,
+          hi = D.type === 'shed' ? ze + sp2 * d : ze;
+        if (hi - lo > 0.2) fs(P(u, d, lo), P(u, d, hi), eu);
+      }
+    });
+    if (D.type === 'gable') {
+      for (let u = -hw + 0.1; u <= hw - 0.1 + 1e-6; u += S)
+        fs(P(u, wt / 2, ze), P(u, wt / 2, zr - Math.abs(u) * sl - 0.05), ed);
+      for (let d = -ov + 0.1; d <= I.tr + 1e-6; d += S)
+        [-1, 1].forEach((sg) => fs(P(sg * (hw + ov), d, ze - sl * ov), P(0, d, zr), ed));
+      fs(P(0, -ov, zr), P(0, I.tr, zr), eu, 0.5);
+    } else {
+      const tt2 = Math.max(1, I.te);
+      for (let u = -hw - ov + 0.1; u <= hw + ov - 0.1 + 1e-6; u += S)
+        fs(P(u, -ov, ze - sp2 * ov), P(u, tt2, ze + sp2 * tt2), eu);
+    }
+  }
   /* invisible pick volume so the whole dormer is easy to click in 3D */
   lbox(
     -hw,
@@ -9972,7 +11454,7 @@ function roofBase(R, fi) {
   });
   return Math.max(...(ov.length ? ov : W).map((w) => w.h));
 }
-function stick(a, b, R0, fi, dep, sd, col, th) {
+function stick(a, b, R0, fi, dep, sd, col, th, tag) {
   const A = new THREE.Vector3(...a),
     B = new THREE.Vector3(...b),
     d = B.clone().sub(A),
@@ -9991,7 +11473,7 @@ function stick(a, b, R0, fi, dep, sd, col, th) {
     const y = new THREE.Vector3().crossVectors(z, d);
     m.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(d, y, z));
   } else m.quaternion.setFromUnitVectors(new THREE.Vector3(1, 0, 0), d);
-  m.userData.sel = {t: 'roof', o: R0, fi: fi};
+  m.userData.sel = tag || {t: 'roof', o: R0, fi: fi};
   grp.add(m);
 }
 function roofProfile(R0) {
@@ -10009,6 +11491,35 @@ function roofProfile(R0) {
     pr = [
       [0, Sv * k],
       [Sv, 0],
+    ];
+  else if (R0.type === 'saltbox')
+    pr = [
+      [0, 0],
+      [Sv / 3, (Sv * 2 * k) / 3],
+      [Sv, 0],
+    ];
+  else if (PLT.includes(R0.type)) pr = planeSection(R0);
+  else if (R0.type === 'aframe')
+    pr = [
+      [0, 0],
+      [Sv / 2, (Sv / 2) * Math.max(k, 1.5)],
+      [Sv, 0],
+    ];
+  else if (R0.type === 'barrel')
+    pr = Array.from({length: 9}, (_, i) => [(Sv * i) / 8, h * (1 - Math.pow((i - 4) / 4, 2))]);
+  else if (R0.type === 'bonnet')
+    pr = [
+      [0, 0],
+      [Sv * 0.2, Sv * 0.2 * k * 0.5],
+      [Sv * 0.5, Sv * 0.2 * k * 0.5 + Sv * 0.3 * k * 1.5],
+      [Sv * 0.8, Sv * 0.2 * k * 0.5],
+      [Sv, 0],
+    ];
+  else if (R0.type === 'butterfly')
+    pr = [
+      [0, h],
+      [Sv / 2, 0],
+      [Sv, h],
     ];
   else if (R0.type === 'gambrel')
     pr = [
@@ -10078,6 +11589,7 @@ function roof3r(R0, fi) {
     y0 = R0.y0,
     y1 = R0.y1,
     k = R0.pitch / 12;
+  if (PLT.includes(R0.type)) return planeRoof3(R0, fi, zt, rm, FR);
   if (R0.type === 'flat') {
     const fg = new THREE.BoxGeometry(x1 - x0, y1 - y0, 0.4);
     if (rm.map) uvBox(fg, x1 - x0, y1 - y0, 0.4, rm.userData.tile);
@@ -10102,7 +11614,7 @@ function roof3r(R0, fi) {
     OE = R0.ro == null ? 1 : R0.ro,
     pp = roofProfile(R0).pr,
     nz = (-OE * (pp[1][1] - pp[0][1])) / (pp[1][0] - pp[0][0]),
-    RK = R0.type === 'hip' ? 0 : OE,
+    RK = OE,
     PN = gableWalls(R0, fi, roofProfile(R0)),
     U0 = -RK,
     U1 = Lu + RK,
@@ -10113,21 +11625,17 @@ function roof3r(R0, fi) {
     r0 = R0.type === 'hip' ? Sv / 2 : 0,
     E1 = P(r0 ? r0 : U0, Sv / 2, h),
     E2 = P(r0 ? Lu - r0 : U1, Sv / 2, h);
-  if (R0.type === 'gambrel') {
-    const pr = [
-      [0, 0],
-      [0.25, Sv * 0.25 * 1.4],
-      [0.5, Sv * 0.25 * 1.4 + Sv * 0.25 * k],
-      [0.75, Sv * 0.25 * 1.4],
-      [1, 0],
-    ].map((a) => [a[0] * Sv, a[1]]);
-    const prW = pr.map((q) => q.slice());
+  if (RT_PROF.includes(R0.type)) {
+    const pr = pp.map((q) => q.slice()),
+      prW = pp.map((q) => q.slice()),
+      nn = pr.length;
     {
-      const s0 = pr[1][1] / pr[1][0];
-      pr[0] = [-OE, -s0 * OE];
-      pr[4] = [Sv + OE, -s0 * OE];
+      const sA = (pr[1][1] - pr[0][1]) / (pr[1][0] - pr[0][0]),
+        sB = (pr[nn - 1][1] - pr[nn - 2][1]) / (pr[nn - 1][0] - pr[nn - 2][0]);
+      pr[0] = [-OE, pr[0][1] - sA * OE];
+      pr[nn - 1] = [Sv + OE, pr[nn - 1][1] + sB * OE];
     }
-    for (let i = 0; i < 4; i++)
+    for (let i = 0; i < nn - 1; i++)
       quad(
         P(U0, pr[i][0], pr[i][1]),
         P(U1, pr[i][0], pr[i][1]),
@@ -10137,10 +11645,12 @@ function roof3r(R0, fi) {
     if (!PN)
       for (const u of [0, Lu]) {
         const E = prW.map((q) => P(u, q[0], q[1]));
-        tri(E[0], E[1], E[2]);
-        tri(E[0], E[2], E[3]);
-        tri(E[0], E[3], E[4]);
+        for (let q = 0; q < E.length - 1; q++)
+          quad(E[q], E[q + 1], P(u, prW[q + 1][0], 0), P(u, prW[q][0], 0));
       }
+    /* butterfly: the valley sits on the wall top plates and the outer edges rise above them, so the long walls get a parapet strip */
+    if (R0.type === 'butterfly')
+      for (const v of [0, Sv]) quad(P(0, v, 0), P(Lu, v, 0), P(Lu, v, prW[0][1]), P(0, v, prW[0][1]));
   } else if (R0.type === 'shed') {
     const hh = Sv * k,
       H1 = P(U0, -OE, hh + k * OE),
@@ -10174,12 +11684,13 @@ function roof3r(R0, fi) {
   rmesh.userData.sel = {t: 'roof', o: R0, fi: fi};
   rmesh.userData.roofSheet = true;
   grp.add(rmesh);
-  fascia3(
-    R0,
-    fi,
-    zt - bmInfo(R0, fi, roofProfile(R0)).rise + bmInfo(R0, fi, roofProfile(R0)).lift,
-    roofProfile(R0),
-  );
+  if (!FR)
+    fascia3(
+      R0,
+      fi,
+      zt - bmInfo(R0, fi, roofProfile(R0)).rise + bmInfo(R0, fi, roofProfile(R0)).lift,
+      roofProfile(R0),
+    );
   gablePanel3(R0, fi, roofProfile(R0), zt, zt - bmInfo(R0, fi, roofProfile(R0)).rise, PN, FR);
   if (FR) {
     const pf = roofProfile(R0),
@@ -10224,14 +11735,53 @@ function roof3r(R0, fi) {
         pf.lx ? [1, 0, 0] : [0, 1, 0],
       );
     });
-    if (R0.rt === 'plumb')
-      for (const uu of rafPos(pf)) {
-        tail3(R0, fi, pf, W0 + bi.lift, RSZ[R0.rs || '2x8'], uu, 0);
-        tail3(R0, fi, pf, W0 + bi.lift, RSZ[R0.rs || '2x8'], uu, 1);
-      }
+    /* overhang framing: eave rafter tails on every rafter, lookouts and a barge rafter at gable ends */
+    for (const uu of rafPos(pf)) {
+      tail3(R0, fi, pf, W0 + bi.lift, RSZ[R0.rs || '2x8'], uu, 0);
+      tail3(R0, fi, pf, W0 + bi.lift, RSZ[R0.rs || '2x8'], uu, 1);
+    }
+    if (R0.type !== 'hip') rakeFrame3(R0, fi, pf, W0 + bi.lift);
     if (R0.type !== 'shed') {
-      const pk = R0.type === 'gambrel' ? pf.pr[2] : pf.pr[1];
+      const pk =
+        R0.type === 'butterfly' ? pf.pr[1] : pf.pr.reduce((a, b) => (b[1] > a[1] + 1e-9 ? b : a), pf.pr[0]);
       stick(Q(pf.r0, pk), Q(pf.Lu - pf.r0, pk), R0, fi, RSZ[R0.rs || '2x8'], pf.lx ? [0, 1, 0] : [1, 0, 0]);
+    }
+    if (R0.type === 'hip') {
+      /* hip rafters run from each corner to the ends of the ridge; jack rafters fill the hip ends */
+      const dp = RSZ[R0.rs || '2x8'],
+        oo = R0.ro == null ? 1 : R0.ro,
+        ke = R0.pitch / 12,
+        sd = pf.lx ? [1, 0, 0] : [0, 1, 0],
+        pk = pf.pr[1],
+        Sv = pf.Sv,
+        Lu = pf.Lu,
+        hip = (a, b) => {
+          const dx = b[0] - a[0],
+            dy = b[1] - a[1],
+            n = Math.hypot(dx, dy) || 1;
+          stick(a, b, R0, fi, dp, [-dy / n, dx / n, 0]);
+        };
+      [
+        [0, 0, pf.r0],
+        [0, Sv, pf.r0],
+        [Lu, 0, Lu - pf.r0],
+        [Lu, Sv, Lu - pf.r0],
+      ].forEach((c) => hip(Q(c[0] + (c[0] ? oo : -oo), [c[1] + (c[1] ? oo : -oo), -ke * oo]), Q(c[2], pk)));
+      /* end planes: jacks run along the ridge direction from the end eave up to the hip rafters, plus the centre one */
+      const sde = pf.lx ? [0, 1, 0] : [1, 0, 0];
+      stick(Q(-oo, [Sv / 2, -ke * oo]), Q(pf.r0, pk), R0, fi, dp, sde);
+      stick(Q(Lu + oo, [Sv / 2, -ke * oo]), Q(Lu - pf.r0, pk), R0, fi, dp, sde);
+      hipJacks(pf, ke).forEach((j) => {
+        [j.u, Sv - j.u].forEach((v) => {
+          const rn = Math.min(v, Sv - v);
+          stick(Q(-oo, [v, -ke * oo]), Q(rn, [v, rn * ke]), R0, fi, dp, sde);
+          stick(Q(Lu + oo, [v, -ke * oo]), Q(Lu - rn, [v, rn * ke]), R0, fi, dp, sde);
+        });
+        stick(Q(j.u, [-oo, -ke * oo]), Q(j.u, [j.run, j.run * ke]), R0, fi, dp, sd);
+        stick(Q(j.u, [Sv + oo, -ke * oo]), Q(j.u, [Sv - j.run, j.run * ke]), R0, fi, dp, sd);
+        stick(Q(Lu - j.u, [-oo, -ke * oo]), Q(Lu - j.u, [j.run, j.run * ke]), R0, fi, dp, sd);
+        stick(Q(Lu - j.u, [Sv + oo, -ke * oo]), Q(Lu - j.u, [Sv - j.run, j.run * ke]), R0, fi, dp, sd);
+      });
     }
   }
   grp.add(new THREE.LineSegments(new THREE.EdgesGeometry(geo, 20), lineMat));
@@ -10240,8 +11790,11 @@ let orb = null,
   c3d = null,
   pan3 = false;
 const c3 = $('c3');
+c3.addEventListener('auxclick', (e) => e.button === 1 && e.preventDefault());
+c3.addEventListener('mousedown', (e) => e.button === 1 && e.preventDefault());
 c3.addEventListener('contextmenu', (e) => e.preventDefault());
 c3.addEventListener('pointerdown', (e) => {
+  if (e.button === 1) return;
   c3.setPointerCapture(e.pointerId);
   if (e.button === 0 && hmesh.length) {
     const r = c3.getBoundingClientRect(),
@@ -10288,6 +11841,7 @@ c3.addEventListener('pointermove', (e) => {
   render();
 });
 c3.addEventListener('pointerup', (e) => {
+  if (e.button === 1) return;
   if (hd) {
     const m = hd.moved;
     hd = null;
@@ -10696,6 +12250,40 @@ const doSave = async (nm) => {
 };
 /* ---------- Materials list ---------- */
 const STOCK = [8, 10, 12, 14, 16, 20];
+/* drywall: wall faces that look into a room (exterior walls count their inside face only) plus ceilings */
+function drywallAreas(F) {
+  const inRoom = (q) => F.rooms.some((r) => !r.hid && inside(q, r.pts)),
+    allp = F.walls.flatMap((w) => [w.a, w.b]),
+    bx = allp.length
+      ? [
+          Math.min(...allp.map((p) => p[0])),
+          Math.max(...allp.map((p) => p[0])),
+          Math.min(...allp.map((p) => p[1])),
+          Math.max(...allp.map((p) => p[1])),
+        ]
+      : null,
+    inBox = (q) => !!bx && q[0] > bx[0] && q[0] < bx[1] && q[1] > bx[2] && q[1] < bx[3];
+  let walls = 0;
+  F.walls.forEach((w) => {
+    if (w.hid) return;
+    const g = geom(w),
+      mid = [g.ax + g.d[0] * (g.L / 2), g.ay + g.d[1] * (g.L / 2)],
+      k = w.t / 2 + 0.4,
+      side = (s) => {
+        const q = [mid[0] + g.n[0] * k * s, mid[1] + g.n[1] * k * s];
+        return F.rooms.length ? inRoom(q) : inBox(q);
+      };
+    const faces = (side(1) ? 1 : 0) + (side(-1) ? 1 : 0) || 1;
+    let a = g.L * WH;
+    w.open.forEach((o) => {
+      if (o.hid) return;
+      a -= o.w * (OP[o.kind][1] - (o.kind === 'window' ? WSILL[o.wt || 'dh'] : 0));
+    });
+    walls += Math.max(0, a) * faces;
+  });
+  const ceil = F.rooms.reduce((s, r) => s + (r.hid ? 0 : area(r.pts)), 0);
+  return {walls, ceil};
+}
 function materials() {
   const rows = [],
     sheets = [],
@@ -10721,20 +12309,117 @@ function materials() {
       pcs.forEach((q) => {
         const len = q.s1 - q.s0,
           ht = q.z1 - q.z0;
-        if (q.k === 'p') {
+        if (q.k === 't') add(cw, 'Pressure-treated sill plate', sz, len, 1);
+        else if (q.k === 'x') add(cw, 'Corner spacer block', sz, len, 1);
+        else if (q.k === 'p') {
           if (q.z0 < 1) bot += len;
         } else if (q.k === 's') add(cw, 'Stud', sz, ht, 1);
         else if (q.k === 'k') add(cw, 'King stud', sz, ht, 1);
         else if (q.k === 'j') add(cw, 'Jack stud', sz, ht, 1);
         else if (q.k === 'c') add(cw, 'Cripple', sz, ht, 1);
         else if (q.k === 'h') {
-          if (ht > 0.3)
-            add(cw, 'Header (doubled)', len <= 4.5 ? '2x8' : len <= 6.5 ? '2x10' : '2x12', len, 2);
+          if (ht > 0.3) add(cw, 'Header (doubled)', q.hs || '2x8', len, 2);
           else add(cw, 'Window sill', sz, len, 1);
         }
       });
       if (bot > 0.01) add(cw, 'Bottom plate', sz, bot, 1);
     });
+    /* room trim (16 ft lengths) */
+    {
+      const ct = nm + ' — Trim',
+        len = (r, b) =>
+          trimSegs(F, r, b).reduce((s, q) => s + Math.hypot(q[1][0] - q[0][0], q[1][1] - q[0][1]), 0);
+      let bl = 0,
+        cl = 0;
+      F.rooms.forEach((r) => {
+        if (r.hid) return;
+        if (r.base) bl += len(r, true) * 1.05;
+        if (r.crown) cl += len(r, false) * 1.05;
+      });
+      const bh = (F.rooms.find((r) => r.base && !r.hid) || {}).baseH || 5.25,
+        ch = (F.rooms.find((r) => r.crown && !r.hid) || {}).crownH || 4.5;
+      let cl2 = 0,
+        cwid = 3.5;
+      F.walls.forEach((w) => {
+        if (w.hid) return;
+        w.open.forEach((o) => {
+          if (o.hid || (!o.trimIn && !o.trimEx)) return;
+          const c = (o.trimW || 3.5) / 12,
+            z0 = o.kind === 'window' ? WSILL[o.wt || 'dh'] : 0,
+            z1 = OP[o.kind][1];
+          cwid = o.trimW || 3.5;
+          cl2 +=
+            ((o.trimIn ? 1 : 0) + (o.trimEx ? 1 : 0)) *
+            (2 * (z1 + c - z0) + (o.w + 2 * c) * (o.kind === 'window' ? 2 : 1));
+        });
+      });
+      if (cl2 > 0) add(ct, 'Door / window casing', cwid + ' in', 16, Math.ceil((cl2 * 1.1) / 16));
+      if (bl > 0) add(ct, 'Baseboard trim', bh + ' in', 16, Math.ceil(bl / 16));
+      if (cl > 0) add(ct, 'Crown trim', ch + ' in', 16, Math.ceil(cl / 16));
+    }
+    {
+      const ks = (F.skys || []).filter((k) => !k.hid);
+      ks.forEach((k) =>
+        sheets.push({
+          cat: nm + ' — Skylights',
+          item: 'Skylight ' + fmt(k.w) + ' × ' + fmt(k.l) + ' with curb',
+          qty: 1,
+        }),
+      );
+    }
+    /* drywall: 4 x 8 sheets, 10% waste */
+    {
+      const dw = nm + ' — Drywall',
+        A = drywallAreas(F),
+        n = (a) => Math.ceil((a * 1.1) / 32),
+        tot = A.walls + A.ceil;
+      if (A.walls > 1)
+        sheets.push({
+          cat: dw,
+          item: '1/2" drywall 4x8 — walls (' + Math.round(A.walls) + ' sq ft)',
+          qty: n(A.walls),
+        });
+      if (A.ceil > 1)
+        sheets.push({
+          cat: dw,
+          item: '1/2" drywall 4x8 — ceilings (' + Math.round(A.ceil) + ' sq ft)',
+          qty: n(A.ceil),
+        });
+      if (tot > 1) {
+        sheets.push({
+          cat: dw,
+          item: 'Drywall screws, 1 lb box',
+          qty: Math.ceil((n(A.walls) + n(A.ceil)) / 4),
+        });
+        sheets.push({cat: dw, item: 'Joint tape, 500 ft roll', qty: Math.ceil((tot * 0.37) / 500)});
+        sheets.push({cat: dw, item: 'Joint compound, 4.5 gal bucket', qty: Math.ceil(tot / 450)});
+      }
+    }
+    /* finish flooring by room material (sq ft incl. waste) */
+    {
+      const fl = nm + ' — Flooring',
+        by = {};
+      F.rooms.forEach((r) => {
+        if (r.hid) return;
+        const k = r.tex && FLOORS[r.tex] && r.tex !== 'none' ? r.tex : 'none';
+        by[k] = (by[k] || 0) + area(r.pts);
+      });
+      Object.keys(by).forEach((k) => {
+        const waste = ['herring', 'checker', 'tile', 'largetile', 'marble', 'stone'].includes(k) ? 1.15 : 1.1;
+        if (by[k] > 1)
+          sheets.push({
+            cat: fl,
+            item:
+              (k === 'none' ? 'Unspecified finish flooring' : FLOORS[k][0]) +
+              ' — sq ft (' +
+              Math.round(by[k]) +
+              ' net, +' +
+              Math.round((waste - 1) * 100) +
+              '% waste)',
+            qty: Math.ceil(by[k] * waste),
+          });
+      });
+    }
     /* floor systems */
     const regs = (F.fsys || []).filter((r) => !r.hid);
     if (!regs.length && fsys(F).on) {
@@ -10761,6 +12446,74 @@ function materials() {
         k = Math.max(1, r.lens.length),
         per = Math.round(r.n / k);
       r.lens.forEach((len) => add(cr, r.joist ? 'Roof joist' : 'Rafter', sz, len, per));
+      if (R.type === 'hip') {
+        const pf = roofProfile(R),
+          k = R.pitch / 12;
+        add(cr, 'Hip rafter', sz, Math.hypot(pf.r0 * Math.SQRT2, pf.r0 * k), 4);
+        hipJacks(pf, k).forEach((j) => add(cr, 'Jack rafter', sz, j.len, 8));
+        add(cr, 'Jack rafter (hip end centre)', sz, pf.r0 * Math.sqrt(1 + k * k), 2);
+      }
+      /* roofing: surface area, sheathing, underlayment, shingles, edge + ridge */
+      {
+        const cg = nm + ' — Roofing',
+          W = R.x1 - R.x0,
+          D = R.y1 - R.y0,
+          o = R.ro == null ? 1 : R.ro,
+          pl = (W + 2 * o) * (D + 2 * o),
+          sl = Math.sqrt(1 + Math.pow((R.pitch || M.roof.pitch || 0) / 12, 2));
+        let A,
+          ridge = 0;
+        if (R.type === 'flat') A = W * D;
+        else if (PLT.includes(R.type)) {
+          A = planeFaces(planeCells(R)).reduce((t, f) => t + f.area, 0);
+          ridge = roofProfile(R).Lu * 0.8;
+        } else if (R.type === 'hip') {
+          A = pl * sl;
+          ridge = Math.abs(W - D);
+        } else {
+          const pf = roofProfile(R);
+          A = r.lens.reduce((s, l) => s + l, 0) * (pf.Lu + 2 * o);
+          ridge = R.type === 'shed' || R.type === 'butterfly' ? 0 : pf.Lu + 2 * o;
+        }
+        const sq = (A * 1.15) / 100,
+          edge = 2 * (W + D);
+        sheets.push({
+          cat: cg,
+          item: '7/16" OSB roof sheathing 4x8 (' + Math.round(A) + ' sq ft roof)',
+          qty: Math.ceil((A * 1.1) / 32),
+        });
+        sheets.push({
+          cat: cg,
+          item: 'Synthetic underlayment, 1000 sq ft roll',
+          qty: Math.ceil((A * 1.1) / 1000),
+        });
+        sheets.push({
+          cat: cg,
+          item: 'Ice & water shield, 200 sq ft roll (3 ft at eaves)',
+          qty: Math.ceil((2 * (R.type === 'shed' ? W : W + D) * 3) / 200),
+        });
+        sheets.push({cat: cg, item: 'Shingle bundles (3 per square, +15% waste)', qty: Math.ceil(sq * 3)});
+        if (ridge > 0)
+          sheets.push({cat: cg, item: 'Ridge cap bundles (~20 ft each)', qty: Math.ceil(ridge / 20)});
+        sheets.push({cat: cg, item: 'Drip edge, 10 ft pieces', qty: Math.ceil(edge / 10)});
+        sheets.push({cat: cg, item: 'Roofing nails, 1 lb (≈2 per square)', qty: Math.ceil(sq * 2)});
+        if (R.gu && R.gu !== 'none' && R.type !== 'flat') {
+          const pf2 = roofProfile(R),
+            runs = R.type === 'hip' ? 4 : R.type === 'shed' ? 1 : 2,
+            glen = R.type === 'hip' ? 2 * (pf2.Lu + 2 * o) + 2 * (pf2.Sv + 2 * o) : runs * (pf2.Lu + 2 * o);
+          sheets.push({
+            cat: cg,
+            item: (R.gu === 'half' ? 'Half-round' : 'K-style') + ' gutter, 10 ft sections',
+            qty: Math.ceil(glen / 10),
+          });
+          sheets.push({cat: cg, item: 'Gutter hangers (every 2 ft)', qty: Math.ceil(glen / 2)});
+          sheets.push({
+            cat: cg,
+            item: 'Downspouts, 10 ft',
+            qty: runs * Math.max(1, Math.ceil(roofBase(R, fi) / 10)),
+          });
+        }
+      }
     });
     /* stairs */
     (F.stairs || []).forEach((s) => {
@@ -10865,6 +12618,20 @@ function materials() {
     .sort((a, b) => (a.size < b.size ? -1 : a.size > b.size ? 1 : a.stock - b.stock));
   return {cut, sheets: [...sh.values()], purchase, bf};
 }
+/* the list shows each item once: pieces of the same item and size but different cut lengths are added together */
+/* what a sheets-list row is counted in: 4x8 sheets for sheet goods, sq ft for flooring, otherwise each */
+function sheetUnit(item) {
+  return /sheathing|drywall 4x8|OSB/i.test(item) ? '4x8 sheet' : /sq ft \(/.test(item) ? 'sq ft' : 'each';
+}
+function mergeCut(cut) {
+  const m = new Map();
+  cut.forEach((r) => {
+    const k = r.cat + '|' + r.item + '|' + r.size;
+    if (m.has(k)) m.get(k).qty += r.qty;
+    else m.set(k, {cat: r.cat, item: r.item, size: r.size, qty: r.qty});
+  });
+  return [...m.values()];
+}
 function matsHTML(standalone) {
   const D = materials(),
     cats = [...new Set(D.cut.map((r) => r.cat).concat(D.sheets.map((r) => r.cat)))],
@@ -10891,13 +12658,13 @@ function matsHTML(standalone) {
     D.sheets.reduce((a, r) => a + r.qty, 0) +
     ' sheets · about ' +
     bfn(tbf) +
-    ' board feet of lumber. Lengths are cut lengths; the purchase list rounds each piece up to a standard stock length.</p>';
+    ' board feet of lumber. The purchase list rounds each piece up to a standard stock length.</p>';
   cats.forEach((c) => {
-    const rs = D.cut.filter((r) => r.cat === c),
+    const rs = mergeCut(D.cut).filter((r) => r.cat === c),
       ss = D.sheets.filter((r) => r.cat === c);
-    h += '<h2>' + escH(c) + '</h2><table>' + th(['Item', 'Size', 'Cut length', 'Qty']);
-    rs.forEach((r) => (h += td([escH(r.item), r.size, fmt(r.len), r.qty])));
-    ss.forEach((r) => (h += td([escH(r.item), '4x8 sheet', '—', r.qty])));
+    h += '<h2>' + escH(c) + '</h2><table>' + th(['Item', 'Size', 'Qty']);
+    rs.forEach((r) => (h += td([escH(r.item), r.size, r.qty])));
+    ss.forEach((r) => (h += td([escH(r.item), sheetUnit(r.item), r.qty])));
     h += '</table>';
   });
   h += '<h2>Purchase summary (stock lengths)</h2><table>' + th(['Size', 'Stock length', 'Qty', 'Board ft']);
@@ -10915,11 +12682,9 @@ const MATCSS =
 function matsCSV() {
   const D = materials(),
     q = (v) => '"' + String(v).replace(/"/g, '""') + '"',
-    L = [['Section', 'Item', 'Size', 'Cut length (ft)', 'Qty'].map(q).join(',')];
-  D.cut.forEach((r) =>
-    L.push([r.cat, r.item, r.size, Math.round(r.len * 100) / 100, r.qty].map(q).join(',')),
-  );
-  D.sheets.forEach((r) => L.push([r.cat, r.item, '4x8 sheet', '', r.qty].map(q).join(',')));
+    L = [['Section', 'Item', 'Size', 'Qty'].map(q).join(',')];
+  mergeCut(D.cut).forEach((r) => L.push([r.cat, r.item, r.size, r.qty].map(q).join(',')));
+  D.sheets.forEach((r) => L.push([r.cat, r.item, sheetUnit(r.item), r.qty].map(q).join(',')));
   L.push('', ['Purchase summary', '', 'Size', 'Stock length (ft)', 'Qty', 'Board ft'].map(q).join(','));
   D.purchase.forEach((r) =>
     L.push(['Purchase', '', r.size, r.stock, r.qty, Math.round(r.bf * 10) / 10].map(q).join(',')),
@@ -10935,7 +12700,7 @@ async function dlMats() {
 }
 function openMats() {
   const body = matsHTML(),
-    head = '<h1>Framing materials</h1>',
+    head = '<h1>Material List</h1>',
     btns = '<p><button id=mprint>Print</button><button id=mcsv>Download CSV</button></p>';
   let w = null;
   try {
@@ -10944,7 +12709,7 @@ function openMats() {
   if (w && w.document) {
     w.document.open();
     w.document.write(
-      '<!doctype html><html><head><meta charset=utf-8><title>Framing materials — CADieux</title><style>' +
+      '<!doctype html><html><head><meta charset=utf-8><title>Material List — CADieux</title><style>' +
         MATCSS +
         '</style></head><body>' +
         head +
