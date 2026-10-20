@@ -40,6 +40,175 @@
     --btn: #33353b;
   }
 }
+:root[data-theme="dark"] {
+  --bg: #1b1c1f;
+  --panel: #25262a;
+  --ink: #eee;
+  --mute: #9a9a9a;
+  --line: #3a3b40;
+  --grid: #2e2f34;
+  --grid5: #44464c;
+  --wall: #b8b8c0;
+  --room: #2c3a4d;
+  --btn: #33353b;
+}
+#gdlg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(0, 0, 0, 0.6);
+  align-items: center;
+  justify-content: center;
+}
+#gdlg.open {
+  display: flex;
+}
+#gwin {
+  width: min(380px, 92vw);
+  padding: 18px;
+  text-align: center;
+  background: var(--panel);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+#setdlg,
+#exdlg,
+#sidlg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0, 0, 0, 0.35);
+  align-items: center;
+  justify-content: center;
+}
+#sidlg {
+  z-index: 400 !important;
+}
+#sidlg.gate {
+  background: var(--bg);
+}
+#sidlg.gate #six {
+  display: none;
+}
+#setdlg.open,
+#exdlg.open,
+#sidlg.open {
+  display: flex;
+}
+#setwin,
+#exwin,
+#siwin {
+  width: min(460px, 94vw);
+  max-height: 84vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+}
+#setwin header,
+#exwin header,
+#siwin header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--line);
+  font-weight: 600;
+}
+#setbody,
+#exbody,
+#sibody {
+  overflow: auto;
+  padding: 6px 14px 14px;
+}
+#exnl {
+  display: block;
+  font-size: 12px;
+  color: var(--mute);
+  margin: 8px 0 4px;
+}
+#exnl input {
+  width: 100%;
+  margin-top: 3px;
+  padding: 8px 10px;
+  font: inherit;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+#exbody button {
+  display: block;
+  width: 100%;
+  margin: 6px 0;
+  padding: 10px 12px;
+  text-align: left;
+}
+#exbody button small {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  color: var(--mute);
+  font-weight: normal;
+}
+#sibody input {
+  width: 100%;
+  font: inherit;
+  padding: 8px 10px;
+  margin: 3px 0 10px;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+#sibody .sb {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+#sibody .sb button {
+  flex: 1;
+}
+#simsg {
+  min-height: 18px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--mute);
+}
+#simsg.err {
+  color: #d23a3a;
+}
+#sibody .note {
+  font-size: 11px;
+  color: var(--mute);
+  margin-top: 12px;
+}
+#setbody h4 {
+  margin: 14px 0 6px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--mute);
+}
+#setbody label.sr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 0;
+}
+#setbody .sg {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px 14px;
+}
 * {
   box-sizing: border-box;
 }
@@ -98,10 +267,15 @@ button {
   font: inherit;
   cursor: pointer;
 }
-#filem {
+/* top-bar drop-down menus */
+#filem,
+#editm,
+#optm {
   position: relative;
 }
-#filepop {
+#filepop,
+#editpop,
+#optpop {
   display: none;
   position: absolute;
   left: 0;
@@ -117,25 +291,51 @@ button {
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
   min-width: 110px;
 }
-#filepop.open {
+#filepop.open,
+#editpop.open,
+#optpop.open {
   display: flex;
 }
-#filepop button {
+#filepop button,
+#editpop button,
+#optpop button {
+  text-align: left;
+  white-space: nowrap;
+}
+#optpop hr {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 3px 0;
+}
+/* Draw Options flyout inside the Options menu */
+#drawfly {
+  position: relative;
+}
+#drawfly button#drawbtn {
+  width: 100%;
+}
+#drawpop {
+  display: none;
+  position: absolute;
+  left: 100%;
+  top: -5px;
+  z-index: 50;
+  padding: 4px;
+  min-width: 130px;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+}
+#drawpop button {
   text-align: left;
 }
-#vm {
-  display: inline-flex;
-}
-#vm button {
-  border-radius: 0;
-  margin-left: -1px;
-}
-#vm button:first-child {
-  border-radius: 6px 0 0 6px;
-  margin-left: 0;
-}
-#vm button:last-child {
-  border-radius: 0 6px 6px 0;
+#drawfly:hover #drawpop,
+#drawfly.open #drawpop {
+  display: flex;
 }
 button.on {
   background: var(--accent);
@@ -397,6 +597,11 @@ select {
   min-width: 0;
   border-right: 1px solid var(--line);
 }
+button,
+select,
+input {
+  touch-action: manipulation;
+}
 canvas {
   position: absolute;
   inset: 0;
@@ -540,17 +745,21 @@ canvas {
 </head>
 <body>
 <div id="bar">
-<div id="logo" title="Click to add your logo. Right-click to remove it."><span>LOGO</span></div><input type="file" id="logofile" accept="image/*" style="display:none"><span id="filem"><button id="filebtn">File ▾</button><div id="filepop"><button id="save">Save</button><button id="saveas">Save As…</button><button id="load">Load</button><button id="new">Clear</button><button id="demo">Sample</button><button id="exbp" title="Export the architectural drawing set as a PDF">Export Blueprint (PDF)</button><button id="exbh" title="Export the drawing set as a web page">Export Blueprint (web page)</button></div></span><span class='sep'></span>
+<div id="logo" title="Click to add your logo. Right-click to remove it."><span>LOGO</span></div><input type="file" id="logofile" accept="image/*" style="display:none"><span id="filem"><button id="filebtn">File ▾</button><div id="filepop"><button id="save">Save</button><button id="saveas">Save As…</button><button id="load">Load</button><button id="new">Clear</button><button id="demo">Sample</button><button id="exbtn" title="Export drawings, images and project files">Export…</button></div></span><span id="editm"><button id="editbtn" title="Undo and redo">Edit ▾</button><div id="editpop"><button id="undo" title="Undo (Ctrl+Z)">Undo</button><button id="redo" title="Redo (Ctrl+Y)">Redo</button></div></span><span id="optm"><button id="optbtn" title="Snapping and display options">Options ▾</button><div id="optpop"><button id="matbtn" title="Open the Material List">Material List</button><button id="setbtn" title="Program settings">Settings…</button><button id="sibtn" title="Sign in to your account">Sign In…</button><hr><div id="drawfly"><button id="drawbtn" title="How walls, roofs and decks are drawn">Draw Options ▸</button><div id="drawpop"><button data-dm="line" title="Click points to chain wall segments">Line drawing</button><button data-dm="box" title="Click two opposite corners to draw a rectangle">Box drawing</button></div></div></div></span><span class='sep'></span>
   
   <select id='fl'></select><button id='flup' class='flb' title='Go up one floor'>▲</button><button id='fldn' class='flb' title='Go down one floor'>▼</button><span class='sep'></span>
   <span class="sep"></span>
-  <button id="matbtn" title="Open the Material List">Material List</button><input id="seedin" type="text" inputmode="numeric" placeholder="Seed" title="Seed for Random Build (leave blank for a new random seed)" style="margin-left:auto;width:72px"><button id="rnd" title="Generate a random building from a seed">Random Build</button><button id="undo" title="Undo (Ctrl+Z)">Undo</button><button id="redo" title="Redo (Ctrl+Y)">Redo</button><span id='vm' class='seg' title='View'><button data-v='both' class='on'>Split</button><button data-v='2d'>2D</button><button data-v='3d'>3D</button></span><button id='sidebtn'>Hide properties</button>
+  <button id="rnd" title="Generate a random building" style="margin-left:auto">Random Build</button><span id="gtime" title="Guest time left today" style="display:none;margin-right:8px;font-size:12px"></span><button id='vm' title='Switch view: Split, 2D, 3D (click to cycle)'>View: Split</button><button id='sidebtn'>Hide properties</button>
 </div>
-<div id="main"><div id='rail'><button data-t='select' class='on' title='Select / move / resize (S)'><svg viewBox='0 0 24 24'><path d='M5 3l14 7-6 2-2 6z'/></svg>Select</button><button data-t='wall' title='Wall (W)'><svg viewBox='0 0 24 24'><path d='M4 19L20 5'/><circle cx='4' cy='19' r='2'/><circle cx='20' cy='5' r='2'/></svg>Wall</button><button data-t='door' title='Door (D)'><svg viewBox='0 0 24 24'><path d='M6 21V3h12v18M3 21h18'/><circle cx='15' cy='12' r='.9'/></svg>Door</button><button data-t='window' title='Window (N)'><svg viewBox='0 0 24 24'><rect x='4' y='4' width='16' height='16'/><path d='M12 4v16M4 12h16'/></svg>Window</button><button data-t='path' title='Path: driveways and walkways (P)'><svg viewBox='0 0 24 24'><path d='M5 21c0-7 7-5 7-10s-4-4-4-8M19 21c0-7-7-5-7-10'/></svg>Path</button><button data-t='stairs' title='Stairs (T)'><svg viewBox='0 0 24 24'><path d='M3 20h6v-5h6v-5h6'/></svg>Stairs</button><button data-t='roof' title='Roof (F)'><svg viewBox='0 0 24 24'><path d='M3 12l9-8 9 8M6 10v9h12v-9'/></svg>Roof</button><button data-t='dormer' title='Dormer'><svg viewBox='0 0 24 24'><path d='M3 20l9-9 9 9M8 20v-5l4-4 4 4v5M10 20v-3h4v3'/></svg>Dormer</button><button data-t='foundation' title='Foundation (G)'><svg viewBox='0 0 24 24'><path d='M3 20h18M5 20v-6h14v6M8 14V9h8v5'/></svg>Found.</button><button data-t='fsys' title='Floor System (J)'><svg viewBox='0 0 24 24'><path d='M3 6h18M3 18h18M7 6v12M12 6v12M17 6v12'/></svg>Joists</button><button data-t='deck' title='Deck (K)'><svg viewBox='0 0 24 24'><path d='M3 8h18M3 12h18M3 16h18M5 8v12M19 8v12M3 8l2-3h14l2 3'/></svg>Deck</button><button data-t='cabinet' title='Cabinet (C)'><svg viewBox='0 0 24 24'><rect x='3' y='5' width='18' height='14'/><path d='M12 5v14M9 12h.01M15 12h.01'/></svg>Cabinet</button><button data-t='measure' title='Measure (M)'><svg viewBox='0 0 24 24'><path d='M3 17l14-14 4 4L7 21z'/><path d='M7 13l2 2M10 10l2 2M13 7l2 2'/></svg>Measure</button><button id='snapbtn' title='Wall snap: Center'><svg viewBox='0 0 24 24'><rect x='9' y='3' width='6' height='18'/><circle cx='12' cy='12' r='2'/></svg><span id='snapl'>Snap: Center</span></button><button id='frm2' title='Show framing for all objects' style='margin-top:auto'><svg viewBox='0 0 24 24'><rect x='3' y='3' width='18' height='18'/><path d='M8 3v18M12 3v18M16 3v18M3 8h18'/></svg>Framing</button></div>
+<div id="setdlg"><div id="setwin" role="dialog" aria-label="Settings"><header><span>Settings</span><button id="setx" title="Close">✕</button></header><div id="setbody"></div></div></div>
+<div id="sidlg"><div id="siwin" role="dialog" aria-label="Sign In"><header><span id="sittl">Sign In</span><button id="six" title="Close">✕</button></header><div id="sibody"></div></div></div>
+<div id="gdlg"><div id="gwin"><b>Guest time is used up</b><p>Guest accounts get 2 hours of use per day on this device. Your time resets tomorrow. Sign in with another account to keep working.</p><button id="gout">Sign out</button></div></div>
+<div id="exdlg"><div id="exwin" role="dialog" aria-label="Export"><header><span>Export</span><button id="exx" title="Close">✕</button></header><div id="exbody"><label id="exnl">File name<input id="exname" maxlength="80" autocomplete="off" placeholder="cadieux-project"></label><button id="exbp" title="Export the architectural drawing set as a PDF">Blueprint (PDF)<small>Plans, roof plan, elevations and schedules as a printable PDF</small></button><button id="exbh" title="Export the drawing set as a web page">Blueprint (web page)<small>The same drawing set as a web page you can print or save as PDF</small></button><button id="expng2">Plan image (PNG)<small>The 2D plan as it is currently shown</small></button><button id="expng3">3D view image (PNG)<small>The 3D view as it is currently shown</small></button><button id="exproj">Project file (.json)<small>Save the whole design so it can be opened again</small></button><button id="exmat">Material List<small>Open the material list in a new window</small></button></div></div></div>
+<div id="main"><div id='rail'><button data-t='select' class='on' title='Select / move / resize (S)'><svg viewBox='0 0 24 24'><path d='M5 3l14 7-6 2-2 6z'/></svg>Select</button><button data-t='wall' title='Wall (W)'><svg viewBox='0 0 24 24'><path d='M4 19L20 5'/><circle cx='4' cy='19' r='2'/><circle cx='20' cy='5' r='2'/></svg>Wall</button><button data-t='door' title='Door (D)'><svg viewBox='0 0 24 24'><path d='M6 21V3h12v18M3 21h18'/><circle cx='15' cy='12' r='.9'/></svg>Door</button><button data-t='window' title='Window (N)'><svg viewBox='0 0 24 24'><rect x='4' y='4' width='16' height='16'/><path d='M12 4v16M4 12h16'/></svg>Window</button><button data-t='path' title='Path: driveways and walkways (P)'><svg viewBox='0 0 24 24'><path d='M5 21c0-7 7-5 7-10s-4-4-4-8M19 21c0-7-7-5-7-10'/></svg>Path</button><button data-t='stairs' title='Stairs (T)'><svg viewBox='0 0 24 24'><path d='M3 20h6v-5h6v-5h6'/></svg>Stairs</button><button data-t='roof' title='Roof (F)'><svg viewBox='0 0 24 24'><path d='M3 12l9-8 9 8M6 10v9h12v-9'/></svg>Roof</button><button data-t='dormer' title='Dormer'><svg viewBox='0 0 24 24'><path d='M3 20l9-9 9 9M8 20v-5l4-4 4 4v5M10 20v-3h4v3'/></svg>Dormer</button><button data-t='foundation' title='Foundation (G)'><svg viewBox='0 0 24 24'><path d='M3 20h18M5 20v-6h14v6M8 14V9h8v5'/></svg>Found.</button><button data-t='fsys' title='Floor System (J)'><svg viewBox='0 0 24 24'><path d='M3 6h18M3 18h18M7 6v12M12 6v12M17 6v12'/></svg>Joists</button><button data-t='deck' title='Deck (K)'><svg viewBox='0 0 24 24'><path d='M3 8h18M3 12h18M3 16h18M5 8v12M19 8v12M3 8l2-3h14l2 3'/></svg>Deck</button><button data-t='cabinet' title='Cabinet (C)'><svg viewBox='0 0 24 24'><rect x='3' y='5' width='18' height='14'/><path d='M12 5v14M9 12h.01M15 12h.01'/></svg>Cabinet</button><button data-t='measure' title='Measure (M)'><svg viewBox='0 0 24 24'><path d='M3 17l14-14 4 4L7 21z'/><path d='M7 13l2 2M10 10l2 2M13 7l2 2'/></svg>Measure</button><button id='frm2' title='Show framing for all objects' style='margin-top:auto'><svg viewBox='0 0 24 24'><rect x='3' y='3' width='18' height='18'/><path d='M8 3v18M12 3v18M16 3v18M3 8h18'/></svg>Framing</button></div>
   <div class="pane" id="p2"><canvas id="c2"></canvas><div class="tag">2D plan · wheel zoom · right-click cancels · right-drag pans</div><div id="split" title="Drag to resize the split · double-click to reset"></div></div>
   <div class="pane" id="p3"><canvas id="c3"></canvas><div class="tag">3D view · drag orbit · wheel zoom</div></div>
 <div id='side'><details id='propd' open><summary>Properties</summary><div id='props'></div></details><details id='terrd'><summary>Terrain</summary><div id='terrBody'></div></details><details id='furnd'><summary>Furniture / Appliances</summary><div id='furnList'></div></details><details><summary>Floors</summary><div id='flList'></div><div class='r fb'><button id='addf2'>+ Add</button><button id='delf2'>− Remove</button></div></details><details><summary>Objects</summary><div class='r fb'><button id='frm' title='Show framing for all objects'>▦ Framing: all</button></div><div id='obList'></div></details></div></div>
-<div id='tb'><span>View</span><button data-vw='grid' title='Plan grid'>Grid</button><button data-vw='dims' title='Wall dimensions (zoom in to see them)'>Dimensions</button><button data-vw='labels' title='Room names and areas'>Room labels</button><button data-vw='land' title='3 ft stair landing zones'>Landings</button><button data-vw='roofs' title='Show roofs and dormers'>Roofs</button><button data-vw='fram' title='Show framing for all objects'>Framing</button><button data-vw='terr' title='Terrain and trees in 3D'>Terrain</button><button data-vw='sky' title='Sky in 3D'>Sky</button><span id='bld' title='Current program build'>CADieux v1.4.0 · build 282</span></div>
+<div id='tb'><span>View</span><button data-vw='grid' title='Plan grid'>Grid</button><button data-vw='dims' title='Wall dimensions (zoom in to see them)'>Dimensions</button><button data-vw='labels' title='Room names and areas'>Room labels</button><button data-vw='land' title='3 ft stair landing zones'>Landings</button><button data-vw='roofs' title='Show roofs and dormers'>Roofs</button><button data-vw='fram' title='Show framing for all objects'>Framing</button><button data-vw='terr' title='Terrain and trees in 3D'>Terrain</button><button data-vw='sky' title='Sky in 3D'>Sky</button><button id='snapbtn' title='Wall snap: Center'><span id='snapl'>Snap: Center</span></button><span id='bld' title='Current program build'>CADieux v1.4.0 · build 309</span></div>
 <div id='st'>Select: click to select, drag to move, drag a square handle to resize. Delete removes. Q rotates stairs.</div>
 <div id='fly'></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -606,7 +815,9 @@ const status = (s) => ($('st').textContent = s);
 var VW = {grid: true, dims: true, labels: true, land: true, sky: true, roofs: true};
 try {
   Object.assign(VW, JSON.parse(localStorage.getItem('cadieux.vw') || '{}'));
-} catch (e) {}
+} catch (e) {
+  /* ignore */
+}
 const geom = (w) => {
   const [ax, ay] = w.a,
     [bx, by] = w.b,
@@ -2016,6 +2227,26 @@ function renderSide() {
     $('p_dml').onclick = () => mut(() => (D.rot = (D.rot - 90) % 360));
     $('p_dmq').onclick = () => mut(() => (D.rot = (D.rot + 90) % 360));
     return;
+  } else if (sel.t === 'ms') {
+    const m = sel.o,
+      L = Math.hypot(m.b[0] - m.a[0], m.b[1] - m.a[1]);
+    h =
+      '<h3>Measurement</h3>' +
+      row('Length (ft)', num('p_msl', Math.round(L * 1000) / 1000, 0.25)) +
+      ro('Feet / inches', fmt(L));
+    S.innerHTML = h;
+    B('p_msl', (v) =>
+      mut(() => {
+        const dx = m.b[0] - m.a[0],
+          dy = m.b[1] - m.a[1],
+          d0 = Math.hypot(dx, dy),
+          u = d0 > 1e-6 ? [dx / d0, dy / d0] : [1, 0],
+          n = Math.max(0.01, +v || 0);
+        m.b[0] = m.a[0] + u[0] * n;
+        m.b[1] = m.a[1] + u[1] * n;
+      }),
+    );
+    return;
   } else if (sel.t === 'sk') {
     const K = sel.o;
     h =
@@ -2363,7 +2594,9 @@ function tbSync() {
   document.querySelectorAll('#tb [data-vw]').forEach((b) => b.classList.toggle('on', !!on[b.dataset.vw]));
   try {
     sky.visible = !!VW.sky;
-  } catch (e) {}
+  } catch (e) {
+    /* ignore */
+  }
 }
 $('tb').onclick = (e) => {
   const b = e.target.closest('[data-vw]');
@@ -2382,13 +2615,17 @@ $('tb').onclick = (e) => {
     VW[k] = !VW[k];
     try {
       localStorage.setItem('cadieux.vw', JSON.stringify(VW));
-    } catch (e) {}
+    } catch (e) {
+      /* ignore */
+    }
     tbSync();
     if (k === 'roofs') build3();
     draw2();
     try {
       render();
-    } catch (e) {}
+    } catch (e) {
+      /* ignore */
+    }
   }
 };
 function setM(d) {
@@ -3233,7 +3470,8 @@ function randomBuild(seed) {
 const c2 = $('c2'),
   x2 = c2.getContext('2d');
 const w2s = (p) => [off.x + p[0] * sc, off.y - p[1] * sc];
-const s2w = (x, y) => [Math.round(((x - off.x) / sc) * 2) / 2, Math.round(((off.y - y) / sc) * 2) / 2];
+const s2r = (x, y) => [(x - off.x) / sc, (off.y - y) / sc],
+  s2w = (x, y) => [Math.round(((x - off.x) / sc) * 2) / 2, Math.round(((off.y - y) / sc) * 2) / 2];
 function size2() {
   const r = c2.getBoundingClientRect(),
     d = devicePixelRatio || 1;
@@ -3311,7 +3549,9 @@ function draw2() {
             poly(r.pts, pt);
           }
         }
-      } catch (e) {}
+      } catch (e) {
+        /* ignore */
+      }
     }
     const cx = r.pts.reduce((s, p) => s + p[0], 0) / r.pts.length,
       cy = r.pts.reduce((s, p) => s + p[1], 0) / r.pts.length,
@@ -3475,15 +3715,94 @@ function draw2() {
     x2.font = '11px sans-serif';
     x2.fillText(snapKind, a[0] + 11, a[1] - 9);
   }
+  if (isPoly() && roomPts.length) {
+    const P = [...roomPts, cur];
+    x2.beginPath();
+    P.forEach((p, i) => {
+      const q = w2s(p);
+      i ? x2.lineTo(q[0], q[1]) : x2.moveTo(q[0], q[1]);
+    });
+    x2.fillStyle = 'rgba(220,60,60,.12)';
+    x2.fill();
+    x2.strokeStyle = '#dc3c3c';
+    x2.lineWidth = 2;
+    x2.setLineDash([6, 4]);
+    x2.stroke();
+    x2.setLineDash([]);
+    const l = roomPts[roomPts.length - 1],
+      L = Math.hypot(cur[0] - l[0], cur[1] - l[1]);
+    if (L > 0.05) {
+      const q = w2s([(l[0] + cur[0]) / 2, (l[1] + cur[1]) / 2]),
+        t = fmt(L);
+      x2.font = '12px system-ui';
+      const tw = x2.measureText(t).width + 12;
+      x2.fillStyle = css('--panel');
+      x2.fillRect(q[0] - tw / 2, q[1] - 28, tw, 20);
+      x2.strokeRect(q[0] - tw / 2, q[1] - 28, tw, 20);
+      x2.fillStyle = css('--ink');
+      x2.textAlign = 'center';
+      x2.fillText(t, q[0], q[1] - 14);
+    }
+    status('Outline ' + fmt(L) + ' · click the first point, Enter or double-click to finish · Esc cancels');
+    return;
+  }
+  if ((tool === 'wall' && start) || (tool === 'room' && roomPts.length === 1)) {
+    if (dmode() === 'box') {
+      const o = tool === 'wall' ? start : roomPts[0],
+        Q = boxPts(o, cur);
+      x2.beginPath();
+      Q.forEach((p, i) => {
+        const q = w2s(p);
+        i ? x2.lineTo(q[0], q[1]) : x2.moveTo(q[0], q[1]);
+      });
+      x2.closePath();
+      x2.strokeStyle = '#dc3c3c';
+      x2.lineWidth = 2;
+      x2.setLineDash([6, 4]);
+      x2.stroke();
+      x2.setLineDash([]);
+      const tag = (t, p) => {
+        const q = w2s(p);
+        x2.font = '12px system-ui';
+        const tw = x2.measureText(t).width + 12;
+        x2.fillStyle = css('--panel');
+        x2.strokeStyle = '#dc3c3c';
+        x2.lineWidth = 1;
+        x2.fillRect(q[0] - tw / 2, q[1] - 10, tw, 20);
+        x2.strokeRect(q[0] - tw / 2, q[1] - 10, tw, 20);
+        x2.fillStyle = css('--ink');
+        x2.textAlign = 'center';
+        x2.fillText(t, q[0], q[1] + 4);
+      };
+      const W = Math.abs(cur[0] - o[0]),
+        H = Math.abs(cur[1] - o[1]);
+      if (W > 0.05) tag(fmt(W), [(o[0] + cur[0]) / 2, o[1]]);
+      if (H > 0.05) tag(fmt(H), [cur[0], (o[1] + cur[1]) / 2]);
+      status('Box ' + fmt(W) + ' × ' + fmt(H) + ' · click the opposite corner · Esc cancels');
+      return;
+    }
+  }
   if (tool === 'wall' && start) {
     const sa = connPt(cur);
     line(sa, cur, '#dc3c3c', 2, [6, 4]);
-    const ag = drawAngle(sa);
+    const ag = drawAngle(sa),
+      WL = Math.hypot(cur[0] - sa[0], cur[1] - sa[1]);
+    if (WL > 0.05) {
+      const q = w2s([(sa[0] + cur[0]) / 2, (sa[1] + cur[1]) / 2]),
+        t = fmt(WL);
+      x2.font = '12px system-ui';
+      const tw = x2.measureText(t).width + 12;
+      x2.fillStyle = css('--panel');
+      x2.strokeStyle = '#dc3c3c';
+      x2.lineWidth = 1;
+      x2.fillRect(q[0] - tw / 2, q[1] - 28, tw, 20);
+      x2.strokeRect(q[0] - tw / 2, q[1] - 28, tw, 20);
+      x2.fillStyle = css('--ink');
+      x2.textAlign = 'center';
+      x2.fillText(t, q[0], q[1] - 14);
+    }
     status(
-      'Length ' +
-        Math.hypot(cur[0] - sa[0], cur[1] - sa[1]).toFixed(1) +
-        ' ft' +
-        (ag != null ? '  ·  inside angle ' + ag + '°' : ''),
+      'Length ' + fmt(WL) + ' (' + WL.toFixed(2) + ' ft)' + (ag != null ? '  ·  angle ' + ag + '°' : ''),
     );
   }
   if (tool === 'path' && roomPts.length) {
@@ -4178,8 +4497,9 @@ function handle(p) {
   x2.fillStyle = '#fff';
   x2.strokeStyle = '#2f6fdb';
   x2.lineWidth = 2;
-  x2.fillRect(q[0] - 4, q[1] - 4, 8, 8);
-  x2.strokeRect(q[0] - 4, q[1] - 4, 8, 8);
+  const hs = ptrTouch ? 7 : 4;
+  x2.fillRect(q[0] - hs, q[1] - hs, hs * 2, hs * 2);
+  x2.strokeRect(q[0] - hs, q[1] - hs, hs * 2, hs * 2);
 }
 function drawSel() {
   if (!sel || tool !== 'select') return;
@@ -4195,10 +4515,11 @@ function drawSel() {
     sel.o.pts.forEach((p, i) => i && line(sel.o.pts[i - 1], p, A, 2, [6, 4]));
     sel.o.pts.forEach(handle);
   } else if (sel.t === 'stair') stairPolys(sel.o).forEach((Q) => poly(Q, null, A));
-  else if (sel.t === 'rl' || sel.t === 'cb') {
+  else if (sel.t === 'rl' || sel.t === 'cb' || sel.t === 'ms') {
     handle(sel.o.a);
     handle(sel.o.b);
   } else if (sel.t === 'fs' || sel.t === 'dk') {
+    /* no outline drawn */
   } else if (sel.t === 'fnd' && sel.o.type === 'sono') {
     circ([(sel.o.x0 + sel.o.x1) / 2, (sel.o.y0 + sel.o.y1) / 2], sel.o.pad / 24, null, A, 3, [8, 5]);
   } else if (sel.t === 'fnd') {
@@ -4225,6 +4546,7 @@ function drawSel() {
       Q.forEach((p, i) => line(p, Q[(i + 1) % 4], A, 3, [8, 5]));
     }
   } else if (sel.t === 'terr' || sel.t === 'dm' || sel.t === 'fu' || sel.t === 'sk') {
+    /* no outline drawn */
   } else {
     const g = geom(sel.w),
       m = sel.o.t * g.L,
@@ -4270,7 +4592,7 @@ function begin(k, refs, extra) {
 }
 function pick(x, y) {
   const raw = [(x - off.x) / sc, (off.y - y) / sc],
-    tol = 9 / sc,
+    tol = (ptrTouch ? 22 : 9) / sc,
     near = (p) => Math.hypot(p[0] - raw[0], p[1] - raw[1]) < tol;
   if (sel && sel.t === 'wall')
     for (const k of ['a', 'b']) if (near(sel.o[k])) return begin('pts', refsAt(sel.o[k]));
@@ -4278,11 +4600,11 @@ function pick(x, y) {
   if (sel && sel.t === 'path') for (const p of sel.o.pts) if (near(p)) return begin('pts', [p]);
   for (const m of MS()) {
     if (near(m.a)) {
-      sel = null;
+      sel = {t: 'ms', o: m};
       return begin('pts', [m.a], {mend: 1});
     }
     if (near(m.b)) {
-      sel = null;
+      sel = {t: 'ms', o: m};
       return begin('pts', [m.b], {mend: 1});
     }
   }
@@ -4294,7 +4616,7 @@ function pick(x, y) {
         Math.min(1, ((raw[0] - m.a[0]) * dx + (raw[1] - m.a[1]) * dy) / (dx * dx + dy * dy || 1)),
       );
     if (Math.hypot(raw[0] - m.a[0] - dx * t, raw[1] - m.a[1] - dy * t) < tol * 0.6) {
-      sel = null;
+      sel = {t: 'ms', o: m};
       return begin('pts', [m.a, m.b]);
     }
   }
@@ -4327,7 +4649,7 @@ function pick(x, y) {
     }
   }
   for (const w of M.walls)
-    if (!w.hid && hit(raw, w)[0] < Math.max(0.4, w.t)) {
+    if (!w.hid && hit(raw, w)[0] < Math.max(0.4, w.t, ptrTouch ? 16 / sc : 0)) {
       sel = {t: 'wall', o: w};
       return begin('pts', new Set([...refsAt(w.a), ...refsAt(w.b)]));
     }
@@ -4488,6 +4810,9 @@ function delSel() {
     } else if (s.t === 'fs') {
       const A = M.floors[M.cf].fsys;
       A.splice(A.indexOf(s.o), 1);
+    } else if (s.t === 'ms') {
+      const A = MS();
+      A.splice(A.indexOf(s.o), 1);
     } else s.w.open.splice(s.w.open.indexOf(s.o), 1);
   });
 }
@@ -4610,7 +4935,9 @@ function drawPath2(o, faint) {
         pt.setTransform(new DOMMatrix([k, 0, 0, -k, off.x, off.y]));
         fillS = pt;
       }
-    } catch (e) {}
+    } catch (e) {
+      /* ignore */
+    }
   }
   x2.strokeStyle = fillS;
   x2.lineWidth = o.w * sc;
@@ -4734,6 +5061,90 @@ function paths3() {
     m.userData.sel = {t: 'path', o, fi: 0};
     grp.add(m);
   });
+}
+const isPoly = () =>
+  dmode() === 'line' &&
+  (tool === 'roof' ||
+    tool === 'fsys' ||
+    (tool === 'foundation' && fdnType !== 'sono') ||
+    (tool === 'deck' && deckType !== 'railing'));
+function polyLock(c) {
+  if (!roomPts.length) return c;
+  const f = w2s(roomPts[0]),
+    q = w2s(c);
+  if (roomPts.length >= 3 && Math.hypot(f[0] - q[0], f[1] - q[1]) < 10) return [...roomPts[0]];
+  const l = roomPts[roomPts.length - 1];
+  return Math.abs(c[0] - l[0]) >= Math.abs(c[1] - l[1]) ? [c[0], l[1]] : [l[0], c[1]];
+}
+/* split a traced outline into rectangles (cells of the vertex grid whose centre lies inside) */
+function polyRects(P) {
+  const xs = [...new Set(P.map((p) => p[0]))].sort((a, b) => a - b),
+    ys = [...new Set(P.map((p) => p[1]))].sort((a, b) => a - b),
+    rows = [];
+  for (let j = 0; j + 1 < ys.length; j++) {
+    const runs = [];
+    let st = null;
+    for (let i = 0; i + 1 < xs.length; i++) {
+      const on = inside([(xs[i] + xs[i + 1]) / 2, (ys[j] + ys[j + 1]) / 2], P);
+      if (on && st === null) st = xs[i];
+      if ((!on || i + 2 === xs.length) && st !== null) {
+        runs.push([st, on ? xs[i + 1] : xs[i]]);
+        st = null;
+      }
+    }
+    rows.push(runs);
+  }
+  const out = [],
+    open = [];
+  rows.forEach((runs, j) => {
+    const next = [];
+    runs.forEach((r) => {
+      const o = open.find((q) => q.x0 === r[0] && q.x1 === r[1] && q.y1 === ys[j]);
+      if (o) {
+        o.y1 = ys[j + 1];
+        next.push(o);
+      } else {
+        const q = {x0: r[0], x1: r[1], y0: ys[j], y1: ys[j + 1]};
+        out.push(q);
+        next.push(q);
+      }
+    });
+    open.length = 0;
+    open.push(...next);
+  });
+  return out;
+}
+function finishPoly() {
+  const P = roomPts.filter((p, i, a) => !i || p[0] !== a[i - 1][0] || p[1] !== a[i - 1][1]);
+  roomPts = [];
+  let R = P.length >= 3 ? polyRects(P) : [];
+  if (tool === 'foundation' && fdnType === 'basement')
+    R = R.sort((a, b) => (b.x1 - b.x0) * (b.y1 - b.y0) - (a.x1 - a.x0) * (a.y1 - a.y0)).slice(0, 1);
+  const fin = {roof: finishRoof, foundation: finishFnd, fsys: finishFS, deck: finishDeck}[tool],
+    sv = {roof: 'rstart', foundation: 'fstart', fsys: 'jstart', deck: 'dstart'}[tool];
+  if (!R.length || !fin) {
+    draw2();
+    return;
+  }
+  const keep = cur;
+  R.forEach((r) => {
+    cur = [r.x1, r.y1];
+    if (sv === 'rstart') rstart = [r.x0, r.y0];
+    else if (sv === 'fstart') fstart = [r.x0, r.y0];
+    else if (sv === 'jstart') jstart = [r.x0, r.y0];
+    else dstart = [r.x0, r.y0];
+    fin();
+  });
+  cur = keep;
+  draw2();
+}
+function boxPts(a, b) {
+  return [
+    [a[0], a[1]],
+    [b[0], a[1]],
+    [b[0], b[1]],
+    [a[0], b[1]],
+  ];
 }
 function finishRoom() {
   const P = roomPts.filter((p, i, a) => !i || p[0] !== a[i - 1][0] || p[1] !== a[i - 1][1]);
@@ -5067,17 +5478,36 @@ document.addEventListener(
   true,
 );
 function drawAngle(sa) {
-  const w = prevW;
-  if (!w || !M.walls.includes(w) || Math.hypot(w.b[0] - start[0], w.b[1] - start[1]) > 1e-6) return null;
-  const g = geom(w),
-    vx = cur[0] - sa[0],
+  /* reference direction at the start point: the wall being chained from, a wall it touches, else horizontal */
+  const near = (q, k) => Math.hypot(q[k][0] - start[0], q[k][1] - start[1]) < q.t / 2 + 0.3;
+  let u = null;
+  if (prevW && M.walls.includes(prevW) && near(prevW, 'b')) {
+    const g = geom(prevW);
+    u = [-g.d[0], -g.d[1]];
+  }
+  if (!u)
+    for (const q of M.walls) {
+      if (q.hid) continue;
+      const g = geom(q);
+      if (near(q, 'b')) u = [-g.d[0], -g.d[1]];
+      else if (near(q, 'a')) u = [g.d[0], g.d[1]];
+      else {
+        const px = start[0] - g.ax,
+          py = start[1] - g.ay,
+          s0 = px * g.d[0] + py * g.d[1];
+        if (s0 > 0 && s0 < g.L && Math.abs(px * g.n[0] + py * g.n[1]) < q.t / 2 + 0.15) u = [g.d[0], g.d[1]];
+      }
+      if (u) break;
+    }
+  if (!u) u = [1, 0];
+  const vx = cur[0] - sa[0],
     vy = cur[1] - sa[1],
     vl = Math.hypot(vx, vy);
   if (vl < 0.05) return null;
-  const ux = -g.d[0],
-    uy = -g.d[1],
+  const ux = u[0],
+    uy = u[1],
     deg = (Math.acos(Math.max(-1, Math.min(1, (ux * vx + uy * vy) / vl))) * 180) / Math.PI,
-    J = w2s(w.b),
+    J = w2s(start),
     a1 = Math.atan2(-uy, ux),
     a2 = Math.atan2(-vy, vx);
   let df = a2 - a1;
@@ -5306,7 +5736,54 @@ function snapV(x, y) {
   }
   return c;
 }
-var selMode = 'select',
+/* Shift held: lengths from the start point move in 1 inch steps (walls also lock to an axis) */
+function shiftSnap(c, e, x, y) {
+  if (!e.shiftKey) return c;
+  let o = null;
+  if (tool === 'wall') o = start;
+  else if (tool === 'measure') o = mA;
+  else if (isPoly() && roomPts.length) o = roomPts[roomPts.length - 1];
+  else if (tool === 'select' && drag && drag.mend) {
+    const q = drag.refs[0],
+      m = MS().find((m) => m.a === q || m.b === q);
+    if (m) o = m.a === q ? m.b : m.a;
+  } else if (tool === 'select' && drag && drag.k === 'pts' && sel && sel.t === 'wall') {
+    const ia = drag.refs.includes(sel.o.a),
+      ib = drag.refs.includes(sel.o.b);
+    if (ia !== ib) o = ia ? sel.o.b : sel.o.a;
+  }
+  if (!o) {
+    /* no start point yet: Shift just ignores every snap */
+    if (tool === 'select' && !(drag && drag.mend)) return c;
+    snapPt = null;
+    snapGuide = null;
+    snapKind = '';
+    return s2r(x, y);
+  }
+  const r = s2r(x, y);
+  let dx = r[0] - o[0],
+    dy = r[1] - o[1];
+  if (tool === 'wall' && dmode() === 'box') {
+    snapPt = null;
+    snapGuide = null;
+    snapKind = '';
+    return [o[0] + Math.round(dx * 12) / 12, o[1] + Math.round(dy * 12) / 12];
+  }
+  if (tool === 'wall' || isPoly()) {
+    if (Math.abs(dx) > Math.abs(dy)) dy = 0;
+    else dx = 0;
+  }
+  const L = Math.hypot(dx, dy);
+  if (L < 1e-6) return c;
+  const k = Math.round(L * 12) / 12 / L;
+  snapPt = null;
+  snapGuide = null;
+  snapKind = '';
+  return [o[0] + dx * k, o[1] + dy * k];
+}
+var lastPtr = null,
+  nudged = false,
+  selMode = 'select',
   rotd = null,
   railClick = false,
   msel = [],
@@ -7187,11 +7664,15 @@ $('furnList').onclick = (e) => {
 };
 try {
   if (localStorage.getItem('cadieux.propd') === '0') $('propd').open = false;
-} catch (e) {}
+} catch (e) {
+  /* ignore */
+}
 $('propd').ontoggle = () => {
   try {
     localStorage.setItem('cadieux.propd', $('propd').open ? '1' : '0');
-  } catch (e) {}
+  } catch (e) {
+    /* ignore */
+  }
 };
 $('terrd').ontoggle = () => {
   window.terrOpen = $('terrd').open;
@@ -7649,9 +8130,14 @@ c2.addEventListener('contextmenu', (e) => e.preventDefault());
 /* the middle mouse button does nothing (no pan, no autoscroll, no click) */
 c2.addEventListener('auxclick', (e) => e.button === 1 && e.preventDefault());
 c2.addEventListener('mousedown', (e) => e.button === 1 && e.preventDefault());
-c2.addEventListener('pointerdown', (e) => {
+var ptrTouch = false;
+const c2Down = (e) => {
   if (e.button === 1) return;
-  c2.setPointerCapture(e.pointerId);
+  try {
+    c2.setPointerCapture(e.pointerId);
+  } catch (x) {
+    /* ignore */
+  }
   const r = c2.getBoundingClientRect(),
     x = e.clientX - r.left,
     y = e.clientY - r.top;
@@ -7664,8 +8150,35 @@ c2.addEventListener('pointerdown', (e) => {
     status('This floor is hidden. Show it in the Floors tab to edit it.');
     return;
   }
-  cur = snapV(x, y);
-  if (tool === 'wall') {
+  if (!(nudged && tool === 'wall' && start)) cur = shiftSnap(snapV(x, y), e, x, y);
+  if (isPoly() && roomPts.length) cur = polyLock(cur);
+  nudged = false;
+  if (tool === 'wall' && dmode() === 'box') {
+    if (!start) start = [...cur];
+    else if (Math.abs(cur[0] - start[0]) > 0.1 && Math.abs(cur[1] - start[1]) > 0.1) {
+      const Q = boxPts(start, cur),
+        ws = Q.map((q, i) => ({
+          a: [...q],
+          b: [...Q[(i + 1) % 4]],
+          t: WALLT[wallSize],
+          sz: wallSize,
+          h: WH,
+          open: [],
+        }));
+      mut(() => ws.forEach((w) => M.walls.push(w)));
+      prevW = ws[3];
+      start = null;
+    }
+  } else if (tool === 'room' && dmode() === 'box' && roomPts.length === 1) {
+    if (Math.abs(cur[0] - roomPts[0][0]) > 0.1 && Math.abs(cur[1] - roomPts[0][1]) > 0.1) {
+      roomPts = boxPts(roomPts[0], cur);
+      finishRoom();
+    }
+  } else if (isPoly()) {
+    const f = roomPts[0];
+    if (roomPts.length >= 3 && cur[0] === f[0] && cur[1] === f[1]) finishPoly();
+    else roomPts.push([...cur]);
+  } else if (tool === 'wall') {
     if (start && Math.hypot(cur[0] - start[0], cur[1] - start[1]) > 0.1) {
       const a = connPt(cur),
         b = cur,
@@ -7772,7 +8285,8 @@ c2.addEventListener('pointerdown', (e) => {
       M.stairs.push(ns);
     });
   draw2();
-});
+};
+c2.addEventListener('pointerdown', c2Down);
 c2.addEventListener('pointermove', (e) => {
   const r = c2.getBoundingClientRect(),
     x = e.clientX - r.left,
@@ -7785,12 +8299,10 @@ c2.addEventListener('pointermove', (e) => {
       pan = [x, y];
     }
   }
-  let c = snapV(x, y);
-  if (tool === 'wall' && start && e.shiftKey && !snapPt) {
-    if (Math.abs(c[0] - start[0]) > Math.abs(c[1] - start[1])) c[1] = start[1];
-    else c[0] = start[0];
-  }
-  cur = c;
+  lastPtr = [x, y];
+  nudged = false;
+  cur = shiftSnap(snapV(x, y), e, x, y);
+  if (isPoly() && roomPts.length) cur = polyLock(cur);
   if (mq) mq.b = [(x - off.x) / sc, (off.y - y) / sc];
   if (rotd) doRot(e, x, y);
   if (drag) {
@@ -7798,6 +8310,13 @@ c2.addEventListener('pointermove', (e) => {
     build3();
     renderSide();
   }
+  draw2();
+});
+c2.addEventListener('pointercancel', () => {
+  if (drag || rotd) cancelAct0();
+  mq = null;
+  pan = null;
+  rc = null;
   draw2();
 });
 c2.addEventListener('pointerup', (e) => {
@@ -7836,15 +8355,55 @@ const touchXY = (e) => {
   const r = c2.getBoundingClientRect();
   return [e.clientX - r.left, e.clientY - r.top];
 };
+/* A finger-down is held back briefly (or until the finger lifts, for point-placing tools) so that a second
+   finger arriving for a pinch does not leave a stray wall point, door or drag behind. */
+const TOUCH_TAP_TOOLS = [
+  'wall',
+  'room',
+  'path',
+  'door',
+  'window',
+  'stairs',
+  'measure',
+  'cabinet',
+  'dormer',
+  'furn',
+];
+let pend = null;
+const pend0 = (q, up) =>
+  TOUCH_TAP_TOOLS.includes(tool)
+    ? {
+        button: 0,
+        pointerId: q.pointerId,
+        pointerType: 'touch',
+        clientX: up.clientX,
+        clientY: up.clientY,
+        shiftKey: false,
+      }
+    : q;
+const pendFlush = () => {
+  if (!pend) return;
+  const q = pend.e;
+  clearTimeout(pend.t);
+  pend = null;
+  c2Down(q);
+};
 c2.addEventListener(
   'pointerdown',
   (e) => {
-    if (e.pointerType !== 'touch') return;
+    ptrTouch = e.pointerType === 'touch';
+    if (!ptrTouch) return;
     touchPts.set(e.pointerId, touchXY(e));
     if (touchPts.size >= 2) {
+      if (pend) clearTimeout(pend.t);
+      pend = null;
       touchGesture = touchMid();
       touchSwallow = true;
       e.stopImmediatePropagation();
+    } else if (!touchSwallow) {
+      e.stopImmediatePropagation();
+      const tap = TOUCH_TAP_TOOLS.includes(tool);
+      pend = {e, tap, t: tap ? 0 : setTimeout(pendFlush, 90)};
     }
   },
   true,
@@ -7854,7 +8413,10 @@ c2.addEventListener(
   (e) => {
     if (e.pointerType !== 'touch' || !touchPts.has(e.pointerId)) return;
     touchPts.set(e.pointerId, touchXY(e));
-    if (touchPts.size < 2 && !touchSwallow) return;
+    if (touchPts.size < 2 && !touchSwallow) {
+      if (pend && !pend.tap) pendFlush();
+      return;
+    }
     e.stopImmediatePropagation();
     if (touchPts.size < 2 || !touchGesture) return;
     const m = touchMid(),
@@ -7863,7 +8425,10 @@ c2.addEventListener(
     off.y += m.y - touchGesture.y;
     off.x = m.x - (m.x - off.x) * f;
     off.y = m.y - (m.y - off.y) * f;
-    sc = Math.max(3, Math.min(200, sc * f));
+    const ns = Math.max(3, Math.min(200, sc * f));
+    off.x = m.x - (m.x - off.x) * (ns / sc / f);
+    off.y = m.y - (m.y - off.y) * (ns / sc / f);
+    sc = ns;
     touchGesture = m;
     draw2();
   },
@@ -7874,6 +8439,18 @@ c2.addEventListener(
     ev,
     (e) => {
       if (e.pointerType !== 'touch') return;
+      if (pend && pend.e.pointerId === e.pointerId) {
+        if (ev === 'pointerup') {
+          /* a tap: point-placing tools use where the finger lifted, so it can be nudged while held down */
+          clearTimeout(pend.t);
+          const q = pend.e;
+          pend = null;
+          c2Down(pend0(q, e));
+        } else {
+          clearTimeout(pend.t);
+          pend = null;
+        }
+      }
       touchPts.delete(e.pointerId);
       if (touchPts.size < 2) touchGesture = null;
       if (touchSwallow) {
@@ -7895,6 +8472,7 @@ if (window.matchMedia && matchMedia('(pointer: coarse)').matches) {
 }
 c2.addEventListener('dblclick', () => {
   if (tool === 'room') finishRoom();
+  else if (isPoly()) finishPoly();
   if (tool === 'path') finishPath();
   if (tool === 'wall') {
     start = null;
@@ -11854,7 +12432,7 @@ c3.addEventListener('pointerup', (e) => {
   c3d = null;
   pan3 = false;
   if (wp) return;
-  if (!d || Math.hypot(e.clientX - d[0], e.clientY - d[1]) > 4) return;
+  if (!d || Math.hypot(e.clientX - d[0], e.clientY - d[1]) > (e.pointerType === 'touch' ? 12 : 4)) return;
   const r = c3.getBoundingClientRect(),
     rc = new THREE.Raycaster();
   rc.setFromCamera(
@@ -11891,6 +12469,90 @@ c3.addEventListener('pointerup', (e) => {
     changed();
   }
 });
+
+/* touch screens: one finger orbits, two fingers pinch-zoom and pan, a short tap selects */
+const t3 = new Map();
+let g3 = null,
+  sw3 = false;
+const t3xy = (e) => {
+    const r = c3.getBoundingClientRect();
+    return [e.clientX - r.left, e.clientY - r.top];
+  },
+  t3m = () => {
+    const P = [...t3.values()];
+    return {
+      x: (P[0][0] + P[1][0]) / 2,
+      y: (P[0][1] + P[1][1]) / 2,
+      d: Math.hypot(P[0][0] - P[1][0], P[0][1] - P[1][1]) || 1,
+    };
+  };
+c3.addEventListener(
+  'pointerdown',
+  (e) => {
+    if (e.pointerType !== 'touch') return;
+    t3.set(e.pointerId, t3xy(e));
+    if (t3.size < 2 && !sw3) return;
+    if (t3.size >= 2) g3 = t3m();
+    if (!sw3) {
+      sw3 = true;
+      if (hd) {
+        const m = hd.moved;
+        hd = null;
+        if (m) changed();
+      }
+      orb = null;
+      c3d = null;
+      pan3 = false;
+    }
+    try {
+      c3.setPointerCapture(e.pointerId);
+    } catch (x) {
+      /* ignore */
+    }
+    e.stopImmediatePropagation();
+  },
+  true,
+);
+c3.addEventListener(
+  'pointermove',
+  (e) => {
+    if (e.pointerType !== 'touch' || !t3.has(e.pointerId)) return;
+    t3.set(e.pointerId, t3xy(e));
+    if (!sw3) return;
+    e.stopImmediatePropagation();
+    if (t3.size < 2 || !g3) return;
+    const m = t3m(),
+      k = (2 * cs.dist * Math.tan((cam.fov * Math.PI) / 360)) / c3.clientHeight,
+      dx = (m.x - g3.x) * k,
+      dy = (m.y - g3.y) * k,
+      sy = Math.sin(cs.yaw),
+      cy = Math.cos(cs.yaw),
+      sp = Math.sin(cs.pit),
+      cp = Math.cos(cs.pit);
+    cs.tx += sy * dx - sp * cy * dy;
+    cs.ty += -cy * dx - sp * sy * dy;
+    cs.tz += cp * dy;
+    cs.dist = Math.max(5, Math.min(500, (cs.dist * g3.d) / m.d));
+    g3 = m;
+    render();
+  },
+  true,
+);
+['pointerup', 'pointercancel'].forEach((ev) =>
+  c3.addEventListener(
+    ev,
+    (e) => {
+      if (e.pointerType !== 'touch') return;
+      t3.delete(e.pointerId);
+      if (t3.size < 2) g3 = null;
+      if (sw3) {
+        e.stopImmediatePropagation();
+        if (!t3.size) sw3 = false;
+      }
+    },
+    true,
+  ),
+);
 c3.addEventListener(
   'wheel',
   (e) => {
@@ -12019,16 +12681,18 @@ $('delf2').onclick = () => {
     });
 };
 
-$('vm').onclick = (e) => {
-  const b = e.target.closest('button[data-v]');
-  if (!b) return;
-  const m = $('main'),
-    v = b.dataset.v;
-  m.classList.remove('v2d', 'v3d');
-  if (v !== 'both') m.classList.add('v' + v);
-  $('vm')
-    .querySelectorAll('button')
-    .forEach((x) => x.classList.toggle('on', x === b));
+var VIEWS = [
+    ['both', 'Split'],
+    ['2d', '2D'],
+    ['3d', '3D'],
+  ],
+  viewIx = 0;
+$('vm').onclick = () => {
+  viewIx = (viewIx + 1) % VIEWS.length;
+  const v = VIEWS[viewIx];
+  $('main').classList.remove('v2d', 'v3d');
+  if (v[0] !== 'both') $('main').classList.add('v' + v[0]);
+  $('vm').textContent = 'View: ' + v[1];
   size2();
   size3();
 };
@@ -12057,17 +12721,14 @@ $('snapbtn').onclick = () => {
       }[snapMode],
   );
 };
-const doRnd = (useTyped) => {
-  const i = $('seedin'),
-    v = useTyped ? i.value.trim() : '';
-  i.value = '';
+const doRnd = () => {
+  const v = '';
   let sd =
     v === ''
       ? Math.floor(Math.random() * 1e9)
       : /^-?\d+$/.test(v)
         ? Math.abs(parseInt(v, 10))
         : [...v].reduce((h, c) => (Math.imul(h, 31) + c.charCodeAt(0)) >>> 0, 7);
-  i.value = String(sd);
   let r;
   mut(() => {
     meas = [];
@@ -12108,14 +12769,317 @@ const doRnd = (useTyped) => {
       r.W +
       ' x ' +
       r.D +
-      ' ft. Click again for a new one, or type a seed and press Enter to rebuild that design.',
+      ' ft. Click again for a new one.',
   );
 };
-$('rnd').onclick = () => doRnd(false);
-$('seedin').onkeydown = (e) => {
-  e.stopPropagation();
-  if (e.key === 'Enter') doRnd(true);
+$('rnd').onclick = () => doRnd();
+
+/* ---------- Settings window ---------- */
+const SET_VIEW = [
+    ['grid', 'Grid'],
+    ['dims', 'Dimensions'],
+    ['labels', 'Room labels'],
+    ['land', 'Stair landings'],
+    ['roofs', 'Roofs & dormers'],
+    ['fram', 'Framing'],
+    ['terr', 'Terrain & trees'],
+    ['sky', 'Sky'],
+  ],
+  SET_DM = [
+    ['wall', 'Walls'],
+    ['room', 'Rooms'],
+    ['roof', 'Roofs'],
+    ['foundation', 'Foundations'],
+    ['fsys', 'Joists'],
+    ['deck', 'Deck platforms'],
+  ],
+  SNAPN = {center: 'Centerlines & midpoints', corner: 'Wall corners', edge: 'Wall edges', off: 'Off'};
+function saveSettings() {
+  try {
+    localStorage.setItem(
+      'cadieux_settings',
+      JSON.stringify({
+        theme: document.documentElement.dataset.theme || 'system',
+        snap: snapMode,
+        dm: drawModes,
+        wsz: wallSize,
+      }),
+    );
+  } catch (e) {
+    /* ignore */
+  }
+}
+function applyTheme(t) {
+  if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+  else delete document.documentElement.dataset.theme;
+  try {
+    draw2();
+  } catch (e) {
+    /* ignore */
+  }
+}
+function setSnap(v) {
+  const order = ['center', 'corner', 'edge', 'off'];
+  for (let n = (order.indexOf(v) - order.indexOf(snapMode) + 4) % 4; n > 0; n--) $('snapbtn').click();
+}
+function renderSettings() {
+  const on = {...VW, fram: !!M.framing, terr: !(M.terr && M.terr.on === false)},
+    opt = (v, t, c) => '<option value=' + v + (c === v ? ' selected' : '') + '>' + t + '</option>',
+    th = document.documentElement.dataset.theme || 'system';
+  $('setbody').innerHTML =
+    '<h4>Appearance</h4><label class=sr>Theme<select id=s_theme>' +
+    opt('system', 'Follow system', th) +
+    opt('light', 'Light', th) +
+    opt('dark', 'Dark', th) +
+    '</select></label>' +
+    '<h4>Snapping</h4><label class=sr>Wall snap<select id=s_snap>' +
+    Object.keys(SNAPN)
+      .map((k) => opt(k, SNAPN[k], snapMode))
+      .join('') +
+    '</select></label>' +
+    '<h4>Drawing</h4><label class=sr>New wall size<select id=s_wsz>' +
+    Object.keys(WALLT)
+      .map((k) => opt(k, k, wallSize))
+      .join('') +
+    '</select></label>' +
+    SET_DM.map(
+      (d) =>
+        '<label class=sr>' +
+        d[1] +
+        ' drawn as<select data-sdm=' +
+        d[0] +
+        '>' +
+        opt('line', 'Line drawing', dmode(d[0])) +
+        opt('box', 'Box drawing', dmode(d[0])) +
+        '</select></label>',
+    ).join('') +
+    '<h4>Show in the plan and 3D view</h4><div class=sg>' +
+    SET_VIEW.map(
+      (v) =>
+        '<label class=sr>' +
+        v[1] +
+        '<input type=checkbox data-sv=' +
+        v[0] +
+        (on[v[0]] ? ' checked' : '') +
+        '></label>',
+    ).join('') +
+    '</div>';
+}
+$('setbody').addEventListener('change', (e) => {
+  const t = e.target;
+  if (t.id === 's_theme') applyTheme(t.value);
+  else if (t.id === 's_snap') setSnap(t.value);
+  else if (t.id === 's_wsz') wallSize = t.value;
+  else if (t.dataset.sdm) {
+    drawModes[t.dataset.sdm] = t.value;
+    cancelAct0();
+  } else if (t.dataset.sv) document.querySelector('#tb [data-vw=' + t.dataset.sv + ']').click();
+  saveSettings();
+  renderSettings();
+});
+$('setbtn').onclick = () => {
+  renderSettings();
+  $('setdlg').classList.add('open');
 };
+
+/* ---------- Sign in (accounts are stored only in this browser) ---------- */
+const lsGet = (k) => {
+    try {
+      return localStorage.getItem(k);
+    } catch (e) {
+      return null;
+    }
+  },
+  lsSet = (k, v) => {
+    try {
+      localStorage.setItem(k, v);
+    } catch (e) {
+      /* ignore */
+    }
+  };
+let curUser = lsGet('cadieux_session') || '';
+/* built-in accounts: only salted password hashes are stored here */
+const SI_USERS = {
+  guest: {
+    n: 'Guest',
+    salt: '0c382286a535dfbf',
+    h: ['0ac5ad76205b2367e6c864a3299557c5abf02a8f7637a3769cf2c44247848930', 'xaef49e57'],
+  },
+  admin: {
+    n: 'Admin',
+    salt: 'ee91899f94836090',
+    h: [
+      '7b3630ba3d0f29cec7e39eeb6c524c76b3d1f6d8a99f453e7b287e010f73311c',
+      'x11c89994',
+      '232a6a70040c6ffc55cede3e1b4e6f2522e66addad7394504489ae3fa0e51252',
+      'x75a49b14',
+    ],
+  },
+};
+async function hashPw(pw, salt) {
+  const enc = new TextEncoder().encode(pw);
+  if (window.crypto && crypto.subtle) {
+    const key = await crypto.subtle.importKey('raw', enc, 'PBKDF2', false, ['deriveBits']),
+      bits = await crypto.subtle.deriveBits(
+        {name: 'PBKDF2', hash: 'SHA-256', salt: new TextEncoder().encode(salt), iterations: 100000},
+        key,
+        256,
+      );
+    return [...new Uint8Array(bits)].map((b) => b.toString(16).padStart(2, '0')).join('');
+  }
+  let h = 5381;
+  for (const c of salt + pw) h = (Math.imul(h, 33) ^ c.charCodeAt(0)) >>> 0;
+  return 'x' + h.toString(16);
+}
+
+/* ---------- Guest daily time limit (website build only) ---------- */
+var SITE_BUILD = true;
+const GUEST_LIMIT = 7200,
+  dayKey = () => {
+    const d = new Date();
+    return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate();
+  };
+function guestUsed() {
+  const day = dayKey();
+  let a = 0,
+    b = 0;
+  try {
+    const o = JSON.parse(lsGet('cadieux_guest_use') || 'null');
+    if (o && o.day === day) a = +o.sec || 0;
+  } catch (e) {
+    /* ignore */
+  }
+  try {
+    const m = document.cookie.match(/(?:^|; )cad_g=(\d+)\|([^;]+)/);
+    if (m && m[2] === day) b = +m[1];
+  } catch (e) {
+    /* ignore */
+  }
+  return Math.max(a, b);
+}
+function guestSave(sec) {
+  const day = dayKey();
+  lsSet('cadieux_guest_use', JSON.stringify({day, sec}));
+  try {
+    document.cookie = 'cad_g=' + sec + '|' + day + '; max-age=172800; path=/; SameSite=Lax';
+  } catch (e) {
+    /* ignore */
+  }
+}
+const guestLeft = () => Math.max(0, GUEST_LIMIT - guestUsed()),
+  hm = (sec) => Math.floor(sec / 3600) + ':' + String(Math.floor((sec % 3600) / 60)).padStart(2, '0');
+/* website build: the program stays behind the Sign In window until someone has signed in */
+function guestCheck() {
+  const gate = SITE_BUILD && !curUser;
+  $('sidlg').classList.toggle('gate', gate);
+  if (gate) {
+    renderSignIn();
+    $('sidlg').classList.add('open');
+  }
+  const g = SITE_BUILD && curUser === 'Guest';
+  $('gtime').style.display = g ? '' : 'none';
+  if (g) $('gtime').textContent = 'Guest time left ' + hm(guestLeft());
+  $('gdlg').classList.toggle('open', g && guestLeft() <= 0);
+}
+setInterval(() => {
+  if (!SITE_BUILD || curUser !== 'Guest' || document.visibilityState !== 'visible') return;
+  guestSave(Math.min(GUEST_LIMIT, guestUsed() + 5));
+  guestCheck();
+}, 5000);
+$('gout').onclick = () => {
+  curUser = '';
+  lsSet('cadieux_session', '');
+  siLabel();
+  guestCheck();
+};
+function siLabel() {
+  $('sibtn').textContent = curUser ? 'Account (' + curUser + ')…' : 'Sign In…';
+}
+function renderSignIn(msg, err) {
+  const acct = !!curUser;
+  $('sittl').textContent = acct ? 'Account' : 'Sign In';
+  $('sibody').innerHTML = acct
+    ? '<p>Signed in as <b>' +
+      escH(curUser) +
+      '</b>.</p>' +
+      (SITE_BUILD && curUser === 'Guest' ? '<p>Time left today: ' + hm(guestLeft()) + ' of 2:00</p>' : '') +
+      '<div class=sb><button id=si_out>Sign Out</button></div><div id=simsg></div>'
+    : '<label>User<input id=si_u autocomplete=username maxlength=32></label><label>Password<input id=si_p type=password autocomplete=current-password></label>' +
+      '<div class=sb><button id=si_in>Sign In</button></div><div id=simsg></div>' +
+      '<div class=note>' +
+      (SITE_BUILD ? 'Sign in to use the program.' : 'Sign in with an account provided to you.') +
+      '</div>';
+  const m = $('simsg');
+  m.textContent = msg || '';
+  m.className = err ? 'err' : '';
+  if ($('si_u')) $('si_u').focus();
+}
+function siMsg(msg, err) {
+  const m = $('simsg');
+  m.textContent = msg;
+  m.className = err ? 'err' : '';
+}
+async function siDo() {
+  const nm = $('si_u').value.trim(),
+    pw = $('si_p').value,
+    r = SI_USERS[nm.toLowerCase()];
+  if (!nm) return siMsg('Enter a user name.', 1);
+  if (!r || !r.h.includes(await hashPw(pw, r.salt))) return siMsg('User name or password is incorrect.', 1);
+  if (SITE_BUILD && r.n === 'Guest' && guestLeft() <= 0)
+    return siMsg('Guest time for today is used up (2 hours per day). Try again tomorrow.', 1);
+  curUser = r.n;
+  lsSet('cadieux_session', curUser);
+  siLabel();
+  guestCheck();
+  if (SITE_BUILD) closeSignIn();
+  else renderSignIn('Signed in.');
+  status('Signed in as ' + curUser + '.');
+}
+$('sibtn').onclick = () => {
+  renderSignIn();
+  $('sidlg').classList.add('open');
+};
+const closeSignIn = () => {
+  if (!$('sidlg').classList.contains('gate')) $('sidlg').classList.remove('open');
+};
+$('six').onclick = closeSignIn;
+$('sidlg').addEventListener('pointerdown', (e) => {
+  if (e.target.id === 'sidlg') closeSignIn();
+});
+$('sibody').addEventListener('click', (e) => {
+  if (e.target.id === 'si_in') siDo();
+  else if (e.target.id === 'si_out') {
+    curUser = '';
+    lsSet('cadieux_session', '');
+    siLabel();
+    guestCheck();
+    renderSignIn('Signed out.');
+    status('Signed out.');
+  }
+});
+$('sibody').addEventListener('keydown', (e) => {
+  e.stopPropagation();
+  if (e.key === 'Enter' && $('si_in')) siDo();
+  if (e.key === 'Escape') closeSignIn();
+});
+siLabel();
+guestCheck();
+
+const closeSettings = () => $('setdlg').classList.remove('open');
+$('setx').onclick = closeSettings;
+$('setdlg').addEventListener('pointerdown', (e) => {
+  if (e.target.id === 'setdlg') closeSettings();
+});
+addEventListener(
+  'keydown',
+  (e) => {
+    if (e.key === 'Escape' && $('setdlg').classList.contains('open')) {
+      e.stopPropagation();
+      closeSettings();
+    }
+  },
+  true,
+);
 document.addEventListener('click', (e) => {
   if (e.target.id === 'p_rdq' && sel && sel.t === 'roof')
     mut(() => {
@@ -12123,12 +13087,74 @@ document.addEventListener('click', (e) => {
       delete sel.o.rk;
     });
 });
+var drawModes = {wall: 'line', room: 'line', roof: 'box', foundation: 'box', fsys: 'box', deck: 'box'},
+  dmode = (t) => drawModes[t || tool] || 'line';
+function setDrawMode(m, init) {
+  if (!init) {
+    if (drawModes[tool]) drawModes[tool] = m;
+    else for (const k in drawModes) drawModes[k] = m;
+  }
+  document.querySelectorAll('#drawpop button').forEach((b) => {
+    const on = b.dataset.dm === m;
+    b.classList.toggle('on', on);
+    b.textContent = (on ? '✓ ' : '') + (b.dataset.dm === 'box' ? 'Box drawing' : 'Line drawing');
+  });
+  if (init) return;
+  cancelAct0();
+  status(
+    m === 'box'
+      ? 'Box drawing: click two opposite corners to draw a rectangle.'
+      : 'Line drawing: click points to trace the outline; Enter, double-click or clicking the first point finishes.',
+  );
+}
+(function loadSettings() {
+  let o = null;
+  try {
+    o = JSON.parse(localStorage.getItem('cadieux_settings') || 'null');
+  } catch (e) {
+    /* ignore */
+  }
+  if (!o) return;
+  applyTheme(o.theme);
+  if (SNAPN[o.snap]) setSnap(o.snap);
+  if (o.dm) for (const k in drawModes) if (o.dm[k] === 'line' || o.dm[k] === 'box') drawModes[k] = o.dm[k];
+  if (WALLT[o.wsz]) wallSize = o.wsz;
+})();
+$('editbtn').onclick = (e) => {
+  e.stopPropagation();
+  ['filepop', 'optpop'].forEach((k) => $(k).classList.remove('open'));
+  $('editpop').classList.toggle('open');
+};
+$('editpop').addEventListener('click', () => $('editpop').classList.remove('open'));
+$('optbtn').onclick = (e) => {
+  e.stopPropagation();
+  $('editpop').classList.remove('open');
+  $('filepop').classList.remove('open');
+  setDrawMode(drawModes[tool] || drawModes.wall, true);
+  $('drawfly').classList.remove('open');
+  $('optpop').classList.toggle('open');
+};
+$('optpop').addEventListener('click', () => $('optpop').classList.remove('open'));
+$('drawbtn').onclick = (e) => {
+  e.stopPropagation();
+  setDrawMode(drawModes[tool] || drawModes.wall, true);
+  $('drawfly').classList.toggle('open');
+};
+$('drawpop').onclick = (e) => {
+  const b = e.target.closest('[data-dm]');
+  if (!b) return;
+  setDrawMode(b.dataset.dm);
+};
 $('filebtn').onclick = (e) => {
   e.stopPropagation();
+  $('optpop').classList.remove('open');
+  $('editpop').classList.remove('open');
   $('filepop').classList.toggle('open');
 };
 document.addEventListener('click', (e) => {
   if (!e.target.closest('#filepop')) $('filepop').classList.remove('open');
+  if (!e.target.closest('#optpop')) $('optpop').classList.remove('open');
+  if (!e.target.closest('#editpop')) $('editpop').classList.remove('open');
 });
 const redo = [];
 undo.push = function (x) {
@@ -12159,15 +13185,12 @@ $('new').onclick = () =>
 $('demo').onclick = () => mut(sample);
 const exportBlueprint = async (pdf) => {
   $('filepop').classList.remove('open');
-  const base = fileName || 'cadieux-project',
-    nm = base.replace(/[-_]+/g, ' ');
+  const base = exFile('blueprint'),
+    nm = (exEdited ? base : fileName || 'cadieux project').replace(/[-_]+/g, ' ');
   try {
     /* the Android app's save screen takes text only, so it gets the web-page version, which prints to PDF */
     const asPdf = pdf && !window.cadieuxAndroid,
-      f = await saveFile(
-        base + '-blueprint.' + (asPdf ? 'pdf' : 'html'),
-        asPdf ? await bpPdf(nm) : bpBuild(nm),
-      );
+      f = await saveFile(base + '.' + (asPdf ? 'pdf' : 'html'), asPdf ? await bpPdf(nm) : bpBuild(nm));
     status(
       'Blueprint saved as ' +
         f +
@@ -12183,6 +13206,78 @@ const exportBlueprint = async (pdf) => {
     );
   }
 };
+
+/* ---------- Export window ---------- */
+let exEdited = false;
+/* the typed name is used as given; until it is edited, a suffix tells the files apart */
+const exFile = (suffix) => {
+    const v = $('exname')
+      .value.trim()
+      .replace(/\.(pdf|html|png|json)$/i, '')
+      .replace(/[\\/:*?"<>|]/g, '_');
+    return exEdited && v ? v : (fileName || 'cadieux-project') + '-' + suffix;
+  },
+  openExport = () => {
+    $('filepop').classList.remove('open');
+    $('exname').value = fileName || 'cadieux-project';
+    exEdited = false;
+    $('exdlg').classList.add('open');
+    $('exname').focus();
+    $('exname').select();
+  },
+  closeExport = () => $('exdlg').classList.remove('open');
+async function exportImage(cv, what) {
+  const base = exFile(what);
+  try {
+    if (window.cadieuxAndroid) throw new Error('image export is not available in the Android app yet');
+    const b64 = cv.toDataURL('image/png').split(',')[1],
+      bin = atob(b64),
+      u8 = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
+    const f = await saveFile(base + '.png', u8);
+    status('Image saved as ' + f + '.');
+  } catch (e) {
+    status(
+      e && e.code === 'declined'
+        ? 'Export cancelled.'
+        : 'Image could not be saved: ' + ((e && e.message) || e),
+    );
+  }
+}
+$('exbtn').onclick = openExport;
+$('exname').addEventListener('input', () => (exEdited = true));
+$('exname').addEventListener('keydown', (e) => {
+  e.stopPropagation();
+  if (e.key === 'Escape') closeExport();
+});
+$('exx').onclick = closeExport;
+$('exdlg').addEventListener('pointerdown', (e) => {
+  if (e.target.id === 'exdlg') closeExport();
+});
+$('exbody').addEventListener('click', (e) => {
+  const b = e.target.closest('button');
+  if (!b) return;
+  const fnm = exFile('project');
+  closeExport();
+  if (b.id === 'expng2') {
+    draw2();
+    exportImage(c2, 'plan');
+  } else if (b.id === 'expng3') {
+    render();
+    exportImage(c3, '3d-view');
+  } else if (b.id === 'exproj') doSave(exEdited ? fnm : fileName || 'cadieux-project');
+  else if (b.id === 'exmat') $('matbtn').click();
+});
+addEventListener(
+  'keydown',
+  (e) => {
+    if (e.key === 'Escape' && $('exdlg').classList.contains('open')) {
+      e.stopPropagation();
+      closeExport();
+    }
+  },
+  true,
+);
 $('exbp').onclick = () => exportBlueprint(true);
 $('exbh').onclick = () => exportBlueprint(false);
 function setLogo(u) {
@@ -12197,13 +13292,17 @@ function setLogo(u) {
 }
 try {
   setLogo(localStorage.getItem('cadieux_logo'));
-} catch (e) {}
+} catch (e) {
+  /* ignore */
+}
 $('logo').onclick = () => $('logofile').click();
 $('logo').oncontextmenu = (e) => {
   e.preventDefault();
   try {
     localStorage.removeItem('cadieux_logo');
-  } catch (x) {}
+  } catch (x) {
+    /* ignore */
+  }
   setLogo(null);
 };
 $('logofile').onchange = (e) => {
@@ -12221,7 +13320,9 @@ $('logofile').onchange = (e) => {
       const u = c.toDataURL('image/png');
       try {
         localStorage.setItem('cadieux_logo', u);
-      } catch (x) {}
+      } catch (x) {
+        /* ignore */
+      }
       setLogo(u);
     };
     im.src = r.result;
@@ -12263,7 +13364,9 @@ const doSave = async (nm) => {
   const j = JSON.stringify(M, null, 1);
   try {
     localStorage.setItem('cadieux', JSON.stringify(M));
-  } catch (e) {}
+  } catch (e) {
+    /* ignore */
+  }
   try {
     const f = await saveFile(nm + '.json', j);
     fileName = f.replace(/\.json$/i, '');
@@ -13767,7 +14870,9 @@ function openMats() {
   let w = null;
   try {
     w = window.open('', 'cadieux_materials', 'width=820,height=820,scrollbars=yes,resizable=yes');
-  } catch (e) {}
+  } catch (e) {
+    /* ignore */
+  }
   if (w && w.document) {
     w.document.open();
     w.document.write(
@@ -13884,14 +14989,51 @@ $('saveas').onclick = () => {
       let s = null;
       try {
         s = localStorage.getItem('cadieux');
-      } catch (x) {}
+      } catch (x) {
+        /* ignore */
+      }
       if (s) ld(s);
       else status('Nothing saved yet.');
     }
   };
 })();
+addEventListener('keyup', (e) => {
+  if (e.key === 'Shift' && lastPtr && !nudged) {
+    cur = shiftSnap(snapV(lastPtr[0], lastPtr[1]), e, lastPtr[0], lastPtr[1]);
+    if (drag) {
+      moveDrag();
+      build3();
+    }
+    draw2();
+  }
+});
 addEventListener('keydown', (e) => {
-  if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT') return;
+  if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT' || (SITE_BUILD && !curUser)) return;
+  if (e.key === 'Shift' && lastPtr && !e.repeat) {
+    cur = shiftSnap(snapV(lastPtr[0], lastPtr[1]), e, lastPtr[0], lastPtr[1]);
+    if (drag) {
+      moveDrag();
+      build3();
+    }
+    draw2();
+    return;
+  }
+  /* Shift + arrows while drawing: lengthen or shorten by 1 inch */
+  const nd = {ArrowUp: 1, ArrowRight: 1, ArrowDown: -1, ArrowLeft: -1}[e.key],
+    no = tool === 'wall' ? start : tool === 'measure' ? mA : null;
+  if (e.shiftKey && nd && no && cur) {
+    const dx = cur[0] - no[0],
+      dy = cur[1] - no[1],
+      L = Math.hypot(dx, dy) || 0,
+      n = Math.max(1, Math.round(L * 12) + nd) / 12,
+      u = L > 1e-6 ? [dx / L, dy / L] : [1, 0];
+    cur = [no[0] + u[0] * n, no[1] + u[1] * n];
+    nudged = true;
+    snapPt = null;
+    e.preventDefault();
+    draw2();
+    return;
+  }
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'z') {
     $(e.shiftKey ? 'redo' : 'undo').click();
     return;
@@ -13943,6 +15085,7 @@ addEventListener('keydown', (e) => {
     draw2();
   }
   if (e.key === 'Enter' && tool === 'room') finishRoom();
+  if (e.key === 'Enter' && isPoly()) finishPoly();
   if (e.key === 'Enter' && tool === 'path') finishPath();
 });
 {
@@ -13955,7 +15098,9 @@ addEventListener('keydown', (e) => {
   try {
     const r0 = parseFloat(localStorage.getItem('cadieux.split'));
     if (r0) setSplit(r0);
-  } catch (e) {}
+  } catch (e) {
+    /* ignore */
+  }
   const sp = $('split');
   sp.onpointerdown = (e) => {
     e.preventDefault();
@@ -13977,13 +15122,17 @@ addEventListener('keydown', (e) => {
       b = $('p3').getBoundingClientRect();
     try {
       localStorage.setItem('cadieux.split', String((a.width / (b.right - a.left)).toFixed(4)));
-    } catch (x) {}
+    } catch (x) {
+      /* ignore */
+    }
   };
   sp.ondblclick = () => {
     setSplit(0.5);
     try {
       localStorage.removeItem('cadieux.split');
-    } catch (x) {}
+    } catch (x) {
+      /* ignore */
+    }
     size2();
     size3();
   };
