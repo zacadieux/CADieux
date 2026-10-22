@@ -823,7 +823,7 @@ canvas {
   <div class="pane" id="p2"><canvas id="c2"></canvas><div class="tag">2D plan · wheel zoom · right-click cancels · right-drag pans</div><div id="split" title="Drag to resize the split · double-click to reset"></div></div>
   <div class="pane" id="p3"><canvas id="c3"></canvas><div class="tag">3D view · drag orbit · wheel zoom</div></div>
 <div id='side'><details id='propd' open><summary>Properties</summary><div id='props'></div></details><details id='terrd'><summary>Terrain</summary><div id='terrBody'></div></details><details id='furnd'><summary>Furniture / Appliances</summary><div id='furnList'></div></details><details><summary>Floors</summary><div id='flList'></div><div class='r fb'><button id='addf2'>+ Add</button><button id='delf2'>− Remove</button></div></details><details><summary>Objects</summary><div class='r fb'><button id='frm' title='Show framing for all objects'>▦ Framing: all</button></div><div id='obList'></div></details></div></div>
-<div id='tb'><span>View</span><button data-vw='grid' title='Plan grid'>Grid</button><button data-vw='dims' title='Wall dimensions (zoom in to see them)'>Dimensions</button><button data-vw='labels' title='Room names and areas'>Room labels</button><button data-vw='land' title='3 ft stair landing zones'>Landings</button><button data-vw='roofs' title='Show roofs and dormers'>Roofs</button><button data-vw='fram' title='Show framing for all objects'>Framing</button><button data-vw='terr' title='Terrain and trees in 3D'>Terrain</button><button data-vw='sky' title='Sky in 3D'>Sky</button><button id='snapbtn' title='Snapping: Center'><span id='snapl'>Snapping: Center</span></button><button id='drawcyc' title='Click to cycle the drawing mode: Line, Box, Curved'><span id='drawcl'>Drawing: Line</span></button><span id='bld' title='Current program build'>CADieux v1.4.0 · build 394</span></div>
+<div id='tb'><span>View</span><button data-vw='grid' title='Plan grid'>Grid</button><button data-vw='dims' title='Wall dimensions (zoom in to see them)'>Dimensions</button><button data-vw='labels' title='Room names and areas'>Room labels</button><button data-vw='land' title='3 ft stair landing zones'>Landings</button><button data-vw='roofs' title='Show roofs and dormers'>Roofs</button><button data-vw='fram' title='Show framing for all objects'>Framing</button><button data-vw='terr' title='Terrain and trees in 3D'>Terrain</button><button data-vw='sky' title='Sky in 3D'>Sky</button><button id='snapbtn' title='Snapping: Center'><span id='snapl'>Snapping: Center</span></button><button id='drawcyc' title='Click to cycle the drawing mode: Line, Box, Curved'><span id='drawcl'>Drawing: Line</span></button><span id='bld' title='Current program build'>CADieux v1.4.0 · build 404</span></div>
 <div id='st'>Select: click to select, drag to move, drag a square handle to resize. Delete removes. Q rotates stairs.</div>
 <div id='fly'></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1151,6 +1151,7 @@ function mut(fn) {
   changed();
 }
 function changed() {
+  fixFnds();
   /* each step is isolated so a failure in one (e.g. the 3D rebuild) cannot stop the sidebar updating */
   [refreshUI, draw2, renderSide, renderLists, build3].forEach((fn) => {
     try {
@@ -2064,10 +2065,27 @@ function renderSide0() {
       ) +
       row('Depth (ft)', num('p_fd', R.d, 0.5)) +
       row('Elevation (ft)', num('p_fe', R.el || 0, 0.5)) +
-      row('Width (ft)', num('p_fw', R.x1 - R.x0, 0.5)) +
-      row('Length (ft)', num('p_fl', R.y1 - R.y0, 0.5)) +
-      row('X (ft)', num('p_fx', R.x0, 0.5)) +
-      row('Y (ft)', num('p_fy', R.y0, 0.5)) +
+      (R.pts
+        ? ro('Corners', R.pts.length) +
+          ro('Area', Math.round(Math.abs(polyArea(R.pts))) + ' sq ft') +
+          ro(
+            'Perimeter',
+            fmt(
+              R.pts.reduce(
+                (t, p, i) =>
+                  t +
+                  Math.hypot(
+                    p[0] - R.pts[(i + 1) % R.pts.length][0],
+                    p[1] - R.pts[(i + 1) % R.pts.length][1],
+                  ),
+                0,
+              ),
+            ),
+          )
+        : row('Width (ft)', num('p_fw', R.x1 - R.x0, 0.5)) +
+          row('Length (ft)', num('p_fl', R.y1 - R.y0, 0.5)) +
+          row('X (ft)', num('p_fx', R.x0, 0.5)) +
+          row('Y (ft)', num('p_fy', R.y0, 0.5))) +
       sty(R, '#9a9a95', 'none', 1);
     S.innerHTML = h;
     $('p_ft').value = R.type;
@@ -2085,8 +2103,10 @@ function renderSide0() {
     );
     B('p_fd', (v) => mut(() => (R.d = Math.max(0.25, +v))));
     B('p_fe', (v) => mut(() => (R.el = Math.max(-20, Math.min(10, +v || 0)))));
-    B('p_fw', (v) => mut(() => (R.x1 = R.x0 + Math.max(2, +v))));
-    B('p_fl', (v) => mut(() => (R.y1 = R.y0 + Math.max(2, +v))));
+    if (!R.pts) {
+      B('p_fw', (v) => mut(() => (R.x1 = R.x0 + Math.max(2, +v))));
+      B('p_fl', (v) => mut(() => (R.y1 = R.y0 + Math.max(2, +v))));
+    }
     B('p_fx', (v) =>
       mut(() => {
         const w = R.x1 - R.x0;
@@ -2877,7 +2897,7 @@ function renderSide0() {
       (cantPosts(M.cf, R).length
         ? ro('Corner posts', cantPosts(M.cf, R).length + ' (floor reaches ' + CANT_FT + ' ft or more out)')
         : '') +
-      ro('Subfloor', Math.ceil((I.W * I.D) / 32) + ' sheets 4x8');
+      ro('Subfloor', Math.ceil(I.A / 32) + ' sheets 4x8');
     S.innerHTML = h;
     B('p_js', (v) => mut(() => (R.sz = v)));
     B('p_jc', (v) => mut(() => (R.oc = +v)));
@@ -3454,7 +3474,7 @@ function randomBuild(seed, opt = {}) {
         t: t,
         w: rnd() < 0.2 ? 4 : 3,
         kind: 'window',
-        wt: pick(['dh', 'dh', 'casement', 'fixed']),
+        wt: pick(['dh', 'dh', 'casement', 'fixed', 'awning', 'slider']),
       });
     }
   };
@@ -4632,98 +4652,133 @@ function randomBuild(seed, opt = {}) {
       tur = T;
     }
   }
-  /* curved bow: on some houses a round-ended sunroom bulges out of the back wall, built as a chain of short walls */
+  /* curved or angled bays: a round bow, or a canted bay of three 45-degree walls, bulges out of the back wall
+     and sometimes the front wall. Each footing and roof follows the real outline. */
   let bow = null;
-  if (!wings.length && rnd() < 0.5) {
-    const rear = floors[0].walls.find(
-      (w) =>
-        /^Exterior wall/.test(w.name || '') && Math.abs(w.a[1] - D) < 0.01 && Math.abs(w.b[1] - D) < 0.01,
-    );
-    if (rear) {
-      const lo = Math.min(rear.a[0], rear.b[0]),
-        hi = Math.max(rear.a[0], rear.b[0]),
-        bw = Math.min(hi - lo - 6, pick([10, 12, 14])),
-        bh = pick([4, 5, 6]);
-      if (bw >= 8) {
-        const mid = lo + (hi - lo) * pick([0.35, 0.5, 0.65]),
-          bx0b = Math.max(lo + 2, Math.min(hi - 2 - bw, mid - bw / 2)),
-          bx1b = bx0b + bw,
-          hit = (b) => bx1b + 1 > b.x0 && bx0b - 1 < b.x1 && D + bh + 1 > b.y0 && D - 1 < b.y1,
-          blocked =
-            (gar && hit(gar)) ||
-            (bz && hit(bz)) ||
-            floors.some((F, fi) =>
-              (F.decks || []).some((d) => hit(d) && !(fi === 0 && d.name === 'Rear deck')),
-            ) ||
-            (tur && Math.hypot(tur.c[0] - (bx0b + bx1b) / 2, tur.c[1] - D) < tur.r + bw / 2 + 2) ||
-            (M.paths || []).some((pa) =>
-              pa.pts.some((q) => q[0] > bx0b - 3 && q[0] < bx1b + 3 && q[1] > D - 2 && q[1] < D + bh + 3),
-            );
-        if (!blocked) {
-          const Rr = ((bw * bw) / 4 + bh * bh) / (2 * bh),
-            cx = (bx0b + bx1b) / 2,
-            cy = D + bh - Rr,
-            ang = Math.atan2(D - cy, bx0b - cx),
-            sw = -(2 * Math.atan2(bw / 2, Rr - bh)),
-            ns = Math.max(4, Math.round((Rr * Math.abs(sw)) / 4)),
-            pts = [];
-          for (let k = 0; k <= ns; k++) {
-            const a = ang + (sw * k) / ns;
-            pts.push([+(cx + Rr * Math.cos(a)).toFixed(3), +(cy + Rr * Math.sin(a)).toFixed(3)]);
-          }
-          pts[0] = [bx0b, D];
-          pts[ns] = [bx1b, D];
-          const bws = [];
-          for (let k = 0; k < ns; k++)
-            bws.push({
-              a: pts[k],
-              b: pts[k + 1],
-              t: T6,
-              sz: '2x6',
-              h: WH,
-              open: [],
-              ec,
-              et,
-              name: 'Bow wall ' + (k + 1),
-            });
-          for (let k = 0; k < ns; k++) {
-            if (k > 0) bws[k].a = bws[k - 1].b;
-            const w = bws[k];
-            if (Math.hypot(w.b[0] - w.a[0], w.b[1] - w.a[1]) >= 3.5)
-              w.open.push({t: 0.5, w: 3, kind: 'window', wt: pick(['dh', 'casement', 'fixed'])});
-          }
-          /* the back wall opens into the bow */
-          const dir = rear.b[0] > rear.a[0] ? 1 : -1,
-            tOf = (x) => (dir > 0 ? x - rear.a[0] : rear.a[0] - x) / Math.abs(rear.b[0] - rear.a[0]);
-          rear.open = rear.open.filter((o) => {
-            const u = tOf(cx) * 1;
-            const half = bw / 2 / Math.abs(rear.b[0] - rear.a[0]);
-            return Math.abs(o.t - u) > half + o.w / 2 / Math.abs(rear.b[0] - rear.a[0]);
-          });
-          rear.open.push({t: tOf(cx), w: 6, kind: 'door', dt: 'slider', name: 'Bow door'});
-          /* the bow takes the place of a rear deck */
-          floors[0].decks = (floors[0].decks || []).filter((d) => !(d.name === 'Rear deck' && hit(d)));
-          floors[0].walls.push(...bws);
-          floors[0].rooms.push({name: 'Sunroom', pts: [...pts.map((q) => [q[0], q[1]])]});
-          floors[0].foundations.push({
-            type: 'stem',
-            d: 3,
-            x0: bx0b - 0.5,
-            y0: D - 0.5,
-            x1: bx1b + 0.5,
-            y1: D + bh + 0.5,
-            name: 'Bow foundation',
-          });
-          const BR = rf(bx0b, D, bx1b, D + bh, 'Bow roof');
-          BR.type = 'hip';
-          BR.pitch = Math.min(pitch, 5);
-          BR.y0 = D + 0.25;
-          floors[0].roofs.push(BR);
-          bow = {x0: bx0b, x1: bx1b, h: bh};
-        }
+  const addBay = (front) => {
+    const yb = front ? 0 : D,
+      sy = front ? -1 : 1,
+      rear = floors[0].walls.find(
+        (w) =>
+          /^Exterior wall/.test(w.name || '') && Math.abs(w.a[1] - yb) < 0.01 && Math.abs(w.b[1] - yb) < 0.01,
+      );
+    if (!rear) return;
+    const lo = Math.min(rear.a[0], rear.b[0]),
+      hi = Math.max(rear.a[0], rear.b[0]),
+      bw = Math.min(hi - lo - 6, pick([10, 12, 14])),
+      bh = pick([4, 5, 6]);
+    if (bw < 8) return;
+    const mid = lo + (hi - lo) * pick([0.35, 0.5, 0.65]),
+      bx0b = Math.max(lo + 2, Math.min(hi - 2 - bw, mid - bw / 2)),
+      bx1b = bx0b + bw,
+      ya = Math.min(yb, yb + sy * bh),
+      yz = Math.max(yb, yb + sy * bh),
+      hit = (b) => bx1b + 1 > b.x0 && bx0b - 1 < b.x1 && yz + 1 > b.y0 && ya - 1 < b.y1,
+      doorNear = rear.open.some((o) => {
+        if (o.kind !== 'door') return false;
+        const u = rear.a[0] + (rear.b[0] - rear.a[0]) * o.t;
+        return u > bx0b - 3 - o.w / 2 && u < bx1b + 3 + o.w / 2;
+      });
+    if (
+      (front && doorNear) ||
+      (gar && hit(gar)) ||
+      (bz && hit(bz)) ||
+      floors.some((F, fi) =>
+        (F.decks || []).some((d) => hit(d) && !(!front && fi === 0 && d.name === 'Rear deck')),
+      ) ||
+      (tur && Math.hypot(tur.c[0] - (bx0b + bx1b) / 2, tur.c[1] - yb) < tur.r + bw / 2 + 2) ||
+      (M.paths || []).some((pa) =>
+        pa.pts.some((q) => q[0] > bx0b - 3 && q[0] < bx1b + 3 && q[1] > ya - 3 && q[1] < yz + 3),
+      )
+    )
+      return;
+    const bay = front ? rnd() < 0.7 : rnd() < 0.45,
+      bhh = bay ? Math.min(bh, 4) : bh,
+      Rr = ((bw * bw) / 4 + bh * bh) / (2 * bh),
+      cx = (bx0b + bx1b) / 2,
+      cy = yb + sy * (bh - Rr),
+      ang = Math.atan2(yb - cy, bx0b - cx),
+      sw = -sy * (2 * Math.atan2(bw / 2, Rr - bh)),
+      ns = bay ? 3 : Math.max(4, Math.round((Rr * Math.abs(sw)) / 4)),
+      pts = [];
+    if (bay) pts.push([bx0b, yb], [bx0b + bhh, yb + sy * bhh], [bx1b - bhh, yb + sy * bhh], [bx1b, yb]);
+    else {
+      for (let k = 0; k <= ns; k++) {
+        const a = ang + (sw * k) / ns;
+        pts.push([+(cx + Rr * Math.cos(a)).toFixed(3), +(cy + Rr * Math.sin(a)).toFixed(3)]);
       }
+      pts[0] = [bx0b, yb];
+      pts[ns] = [bx1b, yb];
     }
-  }
+    const nm = (bay ? 'Bay' : 'Bow') + (front ? ' front' : ''),
+      bws = [];
+    for (let k = 0; k < ns; k++)
+      bws.push({
+        a: pts[k],
+        b: pts[k + 1],
+        t: T6,
+        sz: '2x6',
+        h: WH,
+        open: [],
+        ec,
+        et,
+        name: nm + ' wall ' + (k + 1),
+      });
+    for (let k = 0; k < ns; k++) {
+      if (k > 0) bws[k].a = bws[k - 1].b;
+      const w = bws[k];
+      if (Math.hypot(w.b[0] - w.a[0], w.b[1] - w.a[1]) >= 3.5)
+        w.open.push({t: 0.5, w: 3, kind: 'window', wt: pick(['dh', 'casement', 'fixed', 'awning'])});
+    }
+    /* the house wall opens into the bay */
+    const len = Math.abs(rear.b[0] - rear.a[0]),
+      tOf = (x) => (rear.b[0] > rear.a[0] ? x - rear.a[0] : rear.a[0] - x) / len;
+    rear.open = rear.open.filter((o) => Math.abs(o.t - tOf(cx)) > 3.5 / len + o.w / 2 / len);
+    rear.open.push(
+      front
+        ? {t: tOf(cx), w: 5, kind: 'door', dt: 'pocket', name: 'Cased opening'}
+        : {t: tOf(cx), w: 6, kind: 'door', dt: 'slider', name: 'Bow door'},
+    );
+    if (!front) floors[0].decks = (floors[0].decks || []).filter((d) => !(d.name === 'Rear deck' && hit(d)));
+    floors[0].walls.push(...bws);
+    floors[0].rooms.push({name: front ? 'Nook' : 'Sunroom', pts: pts.map((q) => [q[0], q[1]])});
+    floors[0].foundations.push({
+      type: 'stem',
+      d: 3,
+      pts: polyOffset(
+        pts.map((q) => [...q]),
+        -0.5,
+      ),
+      x0: bx0b - 0.5,
+      y0: ya - 0.5,
+      x1: bx1b + 0.5,
+      y1: yz + 0.5,
+      name: nm + ' foundation',
+    });
+    const BR = rf(bx0b, ya, bx1b, yz, nm + ' roof');
+    BR.type = 'hip';
+    BR.pitch = Math.min(pitch, 5);
+    if (front) BR.y1 = -0.25;
+    else BR.y0 = D + 0.25;
+    if (bay)
+      BR.dq = front
+        ? [
+            [bhh, 0],
+            [-bhh, 0],
+            [0, 0],
+            [0, 0],
+          ]
+        : [
+            [0, 0],
+            [0, 0],
+            [-bhh, 0],
+            [bhh, 0],
+          ];
+    floors[0].roofs.push(BR);
+    bow = bow || {x0: bx0b, x1: bx1b, h: bhh};
+  };
+  if (!wings.length && rnd() < 0.5) addBay(false);
+  if (!wings.length && rnd() < 0.35) addBay(true);
   /* dormers: on some houses, one to three on the front slope of the main roof, sometimes mirrored on the back */
   let nDorm = 0;
   {
@@ -4771,6 +4826,40 @@ function randomBuild(seed, opt = {}) {
         }
       });
     }
+  }
+  /* variety: skylights on a plain roof, and some interior doors that slide, pocket or hang on a barn track */
+  {
+    const F = floors[floors.length - 1],
+      R = (F.roofs || []).find((r) => /^Main roof/.test(r.name || '') && !r.dq);
+    if (R && ['gable', 'hip', 'shed', 'gambrel'].includes(R.type) && rnd() < 0.4) {
+      const lx = roofProfile(R).lx,
+        n = ri(1, 3),
+        side = rnd() < 0.5 ? 0.28 : 0.72,
+        L0 = lx ? R.x0 : R.y0,
+        L1 = lx ? R.x1 : R.y1,
+        C0 = lx ? R.y0 : R.x0,
+        C1 = lx ? R.y1 : R.x1,
+        cc = C0 + (C1 - C0) * (R.type === 'shed' ? 0.5 : side);
+      for (let k = 0; k < n; k++) {
+        const u = L0 + ((L1 - L0) * (k + 1)) / (n + 1),
+          c = lx ? [u, cc] : [cc, u];
+        if ((F.dormers || []).some((d) => Math.hypot(d.f[0] - c[0], d.f[1] - c[1]) < 6)) continue;
+        if (skyRoof(c)) (F.skys = F.skys || []).push({c, w: 2, l: 4});
+      }
+    }
+    floors.forEach((G) =>
+      G.walls.forEach((w) =>
+        (w.open || []).forEach((o) => {
+          if (
+            o.kind === 'door' &&
+            o.dt === 'hinged' &&
+            /^(Interior|Bedroom|Door)/.test(o.name || '') &&
+            rnd() < 0.18
+          )
+            o.dt = pick(['pocket', 'barn', 'bifold']);
+        }),
+      ),
+    );
   }
   landings();
   stairRails();
@@ -4844,6 +4933,7 @@ function line(a, b, col, wd, dash) {
   x2.setLineDash([]);
 }
 function draw2() {
+  fixFnds();
   const W = c2.clientWidth,
     H = c2.clientHeight;
   x2.clearRect(0, 0, W, H);
@@ -5992,14 +6082,8 @@ function drawSel() {
   } else if (sel.t === 'fnd' && sel.o.type === 'sono') {
     circ([(sel.o.x0 + sel.o.x1) / 2, (sel.o.y0 + sel.o.y1) / 2], sel.o.pad / 24, null, A, 3, [8, 5]);
   } else if (sel.t === 'fnd') {
-    const r = sel.o,
-      Q = [
-        [r.x0, r.y0],
-        [r.x1, r.y0],
-        [r.x1, r.y1],
-        [r.x0, r.y1],
-      ];
-    Q.forEach((p, i) => line(p, Q[(i + 1) % 4], A, 3, [8, 5]));
+    const Q = fQ(sel.o);
+    Q.forEach((p, i) => line(p, Q[(i + 1) % Q.length], A, 3, [8, 5]));
   } else if (sel.t === 'roof') {
     const rb = roofBox();
     if (rb) {
@@ -6227,6 +6311,14 @@ function pick(x, y) {
           adoptFnd(r);
           sel = {t: 'fnd', o: r};
           return begin('roof', null, {o: r, orig: [r.x0, r.y0, r.x1, r.y1]});
+        }
+        continue;
+      }
+      if (r.pts) {
+        const Q = fQ(r);
+        if (Q.some((q, i) => segDist(raw, q, Q[(i + 1) % Q.length]) <= e2)) {
+          sel = {t: 'fnd', o: r};
+          return begin('pts', new Set(r.pts));
         }
         continue;
       }
@@ -6725,6 +6817,8 @@ function polyLock(c) {
   const f = w2s(roomPts[0]),
     q = w2s(c);
   if (roomPts.length >= 3 && Math.hypot(f[0] - q[0], f[1] - q[1]) < 10) return [...roomPts[0]];
+  /* a foundation outline runs at any angle; the other outlines stay square */
+  if (tool === 'foundation' || tool === 'roof') return c;
   const l = roomPts[roomPts.length - 1];
   return Math.abs(c[0] - l[0]) >= Math.abs(c[1] - l[1]) ? [c[0], l[1]] : [l[0], c[1]];
 }
@@ -6769,6 +6863,82 @@ function polyRects(P) {
 function finishPoly() {
   const P = roomPts.filter((p, i, a) => !i || p[0] !== a[i - 1][0] || p[1] !== a[i - 1][1]);
   roomPts = [];
+  if (
+    tool === 'foundation' &&
+    P.length >= 3 &&
+    (P.some((p, i) => {
+      const q = P[(i + 1) % P.length];
+      return Math.abs(p[0] - q[0]) > 0.01 && Math.abs(p[1] - q[1]) > 0.01;
+    }) ||
+      /* a basement keeps its whole outline (an L or U shape), not just its biggest rectangle */
+      (fdnType === 'basement' && P.length > 4))
+  ) {
+    mut(() => {
+      const fo = {type: fdnType, d: FDEF[fdnType], pts: P.map((q) => [...q])};
+      (M.floors[0].foundations = M.floors[0].foundations || []).push(fo);
+      fixFnds();
+      if (fdnType === 'basement') addBasement(fo);
+    });
+    status('Foundation added. Draw another, or right-click to go back to Select.');
+    return;
+  }
+  if (
+    tool === 'roof' &&
+    P.length >= 3 &&
+    P.some((p, i) => {
+      const q = P[(i + 1) % P.length];
+      return Math.abs(p[0] - q[0]) > 0.01 && Math.abs(p[1] - q[1]) > 0.01;
+    })
+  ) {
+    /* an angled outline: one warped roof per four-sided piece (a fan from the first corner) */
+    const quads = [];
+    let Rm = P.map((q) => [...q]);
+    while (Rm.length > 4) {
+      quads.push([Rm[0], Rm[1], Rm[2], Rm[3]]);
+      Rm = [Rm[0], ...Rm.slice(3)];
+    }
+    quads.push(
+      Rm.length === 3 ? [Rm[0], Rm[1], Rm[2], [(Rm[2][0] + Rm[0][0]) / 2, (Rm[2][1] + Rm[0][1]) / 2]] : Rm,
+    );
+    mut(() => {
+      quads.forEach((q) => {
+        const x0 = Math.min(...q.map((v) => v[0])),
+          x1 = Math.max(...q.map((v) => v[0])),
+          y0 = Math.min(...q.map((v) => v[1])),
+          y1 = Math.max(...q.map((v) => v[1]));
+        if (x1 - x0 < 1 || y1 - y0 < 1) return;
+        const C = [
+          [x0, y0],
+          [x1, y0],
+          [x1, y1],
+          [x0, y1],
+        ];
+        let best = null;
+        for (let rot = 0; rot < 4; rot++)
+          for (const dir of [1, -1]) {
+            const A = C.map((_, k) => q[(((rot + dir * k) % 4) + 4) % 4]),
+              cost = A.reduce((t, v, k) => t + Math.hypot(v[0] - C[k][0], v[1] - C[k][1]), 0);
+            if (!best || cost < best.cost) best = {cost, A};
+          }
+        const R = {
+          type: M.roof.type,
+          pitch: M.roof.pitch,
+          fa: '1x6',
+          so: 'vented',
+          gr: 'yes',
+          x0,
+          y0,
+          x1,
+          y1,
+          dq: best.A.map((v, k) => [+(v[0] - C[k][0]).toFixed(3), +(v[1] - C[k][1]).toFixed(3)]),
+        };
+        if (R.dq.every((d) => !d[0] && !d[1])) delete R.dq;
+        M.roofs.push(R);
+      });
+    });
+    status('Roof added. Draw another, or right-click to go back to Select.');
+    return;
+  }
   let R = P.length >= 3 ? polyRects(P) : [];
   if (tool === 'foundation' && fdnType === 'basement')
     R = R.sort((a, b) => (b.x1 - b.x0) * (b.y1 - b.y0) - (a.x1 - a.x0) * (a.y1 - a.y0)).slice(0, 1);
@@ -7625,7 +7795,7 @@ function snapV0(x, y) {
     ].forEach((r) => {
       P.push([r.x0, r.y0], [r.x1, r.y0], [r.x1, r.y1], [r.x0, r.y1]);
     });
-    (F.foundations || []).forEach((r) => P.push([r.x0, r.y0], [r.x1, r.y0], [r.x1, r.y1], [r.x0, r.y1]));
+    (F.foundations || []).forEach((r) => fQ(r).forEach((q) => P.push(q)));
     (F.rails || []).forEach((r) => P.push(r.a, r.b));
     (F.beams || []).forEach((r) => P.push(r.a, r.b));
     (F.posts || []).forEach((r) => P.push(r.c));
@@ -7634,7 +7804,7 @@ function snapV0(x, y) {
   if (snapMode === 'corner') {
     const F = M.floors[M.cf],
       add4 = (r) => {
-        if (!r.hid) P.push([r.x0, r.y0], [r.x1, r.y0], [r.x1, r.y1], [r.x0, r.y1]);
+        if (!r.hid) fQ(r).forEach((q) => P.push(q));
       };
     if (tool !== 'deck') [...(F.decks || []), ...(F.fsys || []), ...(F.roofs || [])].forEach(add4);
     if (tool !== 'deck') (F.foundations || []).forEach(add4);
@@ -7887,14 +8057,11 @@ function drawFnds() {
       circ(c, r.dia / 24, on ? 'rgba(150,150,140,.45)' : null, on ? '#6f6f66' : css('--grid5'), 1.6);
       return;
     }
-    const Q = [
-      [r.x0, r.y0],
-      [r.x1, r.y0],
-      [r.x1, r.y1],
-      [r.x0, r.y1],
-    ];
+    const Q = fQ(r);
     if (on) poly(Q, 'rgba(120,120,110,.13)');
-    Q.forEach((p, i) => line(p, Q[(i + 1) % 4], on ? '#8a8a80' : css('--grid5'), on ? 1.5 : 1, [2, 3]));
+    Q.forEach((p, i) =>
+      line(p, Q[(i + 1) % Q.length], on ? '#8a8a80' : css('--grid5'), on ? 1.5 : 1, [2, 3]),
+    );
   });
   if (tool === 'dormer' && dormerType === 'turret') {
     drawTur2(turDefault(cur), false, true);
@@ -8028,8 +8195,75 @@ function drawFnds() {
     );
   }
 }
+/* a foundation is a box (x0..y1) or, drawn at any angle, a polygon (pts) whose box is kept in step */
+function fQ(r) {
+  return r.pts && r.pts.length >= 3
+    ? r.pts
+    : [
+        [r.x0, r.y0],
+        [r.x1, r.y0],
+        [r.x1, r.y1],
+        [r.x0, r.y1],
+      ];
+}
+function fixFnds() {
+  (M.floors[0] ? M.floors[0].foundations || [] : []).forEach((r) => {
+    if (!r.pts || r.pts.length < 3) return;
+    r.x0 = Math.min(...r.pts.map((q) => q[0]));
+    r.x1 = Math.max(...r.pts.map((q) => q[0]));
+    r.y0 = Math.min(...r.pts.map((q) => q[1]));
+    r.y1 = Math.max(...r.pts.map((q) => q[1]));
+  });
+}
+function polyArea(P) {
+  return (
+    P.reduce((t, p, i) => t + (p[0] * P[(i + 1) % P.length][1] - P[(i + 1) % P.length][0] * p[1]), 0) / 2
+  );
+}
+/* the outline moved in (h > 0) or out (h < 0) by h, with mitred corners */
+function polyOffset(P, h) {
+  const sg = polyArea(P) >= 0 ? 1 : -1,
+    n = P.length,
+    nrm = (a, b) => {
+      const L = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1;
+      return [(-(b[1] - a[1]) / L) * sg, ((b[0] - a[0]) / L) * sg];
+    };
+  return P.map((p, i) => {
+    const n1 = nrm(P[(i + n - 1) % n], p),
+      n2 = nrm(p, P[(i + 1) % n]),
+      k = h / Math.max(0.25, 1 + n1[0] * n2[0] + n1[1] * n2[1]);
+    return [p[0] + (n1[0] + n2[0]) * k, p[1] + (n1[1] + n2[1]) * k];
+  });
+}
 function addBasement(fo) {
   if (M.bsmt) return;
+  if (fo.pts && fo.pts.length >= 3) {
+    const t = WALLT['2x6'],
+      P = polyOffset(fo.pts, t / 2),
+      B = {
+        walls: P.map((p, i) => ({
+          a: [...p],
+          b: [...P[(i + 1) % P.length]],
+          t,
+          sz: '2x6',
+          h: WH,
+          open: [],
+          name: 'Basement wall ' + (i + 1),
+        })),
+        rooms: [{name: 'Basement', pts: fo.pts.map((q) => [...q])}],
+        stairs: [],
+        roofs: [],
+        name: 'Basement',
+      };
+    B.walls.forEach((w, i) => (w.b = B.walls[(i + 1) % B.walls.length].a));
+    B.foundations = M.floors[0].foundations;
+    delete M.floors[0].foundations;
+    fo.d = FH;
+    M.floors.unshift(B);
+    M.bsmt = 1;
+    M.cf++;
+    return;
+  }
   const t = WALLT['2x6'],
     x0 = fo.x0 + t / 2,
     x1 = fo.x1 - t / 2,
@@ -8133,6 +8367,53 @@ function found3() {
         };
         cyl(r.dia / 24, r.d, -r.d / 2);
         cyl(r.pad / 24, r.padT / 12, -r.d - r.padT / 24);
+      } else if (r.pts && r.pts.length >= 3) {
+        /* an angled outline: a slab is one extruded plate, a stem or basement wall is a run of boxes along each edge */
+        const Q = r.pts,
+          plate = (depth, z) => {
+            const g = new THREE.ExtrudeGeometry(
+                new THREE.Shape(Q.map((q) => new THREE.Vector2(q[0], q[1]))),
+                {
+                  depth,
+                  bevelEnabled: false,
+                },
+              ),
+              b = new THREE.Mesh(g, m);
+            b.position.z = z + (r.el || 0);
+            b.userData.sel = tag;
+            grp.add(b);
+            const e = new THREE.LineSegments(new THREE.EdgesGeometry(g), lineMat);
+            e.position.copy(b.position);
+            grp.add(e);
+          };
+        if (r.type === 'slab') plate(r.d, -r.d);
+        else if (r.type === 'basement' && M.bsmt) plate(0.5, ZBof(0) - 0.5);
+        else {
+          const t = 0.67,
+            sg = polyArea(Q) >= 0 ? 1 : -1;
+          Q.forEach((a, i) => {
+            const b2 = Q[(i + 1) % Q.length],
+              L = Math.hypot(b2[0] - a[0], b2[1] - a[1]);
+            if (L < 0.05) return;
+            const nx = (-(b2[1] - a[1]) / L) * sg,
+              ny = ((b2[0] - a[0]) / L) * sg,
+              g = new THREE.BoxGeometry(L, t, r.d),
+              b = new THREE.Mesh(g, m);
+            b.rotation.z = Math.atan2(b2[1] - a[1], b2[0] - a[0]);
+            b.position.set(
+              (a[0] + b2[0]) / 2 + (nx * t) / 2,
+              (a[1] + b2[1]) / 2 + (ny * t) / 2,
+              -r.d / 2 + (r.el || 0),
+            );
+            b.userData.sel = tag;
+            grp.add(b);
+            const e = new THREE.LineSegments(new THREE.EdgesGeometry(g), lineMat);
+            e.rotation.copy(b.rotation);
+            e.position.copy(b.position);
+            grp.add(e);
+          });
+          if (r.type === 'basement') plate(0.5, -r.d);
+        }
       } else if (r.type === 'basement' && M.bsmt) {
         add(W, D, 0.5, cx, cy, ZBof(0) - 0.25);
       } else if (r.type === 'slab') add(W, D, r.d, cx, cy, -r.d / 2);
@@ -8395,7 +8676,8 @@ function buildTrees(T, bx) {
 function ground3() {
   terrain3();
   {
-    const f = M.bsmt && (M.floors[0].foundations || []).find((r) => r.type === 'basement' && !r.hid);
+    const f =
+      M.bsmt && (M.floors[0].foundations || []).find((r) => r.type === 'basement' && !r.hid && !r.pts);
     R.localClippingEnabled = true;
     if (f) {
       const x0 = f.x0,
@@ -12263,12 +12545,66 @@ function fsys(F) {
   return Object.assign({on: M.floors.indexOf(F) > 0, sz: '2x10', oc: 16, dir: 'auto'}, F.fs);
 }
 function fsRegion(F) {
-  /* a generated house: the floor follows the house walls only, never a detached garage, breezeway or bow */
-  const ew = F.walls.filter((w) => /^Exterior wall/.test(w.name || '')),
-    b = bb(ew.length >= 3 ? ew : F.walls);
-  if (!b) return null;
-  const e = Math.max(0.2, ...F.walls.map((w) => w.t)) / 2;
-  return Object.assign({}, fsys(F), {x0: b.x0 - e, y0: b.y0 - e, x1: b.x1 + e, y1: b.y1 + e});
+  /* the floor reaches the outer face of the walls, no further: each wall adds only its own half thickness,
+     and only across its length (an end cap never pokes past the corner). A generated house uses its exterior
+     walls only, never a detached garage, breezeway or bow. */
+  const ew = F.walls.filter((w) => /^Exterior wall/.test(w.name || '') && !w.hid),
+    W = ew.length >= 3 ? ew : F.walls.filter((w) => !w.hid);
+  if (!W.length) return null;
+  /* outer faces: a horizontal wall adds its half thickness above and below, a vertical one left and right,
+     an angled one both ways; the ends of a wall never poke past its corner */
+  let x0 = Infinity,
+    y0 = Infinity,
+    x1 = -Infinity,
+    y1 = -Infinity;
+  W.forEach((w) => {
+    const h = Math.max(0.1, w.t || 0.4) / 2,
+      horiz = Math.abs(w.a[1] - w.b[1]) < 1e-3,
+      vert = Math.abs(w.a[0] - w.b[0]) < 1e-3,
+      hx = horiz ? 0 : h,
+      hy = vert ? 0 : h;
+    x0 = Math.min(x0, w.a[0] - hx, w.b[0] - hx, vert ? w.a[0] - h : Infinity);
+    x1 = Math.max(x1, w.a[0] + hx, w.b[0] + hx, vert ? w.a[0] + h : -Infinity);
+    y0 = Math.min(y0, w.a[1] - hy, w.b[1] - hy, horiz ? w.a[1] - h : Infinity);
+    y1 = Math.max(y1, w.a[1] + hy, w.b[1] + hy, horiz ? w.a[1] + h : -Infinity);
+  });
+  /* over a basement the floor never reaches past the foundation walls that carry it */
+  if (M.bsmt && M.floors.indexOf(F) === 1) {
+    const fo = (M.floors[0].foundations || []).filter(
+      (r) => !r.hid && r.type !== 'sono' && r.type !== 'slab',
+    );
+    if (fo.length) {
+      const g = {
+        x0: Math.min(...fo.map((r) => r.x0)),
+        y0: Math.min(...fo.map((r) => r.y0)),
+        x1: Math.max(...fo.map((r) => r.x1)),
+        y1: Math.max(...fo.map((r) => r.y1)),
+      };
+      if (g.x1 - g.x0 > 1 && g.y1 - g.y0 > 1) {
+        x0 = Math.max(x0, g.x0);
+        y0 = Math.max(y0, g.y0);
+        x1 = Math.max(x0 + 1, Math.min(x1, g.x1));
+        y1 = Math.max(y0 + 1, Math.min(y1, g.y1));
+      }
+    }
+  }
+  /* the first floor takes the shape of an angled foundation under it */
+  let poly = null;
+  if (M.floors.indexOf(F) === (M.bsmt ? 1 : 0)) {
+    const wa = (x1 - x0) * (y1 - y0),
+      fp = (M.floors[0].foundations || []).filter(
+        (r) => !r.hid && r.pts && r.type !== 'sono' && Math.abs(polyArea(r.pts)) > wa * 0.5,
+      );
+    if (fp.length === 1 && fp[0].type !== 'slab') poly = fp[0].pts.map((q) => [...q]);
+    else if (fp.length === 1 && M.floors.indexOf(F) === 0) poly = fp[0].pts.map((q) => [...q]);
+  }
+  if (poly) {
+    x0 = Math.min(...poly.map((q) => q[0]));
+    x1 = Math.max(...poly.map((q) => q[0]));
+    y0 = Math.min(...poly.map((q) => q[1]));
+    y1 = Math.max(...poly.map((q) => q[1]));
+  }
+  return Object.assign({}, fsys(F), {x0, y0, x1, y1}, poly ? {poly} : {});
 }
 function fsInfoR(R) {
   const W = R.x1 - R.x0,
@@ -12278,7 +12614,16 @@ function fsInfoR(R) {
     len = ax === 'x' ? D : W,
     oc = (R.oc || 16) / 12,
     n = Math.floor(len / oc) + 1 + (len % oc > 0.05 ? 1 : 0);
-  return {W, D, ax, span, len, n, d: FJD[R.sz] || FJD['2x10']};
+  return {
+    W,
+    D,
+    ax,
+    span,
+    len,
+    n,
+    d: FJD[R.sz] || FJD['2x10'],
+    A: R.poly ? Math.abs(polyArea(R.poly)) : W * D,
+  };
 }
 function fsInfo(F) {
   const R = fsRegion(F);
@@ -12319,8 +12664,28 @@ function fsLayout(i, R) {
   const ps = [];
   for (let p = L0 + tk / 2; p < L1 - tk; p += oc) ps.push(p);
   ps.push(L1 - tk / 2);
+  /* the stretches of a joist line that lie inside an angled outline */
+  const inPoly = (p) => {
+    const Pp = R.poly,
+      xs = [];
+    Pp.forEach((q, k) => {
+      const r2 = Pp[(k + 1) % Pp.length],
+        u0 = ax === 'x' ? q[1] : q[0],
+        u1 = ax === 'x' ? r2[1] : r2[0];
+      if ((u0 <= p && u1 > p) || (u1 <= p && u0 > p)) {
+        const t = (p - u0) / (u1 - u0),
+          v0 = ax === 'x' ? q[0] : q[1],
+          v1 = ax === 'x' ? r2[0] : r2[1];
+        xs.push(v0 + (v1 - v0) * t);
+      }
+    });
+    xs.sort((a, b) => a - b);
+    const o = [];
+    for (let k = 0; k + 1 < xs.length; k += 2) o.push([xs[k], xs[k + 1]]);
+    return o;
+  };
   ps.forEach((p) => {
-    let segs = [[A0, A1]];
+    let segs = R.poly ? inPoly(p) : [[A0, A1]];
     cuts.forEach((c) => {
       const l0 = ax === 'x' ? c.y0 : c.x0,
         l1 = ax === 'x' ? c.y1 : c.x1,
@@ -12359,8 +12724,10 @@ function fsLayout(i, R) {
       }
     });
   });
-  H(L0, L1, A0 + tk / 2, 'r');
-  H(L0, L1, A1 - tk / 2, 'r');
+  if (!R.poly) {
+    H(L0, L1, A0 + tk / 2, 'r');
+    H(L0, L1, A1 - tk / 2, 'r');
+  }
   return {items: out, cuts, I};
 }
 function drawFS(i, R, tag) {
@@ -12393,12 +12760,17 @@ function drawFS(i, R, tag) {
       Y0 = R.y0 + q,
       Y1 = R.y1 - q;
     if (X1 - X0 < 0.5 || Y1 - Y0 < 0.5) return;
-    const sh = new THREE.Shape([
-      new THREE.Vector2(X0, Y0),
-      new THREE.Vector2(X1, Y0),
-      new THREE.Vector2(X1, Y1),
-      new THREE.Vector2(X0, Y1),
-    ]);
+    const sh = new THREE.Shape(
+      (R.poly
+        ? polyOffset(R.poly, q)
+        : [
+            [X0, Y0],
+            [X1, Y0],
+            [X1, Y1],
+            [X0, Y1],
+          ]
+      ).map((c) => new THREE.Vector2(c[0], c[1])),
+    );
     cutHoles(sh, i, {x0: X0, x1: X1, y0: Y0, y1: Y1});
     const m = new THREE.Mesh(new THREE.ExtrudeGeometry(sh, {depth: sub + d, bevelEnabled: false}), floorMat);
     m.position.set(0, 0, ZB - sub - d);
@@ -12497,7 +12869,7 @@ function floorSys3(F, i) {
 }
 function drawFS2(R, on) {
   const L = fsLayout(M.cf, R),
-    Q = [
+    Q = R.poly || [
       [R.x0, R.y0],
       [R.x1, R.y0],
       [R.x1, R.y1],
@@ -12546,7 +12918,7 @@ function floorSysUI(F) {
         nj = L.items.filter((t) => t.k === 'j').length,
         nh = L.items.filter((t) => t.k === 'h').length,
         rm = Math.ceil((2 * (I.W + I.D)) / 16),
-        sh = Math.ceil((I.W * I.D) / 32);
+        sh = Math.ceil(I.A / 32);
       tj += nj;
       th += nh;
       tr += rm;
@@ -12609,7 +12981,7 @@ function floorSysUI(F) {
         r('Direction', 'along ' + I.ax.toUpperCase() + ', span ' + fmt(I.span)) +
         r('Headers', L.items.filter((t) => t.k === 'h').length + ' (doubled)') +
         r('Rim / band', '~' + Math.ceil((2 * (I.W + I.D)) / 16) + ' x 16 ft') +
-        r('Subfloor', Math.ceil((I.W * I.D) / 32) + ' sheets 4x8') +
+        r('Subfloor', Math.ceil(I.A / 32) + ' sheets 4x8') +
         r('Depth', Math.round(I.d * 1200) / 100 + ' in + 3/4 in subfloor') +
         r('Floor-to-floor', fmt(flh(fi)));
     }
@@ -19112,7 +19484,7 @@ function materials() {
         else if (it.k === 'h') add(cf, 'Header (doubled)', R.sz, len, 2);
         else add(cf, 'Rim / band joist', R.sz, len, 1);
       });
-      sheets.push({cat: cf, item: '3/4" subfloor sheathing', qty: Math.ceil((I.W * I.D) / 32)});
+      sheets.push({cat: cf, item: '3/4" subfloor sheathing', qty: Math.ceil(I.A / 32)});
       cantPosts(fi, R).forEach((p) => {
         add(cf, 'Cantilever post', '6x6', p.h + 0.5, 1);
         if (!ftSkip(p.x, p.y))
