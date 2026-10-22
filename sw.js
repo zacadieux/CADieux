@@ -1,5 +1,5 @@
 /* CADieux service worker: lets the site install as an app and keep working offline */
-const VERSION = 'cadieux-1.4.0-b364',
+const VERSION = 'cadieux-1.4.0-b394',
   SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'],
   THREE = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
 

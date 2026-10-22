@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>CADieux</title>
 <meta name="theme-color" content="#1e293b">
 <meta name="description" content="CADieux - 2D plan and 3D home design with framing, roofs, stairs, decks, cabinets and a materials list.">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
+<title>CADieux</title>
 <style>
 :root {
   --bg: #f6f6f2;
@@ -365,13 +365,16 @@ button {
   margin: 3px 0;
 }
 /* Draw Options flyout inside the Options menu */
-#drawfly {
+#drawfly,
+#pbfly {
   position: relative;
 }
-#drawfly button#drawbtn {
+#drawfly button#drawbtn,
+#pbfly button#pbfbtn {
   width: 100%;
 }
-#drawpop {
+#drawpop,
+#pbpop {
   display: none;
   position: absolute;
   left: 100%;
@@ -386,11 +389,15 @@ button {
   border-radius: 8px;
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
 }
-#drawpop button {
+#drawpop button,
+#pbpop button {
   text-align: left;
+  white-space: nowrap;
 }
 #drawfly:hover #drawpop,
-#drawfly.open #drawpop {
+#drawfly.open #drawpop,
+#pbfly:hover #pbpop,
+#pbfly.open #pbpop {
   display: flex;
 }
 button.on {
@@ -801,13 +808,13 @@ canvas {
 </head>
 <body>
 <div id="bar">
-<div id="logo" title="Click to add your logo. Right-click to remove it."><span>LOGO</span></div><input type="file" id="logofile" accept="image/*" style="display:none"><span id="filem"><button id="filebtn">File ▾</button><div id="filepop"><button id="save">Save</button><button id="saveas">Save As…</button><button id="load">Load</button><button id="new">Clear</button><button id="demo">Sample</button><button id="exbtn" title="Export drawings, images and project files">Export…</button></div></span><span id="editm"><button id="editbtn" title="Undo and redo">Edit ▾</button><div id="editpop"><button id="undo" title="Undo (Ctrl+Z)">Undo</button><button id="redo" title="Redo (Ctrl+Y)">Redo</button></div></span><span id="optm"><button id="optbtn" title="Snapping and display options">Options ▾</button><div id="optpop"><button id="matbtn" title="Open the Material List">Material List</button><button id="pbbtn" title="Choose a room type and size, then place it on the plan">Prebuild…</button><button id="setbtn" title="Program settings">Settings…</button><button id="sibtn" title="Sign in to your account">Sign In…</button><hr><div id="drawfly"><button id="drawbtn" title="How walls, roofs and decks are drawn">Draw Options ▸</button><div id="drawpop"><button data-dm="line" title="Click points to chain wall segments">Line drawing</button><button data-dm="box" title="Click two opposite corners to draw a rectangle">Box drawing</button></div></div></div></span><span class='sep'></span>
+<div id="logo" title="Click to add your logo. Right-click to remove it."><span>LOGO</span></div><input type="file" id="logofile" accept="image/*" style="display:none"><span id="filem"><button id="filebtn">File ▾</button><div id="filepop"><button id="save">Save</button><button id="saveas">Save As…</button><button id="load">Load</button><button id="new">Clear</button><button id="demo">Sample</button><button id="exbtn" title="Export drawings, images and project files">Export…</button></div></span><span id="editm"><button id="editbtn" title="Undo and redo">Edit ▾</button><div id="editpop"><button id="undo" title="Undo (Ctrl+Z)">Undo</button><button id="redo" title="Redo (Ctrl+Y)">Redo</button></div></span><span id="optm"><button id="optbtn" title="Snapping and display options">Options ▾</button><div id="optpop"><button id="matbtn" title="Open the Material List">Material List</button><div id="pbfly"><button id="pbfbtn" title="Ready-made rooms and houses">Prebuild ▸</button><div id="pbpop"><button id="pbbtn" title="Choose a room type and size, then place it on the plan">Prebuild Room…</button><button id="phbtn" title="Choose a house style and size, then place it on the plan">Prebuild House…</button></div></div><button id="setbtn" title="Program settings">Settings…</button><button id="sibtn" title="Sign in to your account">Sign In…</button><hr><div id="drawfly"><button id="drawbtn" title="How walls, roofs and decks are drawn">Draw Options ▸</button><div id="drawpop"><button data-dm="line" title="Click points to chain wall segments">Line drawing</button><button data-dm="box" title="Click two opposite corners to draw a rectangle">Box drawing</button><button data-dm="curve" title="Walls: click the start, the corner, then the end. The curve follows the angle between them">Curved drawing</button></div></div></div></span><span class='sep'></span>
   
   <select id='fl'></select><button id='flup' class='flb' title='Go up one floor'>▲</button><button id='fldn' class='flb' title='Go down one floor'>▼</button><span class='sep'></span>
   <span class="sep"></span>
   <button id="rnd" title="Generate a random building" style="margin-left:auto">Random Build</button><span id="gtime" title="Guest time left today" style="display:none;margin-right:8px;font-size:12px"></span><button id='vm' title='Switch view: Split, 2D, 3D (click to cycle)'>View: Split</button><button id='sidebtn'>Hide properties</button>
 </div>
-<div id="pbdlg"><div id="pbwin" role="dialog" aria-label="Prebuild"><header><span>Prebuild a room</span><button id="pbx" title="Close">✕</button></header><div id="pbbody"></div></div></div>
+<div id="pbdlg"><div id="pbwin" role="dialog" aria-label="Prebuild Room"><header><span id="pbtitle">Prebuild Room</span><button id="pbx" title="Close">✕</button></header><div id="pbbody"></div></div></div>
 <div id="setdlg"><div id="setwin" role="dialog" aria-label="Settings"><header><span>Settings</span><button id="setx" title="Close">✕</button></header><div id="setbody"></div></div></div>
 <div id="sidlg"><div id="siwin" role="dialog" aria-label="Sign In"><header><span id="sittl">Sign In</span><button id="six" title="Close">✕</button></header><div id="sibody"></div></div></div>
 <div id="gdlg"><div id="gwin"><b>Guest time is used up</b><p>Guest accounts get 2 hours of use per day on this device. Your time resets tomorrow. Sign in with another account to keep working.</p><button id="gout">Sign out</button></div></div>
@@ -816,7 +823,7 @@ canvas {
   <div class="pane" id="p2"><canvas id="c2"></canvas><div class="tag">2D plan · wheel zoom · right-click cancels · right-drag pans</div><div id="split" title="Drag to resize the split · double-click to reset"></div></div>
   <div class="pane" id="p3"><canvas id="c3"></canvas><div class="tag">3D view · drag orbit · wheel zoom</div></div>
 <div id='side'><details id='propd' open><summary>Properties</summary><div id='props'></div></details><details id='terrd'><summary>Terrain</summary><div id='terrBody'></div></details><details id='furnd'><summary>Furniture / Appliances</summary><div id='furnList'></div></details><details><summary>Floors</summary><div id='flList'></div><div class='r fb'><button id='addf2'>+ Add</button><button id='delf2'>− Remove</button></div></details><details><summary>Objects</summary><div class='r fb'><button id='frm' title='Show framing for all objects'>▦ Framing: all</button></div><div id='obList'></div></details></div></div>
-<div id='tb'><span>View</span><button data-vw='grid' title='Plan grid'>Grid</button><button data-vw='dims' title='Wall dimensions (zoom in to see them)'>Dimensions</button><button data-vw='labels' title='Room names and areas'>Room labels</button><button data-vw='land' title='3 ft stair landing zones'>Landings</button><button data-vw='roofs' title='Show roofs and dormers'>Roofs</button><button data-vw='fram' title='Show framing for all objects'>Framing</button><button data-vw='terr' title='Terrain and trees in 3D'>Terrain</button><button data-vw='sky' title='Sky in 3D'>Sky</button><button id='snapbtn' title='Snapping: Center'><span id='snapl'>Snapping: Center</span></button><span id='bld' title='Current program build'>CADieux v1.4.0 · build 364</span></div>
+<div id='tb'><span>View</span><button data-vw='grid' title='Plan grid'>Grid</button><button data-vw='dims' title='Wall dimensions (zoom in to see them)'>Dimensions</button><button data-vw='labels' title='Room names and areas'>Room labels</button><button data-vw='land' title='3 ft stair landing zones'>Landings</button><button data-vw='roofs' title='Show roofs and dormers'>Roofs</button><button data-vw='fram' title='Show framing for all objects'>Framing</button><button data-vw='terr' title='Terrain and trees in 3D'>Terrain</button><button data-vw='sky' title='Sky in 3D'>Sky</button><button id='snapbtn' title='Snapping: Center'><span id='snapl'>Snapping: Center</span></button><button id='drawcyc' title='Click to cycle the drawing mode: Line, Box, Curved'><span id='drawcl'>Drawing: Line</span></button><span id='bld' title='Current program build'>CADieux v1.4.0 · build 394</span></div>
 <div id='st'>Select: click to select, drag to move, drag a square handle to resize. Delete removes. Q rotates stairs.</div>
 <div id='fly'></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1604,13 +1611,35 @@ function renderSide() {
   existingRow();
 }
 /* "Existing" objects (o.ex) are left out of the material list */
-const EXT = ['wall', 'open', 'room', 'stair', 'roof', 'tu', 'sk', 'rl', 'po', 'bm', 'dk', 'fs'];
+const EXT = ['wall', 'open', 'room', 'stair', 'roof', 'dm', 'tu', 'sk', 'rl', 'po', 'bm', 'dk', 'fs'];
+/* every selectable object can be renamed; panels that already have a Name field keep theirs */
+const NAMEABLE = ['wall', 'open', 'stair', 'roof', 'fnd', 'fs', 'gl', 'ms', 'path'];
+function nameRow() {
+  const S = $('props'),
+    h3 = S.querySelector('h3');
+  if (!h3 || $('p_n') || $('p_nm')) return;
+  const o = sel.o;
+  h3.insertAdjacentHTML(
+    'afterend',
+    '<label class=r><span>Name</span><input id=p_nm placeholder="Default name" value="' +
+      escH(o.name || '').replace(/"/g, '&quot;') +
+      '"></label>',
+  );
+  $('p_nm').onchange = (e) =>
+    mut(() => {
+      const v = e.target.value.trim();
+      if (v) o.name = v;
+      else delete o.name;
+    });
+}
 function existingRow() {
-  if (!sel || !sel.o || !EXT.includes(sel.t) || (msLive().length && tool === 'select')) return;
+  if (!sel || !sel.o || (msLive().length && tool === 'select')) return;
   if (tool !== 'select' && !(tool === 'dormer' && sel.t === 'tu')) return;
   const S = $('props'),
     h3 = S.querySelector('h3');
-  if (!h3 || $('p_ex')) return;
+  if (!h3) return;
+  if (NAMEABLE.includes(sel.t)) nameRow();
+  if (!EXT.includes(sel.t) || $('p_ex')) return;
   h3.insertAdjacentHTML(
     'afterend',
     '<label class=r title="Existing objects are left out of the material list"><span>Existing</span><input id=p_ex type=checkbox' +
@@ -2632,6 +2661,21 @@ function renderSide0() {
     B('p_cbx', (v) => mut(() => (C.b[0] = +v)));
     B('p_cby', (v) => mut(() => (C.b[1] = +v)));
     return;
+  } else if (sel.t === 'gl') {
+    const G = sel.o;
+    S.innerHTML =
+      '<h3>Guide line</h3>' +
+      ro('Length', fmt(Math.hypot(G.b[0] - G.a[0], G.b[1] - G.a[1]))) +
+      row('Start X (ft)', num('p_gax', G.a[0], 0.5)) +
+      row('Start Y (ft)', num('p_gay', G.a[1], 0.5)) +
+      row('End X (ft)', num('p_gbx', G.b[0], 0.5)) +
+      row('End Y (ft)', num('p_gby', G.b[1], 0.5)) +
+      '<p class=m>A reference line for drawing in 2D. It is not shown in 3D or in the material list.</p>';
+    B('p_gax', (v) => mut(() => (G.a[0] = +v)));
+    B('p_gay', (v) => mut(() => (G.a[1] = +v)));
+    B('p_gbx', (v) => mut(() => (G.b[0] = +v)));
+    B('p_gby', (v) => mut(() => (G.b[1] = +v)));
+    return;
   } else if (sel.t === 'rl') {
     const R = sel.o;
     h =
@@ -3204,9 +3248,11 @@ function sample() {
     name: 'Rear deck',
   });
   landings();
+  stairRails();
   M.floors.forEach((F) => F.rooms.forEach((q) => codeRoom(F, q)));
   structure(null, null);
   furnishHouse();
+  kitchenCabinets();
   /* two gable dormers on the front slope of the roof */
   [
     [9, 3],
@@ -3267,7 +3313,7 @@ function clearJunctions(F) {
     w.open = kept;
   });
 }
-function randomBuild(seed) {
+function randomBuild(seed, opt = {}) {
   let a = seed >>> 0;
   const rnd = () => {
       a = (a + 0x6d2b79f5) >>> 0;
@@ -3278,14 +3324,27 @@ function randomBuild(seed) {
     },
     ri = (x, y) => x + Math.floor(rnd() * (y - x + 1)),
     pick = (A) => A[Math.floor(rnd() * A.length)];
-  const W = ri(24, 44),
-    D = ri(20, 32),
+  const W = opt.W || ri(24, 44),
+    D = opt.D || ri(20, 32),
     T6 = WALLT['2x6'],
     T4 = WALLT['2x4'],
     sr = rnd(),
     left = rnd() < 0.5,
     /* footprint: plain box, L (one back wing), T (centred wing), U (two wings round a courtyard), or a two-wing offset */
-    shape = sr < 0.4 ? 'R' : sr < 0.6 ? 'L' : sr < 0.75 ? 'T' : sr < 0.88 ? 'O' : W >= 28 ? 'U' : 'T',
+    shape =
+      opt.shape && !(opt.shape === 'U' && W < 28)
+        ? opt.shape
+        : sr < 0.4
+          ? 'R'
+          : sr < 0.6
+            ? 'L'
+            : sr < 0.75
+              ? 'T'
+              : sr < 0.88
+                ? 'O'
+                : W >= 28
+                  ? 'U'
+                  : 'T',
     wmax = Math.max(10, Math.min(W - 10, D - 6)),
     wings = [];
   if (shape === 'L') {
@@ -3328,8 +3387,8 @@ function randomBuild(seed) {
       b = P[(i + 1) % P.length];
     return Math.abs((p[0] - a[0]) * (b[1] - p[1]) - (p[1] - a[1]) * (b[0] - p[0])) > 1e-9;
   });
-  const stories = rnd() < 0.55 ? 2 : 1,
-    bsm = rnd() < 0.25,
+  const stories = opt.stories || (rnd() < 0.55 ? 2 : 1),
+    bsm = opt.bsm !== undefined ? opt.bsm : rnd() < 0.25,
     xs = ri(Math.max(10, Math.ceil(W * 0.35)), Math.floor(W * 0.5)),
     splitR = D >= 20 && rnd() < 0.6,
     ys = ri(13, Math.max(13, D - 6)),
@@ -3339,7 +3398,8 @@ function randomBuild(seed) {
     et = pick(ets),
     roofCol = pick(['#5c5c5c', '#6b4a3a', '#3f4a52', '#7a4b36', '#444']),
     roofT0 =
-      rnd() < 0.1
+      opt.roof ||
+      (rnd() < 0.1
         ? 'shed'
         : pick([
             'gable',
@@ -3357,9 +3417,9 @@ function randomBuild(seed) {
             'barrel',
             'aframe',
             'butterfly',
-          ]),
+          ])),
     roofT = L ? 'gable' : roofT0,
-    pitch = ri(4, 10),
+    pitch = opt.pitch || ri(4, 10),
     ext = () =>
       P.map((p, i) => ({
         a: [...p],
@@ -3377,7 +3437,7 @@ function randomBuild(seed) {
   /* garage: none, built into the house (front-left room), attached beside it, or detached on the lot */
   const gmode = (() => {
       const g = rnd();
-      const m = g < 0.25 ? 'none' : g < 0.5 ? 'built' : g < 0.75 ? 'attached' : 'detached';
+      const m = opt.garage || (g < 0.25 ? 'none' : g < 0.5 ? 'built' : g < 0.75 ? 'attached' : 'detached');
       return m === 'built' && !(stories === 2 || splitR || L) ? 'attached' : m;
     })(),
     gright = rnd() < 0.5,
@@ -4135,6 +4195,7 @@ function randomBuild(seed) {
         const pl = stairPolys(s),
           L = stairLandings(s);
         if (!inb(pl.flat()) || !inb(L.bot) || (M.floors[fi + 1] && !inb(L.top))) return false;
+        if (stairNearGarageDoor(fi, [...pl.flat(), ...L.bot])) return false;
         /* keep 3 ft clear of every door: the stair and its bottom landing on this floor, its top landing above */
         if (
           !loose &&
@@ -4571,13 +4632,105 @@ function randomBuild(seed) {
       tur = T;
     }
   }
+  /* curved bow: on some houses a round-ended sunroom bulges out of the back wall, built as a chain of short walls */
+  let bow = null;
+  if (!wings.length && rnd() < 0.5) {
+    const rear = floors[0].walls.find(
+      (w) =>
+        /^Exterior wall/.test(w.name || '') && Math.abs(w.a[1] - D) < 0.01 && Math.abs(w.b[1] - D) < 0.01,
+    );
+    if (rear) {
+      const lo = Math.min(rear.a[0], rear.b[0]),
+        hi = Math.max(rear.a[0], rear.b[0]),
+        bw = Math.min(hi - lo - 6, pick([10, 12, 14])),
+        bh = pick([4, 5, 6]);
+      if (bw >= 8) {
+        const mid = lo + (hi - lo) * pick([0.35, 0.5, 0.65]),
+          bx0b = Math.max(lo + 2, Math.min(hi - 2 - bw, mid - bw / 2)),
+          bx1b = bx0b + bw,
+          hit = (b) => bx1b + 1 > b.x0 && bx0b - 1 < b.x1 && D + bh + 1 > b.y0 && D - 1 < b.y1,
+          blocked =
+            (gar && hit(gar)) ||
+            (bz && hit(bz)) ||
+            floors.some((F, fi) =>
+              (F.decks || []).some((d) => hit(d) && !(fi === 0 && d.name === 'Rear deck')),
+            ) ||
+            (tur && Math.hypot(tur.c[0] - (bx0b + bx1b) / 2, tur.c[1] - D) < tur.r + bw / 2 + 2) ||
+            (M.paths || []).some((pa) =>
+              pa.pts.some((q) => q[0] > bx0b - 3 && q[0] < bx1b + 3 && q[1] > D - 2 && q[1] < D + bh + 3),
+            );
+        if (!blocked) {
+          const Rr = ((bw * bw) / 4 + bh * bh) / (2 * bh),
+            cx = (bx0b + bx1b) / 2,
+            cy = D + bh - Rr,
+            ang = Math.atan2(D - cy, bx0b - cx),
+            sw = -(2 * Math.atan2(bw / 2, Rr - bh)),
+            ns = Math.max(4, Math.round((Rr * Math.abs(sw)) / 4)),
+            pts = [];
+          for (let k = 0; k <= ns; k++) {
+            const a = ang + (sw * k) / ns;
+            pts.push([+(cx + Rr * Math.cos(a)).toFixed(3), +(cy + Rr * Math.sin(a)).toFixed(3)]);
+          }
+          pts[0] = [bx0b, D];
+          pts[ns] = [bx1b, D];
+          const bws = [];
+          for (let k = 0; k < ns; k++)
+            bws.push({
+              a: pts[k],
+              b: pts[k + 1],
+              t: T6,
+              sz: '2x6',
+              h: WH,
+              open: [],
+              ec,
+              et,
+              name: 'Bow wall ' + (k + 1),
+            });
+          for (let k = 0; k < ns; k++) {
+            if (k > 0) bws[k].a = bws[k - 1].b;
+            const w = bws[k];
+            if (Math.hypot(w.b[0] - w.a[0], w.b[1] - w.a[1]) >= 3.5)
+              w.open.push({t: 0.5, w: 3, kind: 'window', wt: pick(['dh', 'casement', 'fixed'])});
+          }
+          /* the back wall opens into the bow */
+          const dir = rear.b[0] > rear.a[0] ? 1 : -1,
+            tOf = (x) => (dir > 0 ? x - rear.a[0] : rear.a[0] - x) / Math.abs(rear.b[0] - rear.a[0]);
+          rear.open = rear.open.filter((o) => {
+            const u = tOf(cx) * 1;
+            const half = bw / 2 / Math.abs(rear.b[0] - rear.a[0]);
+            return Math.abs(o.t - u) > half + o.w / 2 / Math.abs(rear.b[0] - rear.a[0]);
+          });
+          rear.open.push({t: tOf(cx), w: 6, kind: 'door', dt: 'slider', name: 'Bow door'});
+          /* the bow takes the place of a rear deck */
+          floors[0].decks = (floors[0].decks || []).filter((d) => !(d.name === 'Rear deck' && hit(d)));
+          floors[0].walls.push(...bws);
+          floors[0].rooms.push({name: 'Sunroom', pts: [...pts.map((q) => [q[0], q[1]])]});
+          floors[0].foundations.push({
+            type: 'stem',
+            d: 3,
+            x0: bx0b - 0.5,
+            y0: D - 0.5,
+            x1: bx1b + 0.5,
+            y1: D + bh + 0.5,
+            name: 'Bow foundation',
+          });
+          const BR = rf(bx0b, D, bx1b, D + bh, 'Bow roof');
+          BR.type = 'hip';
+          BR.pitch = Math.min(pitch, 5);
+          BR.y0 = D + 0.25;
+          floors[0].roofs.push(BR);
+          bow = {x0: bx0b, x1: bx1b, h: bh};
+        }
+      }
+    }
+  }
   /* dormers: on some houses, one to three on the front slope of the main roof, sometimes mirrored on the back */
   let nDorm = 0;
   {
     const fi = floors.length - 1,
       F = floors[fi],
       R = (F.roofs || []).find((r) => /^Main roof/.test(r.name || '')),
-      dormOk = rnd() < 0.5;
+      dormOk = opt.dorm ? (rnd(), true) : rnd() < 0.5;
     if (dormOk && R && ['gable', 'hip', 'gambrel'].includes(R.type)) {
       const w = R.x1 - R.x0,
         d = R.y1 - R.y0,
@@ -4586,9 +4739,9 @@ function randomBuild(seed) {
         s1 = alongX ? R.x1 : R.y1,
         c0 = alongX ? R.y0 : R.x0,
         c1 = alongX ? R.y1 : R.x1,
-        want = ri(1, 3),
+        want = opt.dorm ? Math.min(opt.dorm, 3) : ri(1, 3),
         dw = pick([5, 6, 6, 8]),
-        sides = rnd() < 0.4 ? [0, 1] : [rnd() < 0.5 ? 0 : 1],
+        sides = opt.dorm ? [0] : rnd() < 0.4 ? [0, 1] : [rnd() < 0.5 ? 0 : 1],
         dtype = pick(['gable', 'gable', 'shed']),
         pts = (q) => (alongX ? [q[0], q[1]] : [q[1], q[0]]);
       sides.forEach((sd) => {
@@ -4620,9 +4773,11 @@ function randomBuild(seed) {
     }
   }
   landings();
+  stairRails();
   const struct = structure(cant, bz);
   M.floors.forEach((F) => F.rooms.forEach((q) => codeRoom(F, q)));
   furnishHouse();
+  kitchenCabinets();
   return {
     struct,
     W,
@@ -4638,6 +4793,7 @@ function randomBuild(seed) {
     cant: cant ? cant.side + ' ' + cant.c + ' ft' : '',
     dormers: nDorm,
     turret: !!tur,
+    bow: !!bow,
   };
 }
 /* ---------- 2D plan ---------- */
@@ -4770,6 +4926,12 @@ function draw2() {
       }),
     );
   tuOn(M.cf).forEach((o) => drawTur2(o, sel && sel.o === o));
+  (M.floors[M.cf].guides || []).forEach((g) => {
+    const on = sel && sel.o === g;
+    x2.setLineDash([10, 5]);
+    line(g.a, g.b, on ? '#2f6fdb' : '#d6336c', on ? 2 : 1);
+    x2.setLineDash([]);
+  });
   (M.floors[M.cf].rails || []).forEach((r) => {
     if (!r.hid) {
       const on = sel && sel.o === r;
@@ -4931,6 +5093,29 @@ function draw2() {
       x2.fillText(t, q[0], q[1] - 14);
     }
     status('Outline ' + fmt(L) + ' · click the first point, Enter or double-click to finish · Esc cancels');
+    return;
+  }
+  if (tool === 'wall' && dmode() === 'curve' && start) {
+    const P = cvEnd ? filletPts(start, cvEnd, cur) || [start, cvEnd, cur] : [start, cur];
+    x2.beginPath();
+    P.forEach((p, i) => {
+      const q = w2s(p);
+      i ? x2.lineTo(q[0], q[1]) : x2.moveTo(q[0], q[1]);
+    });
+    x2.strokeStyle = '#dc3c3c';
+    x2.lineWidth = Math.max(2, WALLT[wallSize] * sc);
+    x2.globalAlpha = 0.45;
+    x2.stroke();
+    x2.globalAlpha = 1;
+    [start, cvEnd].forEach((p) => p && circ(p, 0.25, '#dc3c3c'));
+    const len = P.reduce((a, p, i) => (i ? a + Math.hypot(p[0] - P[i - 1][0], p[1] - P[i - 1][1]) : 0), 0);
+    status(
+      cvEnd
+        ? 'Curved wall ' +
+            fmt(len) +
+            ' · the curve follows the angle at the corner · click the end point · Esc cancels'
+        : 'Curved wall: click the corner point, then the end point · Esc cancels',
+    );
     return;
   }
   if ((tool === 'wall' && start) || (tool === 'room' && roomPts.length === 1)) {
@@ -5342,7 +5527,9 @@ function well3(s, fi) {
 /* put a handrail on each side of a stair that is not against a wall */
 function autoRail(s, walls) {
   let l = false,
-    r = false;
+    r = false,
+    nl = 0,
+    nr = 0;
   stairParts(s).forEach((p) => {
     if (p.k === 'spiral') {
       l = true;
@@ -5351,10 +5538,38 @@ function autoRail(s, walls) {
     if (p.k !== 'run') return;
     [0.15, 0.5, 0.85].forEach((f) => {
       if (!wallHit(walls, frP(p, p.len * f, p.w / 2 + 0.25), 0.02)) l = true;
+      else nl++;
       if (!wallHit(walls, frP(p, p.len * f, -p.w / 2 - 0.25), 0.02)) r = true;
+      else nr++;
     });
   });
+  /* a stair always has at least one handrail (IRC R311.7.8): enclosed on both sides, rail the side with less wall */
+  if (!l && !r) {
+    if (nl < nr) l = true;
+    else r = true;
+  }
   s.rl = Object.assign({}, s.rl, {l, r});
+}
+/* give every stair in the building its handrails */
+function stairRails() {
+  M.floors.forEach((F) => (F.stairs || []).forEach((st) => autoRail(st, F.walls)));
+}
+/* a stair inside a garage keeps 20 ft from the garage door (vehicle path) */
+function stairNearGarageDoor(fi, pts, d = 20) {
+  const F = M.floors[fi];
+  if (!F) return false;
+  const gar = F.rooms.filter((r) => /^Garage/.test(r.name || '') && !r.hid);
+  if (!gar.length || !pts.some((p) => gar.some((r) => inside(p, r.pts)))) return false;
+  const doors = [];
+  F.walls.forEach((w) =>
+    w.open.forEach((o) => {
+      if (o.kind === 'door' && o.dt === 'garage') {
+        const g = geom(w);
+        doors.push([g.ax + g.d[0] * g.L * o.t, g.ay + g.d[1] * g.L * o.t]);
+      }
+    }),
+  );
+  return pts.some((p) => doors.some((q) => Math.hypot(p[0] - q[0], p[1] - q[1]) < d));
 }
 function stairPolys(s) {
   return stairParts(s).map((p) => {
@@ -5765,7 +5980,7 @@ function drawSel() {
     sel.o.pts.forEach(handle);
   } else if (sel.t === 'stair') stairPolys(sel.o).forEach((Q) => poly(Q, null, A));
   else if (sel.t === 'po') handle(sel.o.c);
-  else if (sel.t === 'rl' || sel.t === 'bm' || sel.t === 'cb' || sel.t === 'ms') {
+  else if (sel.t === 'rl' || sel.t === 'bm' || sel.t === 'cb' || sel.t === 'ms' || sel.t === 'gl') {
     handle(sel.o.a);
     handle(sel.o.b);
   } else if (sel.t === 'dk') {
@@ -5859,7 +6074,8 @@ function pick(x, y) {
     for (const k of ['a', 'b']) if (near(sel.o[k])) return begin('pts', refsAt(sel.o[k]));
   if (sel && sel.t === 'room') for (const p of sel.o.pts) if (near(p)) return begin('pts', refsAt(p));
   if (sel && sel.t === 'path') for (const p of sel.o.pts) if (near(p)) return begin('pts', [p]);
-  if (sel && sel.t === 'bm') for (const k of ['a', 'b']) if (near(sel.o[k])) return begin('pts', [sel.o[k]]);
+  if (sel && (sel.t === 'bm' || sel.t === 'gl'))
+    for (const k of ['a', 'b']) if (near(sel.o[k])) return begin('pts', [sel.o[k]]);
   /* a selected deck platform can be reshaped from any of its four corners */
   if (sel && sel.t === 'dk' && !sel.o.hid) {
     const Q = deckCorners(sel.o);
@@ -5916,6 +6132,14 @@ function pick(x, y) {
       }
     }
   }
+  for (const D of M.floors[M.cf].decks || [])
+    if (!D.hid)
+      for (const p of deckPosts(D, M.cf))
+        if (Math.hypot(raw[0] - p[0], raw[1] - p[1]) < Math.max(0.45, tol)) {
+          const o = adoptDeckPost(D, M.cf, p);
+          sel = {t: 'po', o};
+          return begin('pts', [o.c]);
+        }
   for (const o of (M.floors[M.cf].posts || []).slice().reverse())
     if (!o.hid && Math.hypot(raw[0] - o.c[0], raw[1] - o.c[1]) < Math.max(0.45, tol)) {
       sel = {t: 'po', o};
@@ -5960,6 +6184,12 @@ function pick(x, y) {
       return begin('pts', [c.a, c.b]);
     }
   }
+  for (const r of M.floors[M.cf].guides || []) {
+    if (segDist(raw, r.a, r.b) < Math.max(0.3, tol * 0.5)) {
+      sel = {t: 'gl', o: r};
+      return begin('pts', [r.a, r.b]);
+    }
+  }
   for (const r of M.floors[M.cf].beams || []) {
     if (r.hid) continue;
     if (segDist(raw, r.a, r.b) < Math.max(0.5, tol * 0.6)) {
@@ -5990,10 +6220,11 @@ function pick(x, y) {
     }
   }
   if (M.cf === 0)
-    for (const r of M.floors[0].foundations || []) {
+    for (const r of (M.floors[0].foundations || []).concat(cantFootings())) {
       if (r.hid) continue;
       if (r.type === 'sono') {
         if (Math.hypot(raw[0] - (r.x0 + r.x1) / 2, raw[1] - (r.y0 + r.y1) / 2) <= r.pad / 24 + e2) {
+          adoptFnd(r);
           sel = {t: 'fnd', o: r};
           return begin('roof', null, {o: r, orig: [r.x0, r.y0, r.x1, r.y1]});
         }
@@ -6123,6 +6354,7 @@ function delSel() {
     else if (s.t === 'fnd') {
       const A = M.floors[0].foundations;
       A.splice(A.indexOf(s.o), 1);
+      if (s.o.from) (M.floors[0].noAuto = M.floors[0].noAuto || []).push(s.o.from);
     } else if (s.t === 'dm') {
       const A = M.floors[dormFi(s.o)].dormers;
       A.splice(A.indexOf(s.o), 1);
@@ -6140,6 +6372,9 @@ function delSel() {
     } else if (s.t === 'cb') {
       const A = M.floors[M.cf].cabs;
       A.splice(A.indexOf(s.o), 1);
+    } else if (s.t === 'gl') {
+      const A = M.floors[M.cf].guides;
+      A.splice(A.indexOf(s.o), 1);
     } else if (s.t === 'rl') {
       const A = M.floors[M.cf].rails;
       A.splice(A.indexOf(s.o), 1);
@@ -6147,6 +6382,7 @@ function delSel() {
       const F = M.floors.find((F) => (F[s.t === 'po' ? 'posts' : 'beams'] || []).includes(s.o)),
         A = F[s.t === 'po' ? 'posts' : 'beams'];
       A.splice(A.indexOf(s.o), 1);
+      if (s.t === 'po' && s.o.from) (F.noAutoP = F.noAutoP || []).push(s.o.from);
     } else if (s.t === 'dk') {
       const A = M.floors[M.cf].decks;
       A.splice(A.indexOf(s.o), 1);
@@ -6170,7 +6406,49 @@ function placeCalc(p) {
     L = geom(best.w).L;
   if (L < wd + 0.5) return null;
   const half = wd / 2 / L;
-  return {w: best.w, wd, t: Math.max(half, Math.min(1 - half, best.h[1]))};
+  let t = Math.max(half, Math.min(1 - half, best.h[1]));
+  /* Snapping setting: Center = middle of the wall or of the free gap between openings;
+     Corner / Edge = flush to the inside of the wall ends (Edge also to neighbouring openings) */
+  if (snapMode !== 'off') {
+    const w = best.w,
+      ends = [w.a, w.b].map((e) => {
+        let ins = 0;
+        M.walls.forEach((w2) => {
+          if (w2 === w || w2.hid) return;
+          if ([w2.a, w2.b].some((q) => Math.hypot(q[0] - e[0], q[1] - e[1]) < 0.1))
+            ins = Math.max(ins, w2.t / 2);
+        });
+        return ins;
+      }),
+      ops = w.open.map((o) => [o.t * L - o.w / 2, o.t * L + o.w / 2]).sort((a, b) => a[0] - b[0]),
+      cand = [];
+    if (snapMode === 'center') {
+      cand.push(L / 2);
+      let g0 = 0;
+      [...ops, [L, L]].forEach((o) => {
+        if (o[0] - g0 >= wd) cand.push((g0 + o[0]) / 2);
+        g0 = Math.max(g0, o[1]);
+      });
+    } else {
+      cand.push(ends[0] + wd / 2, L - ends[1] - wd / 2);
+      if (snapMode === 'edge')
+        ops.forEach((o) => {
+          cand.push(o[1] + wd / 2, o[0] - wd / 2);
+        });
+    }
+    const c0 = best.h[1] * L;
+    let bc = null,
+      bd = 10 / sc;
+    cand.forEach((c) => {
+      if (c - wd / 2 < -1e-6 || c + wd / 2 > L + 1e-6) return;
+      if (Math.abs(c - c0) < bd) {
+        bd = Math.abs(c - c0);
+        bc = c;
+      }
+    });
+    if (bc !== null) t = bc / L;
+  }
+  return {w: best.w, wd, t};
 }
 function place(p) {
   const r = placeCalc(p);
@@ -6533,6 +6811,7 @@ var snapGuide = null,
   prevW = null,
   WALLT = {'2x4': 0.375, '2x6': 0.5417},
   wallSize = '2x4',
+  guideOn = false,
   doorType = 'hinged',
   windowType = 'dh',
   WINN = {dh: 'Double Hung', casement: 'Casement', awning: 'Awning', fixed: 'Fixed', slider: 'Slider'},
@@ -6784,19 +7063,35 @@ function showFlyWall(on) {
         (k) =>
           '<button data-sz=' +
           k +
-          (k === wallSize ? ' class=on' : '') +
+          (k === wallSize && !guideOn ? ' class=on' : '') +
           '>' +
           k +
           ' · ' +
           (k === '2x4' ? '4½' : '6½') +
           '″</button>',
       )
-      .join('');
+      .join('') +
+    '<button data-gl=1' +
+    (guideOn ? ' class=on' : '') +
+    ' title="Draw invisible reference lines (shown in 2D only)">Guide line' +
+    (guideOn ? ' ✓' : '') +
+    '</button>';
   f.style.display = 'block';
   f.style.left = (vert ? r.right + 6 : r.left) + 'px';
   f.style.top = (vert ? r.top : r.bottom + 6) + 'px';
 }
 $('fly').onclick = (e) => {
+  if (e.target.closest('[data-gl]')) {
+    guideOn = !guideOn;
+    showFly(false);
+    status(
+      guideOn
+        ? 'Guide line on: walls you draw become 2D-only reference lines (not shown in 3D or the material list).'
+        : 'Guide line off: drawing real walls.',
+    );
+    draw2();
+    return;
+  }
   const cbt = e.target.closest('[data-cbt]');
   if (cbt) {
     showFly(false);
@@ -6948,6 +7243,7 @@ $('fly').onclick = (e) => {
   const b = e.target.closest('[data-sz]');
   if (!b) return;
   wallSize = b.dataset.sz;
+  guideOn = false;
   showFly(false);
   status(
     'Wall size ' + wallSize + '. Click points to chain walls. Shift = straight, double-click/Esc = stop.',
@@ -7035,29 +7331,19 @@ function drawAngle(sa) {
 function connPt(c) {
   return start;
 }
-function measEdge(x, y) {
-  const p = s2w(x, y);
-  let best = null,
-    bd = 1e9;
-  M.walls.forEach((w) => {
-    if (w.hid) return;
-    const d = hit(p, w)[0];
-    if (d < w.t / 2 + 0.6 && d < bd) {
-      bd = d;
-      best = w;
-    }
-  });
-  if (!best) return null;
-  const g = geom(best),
-    h = best.t / 2,
-    side = (p[0] - g.ax) * g.n[0] + (p[1] - g.ay) * g.n[1] >= 0 ? 1 : -1,
-    A = [g.ax + g.n[0] * side * h, g.ay + g.n[1] * side * h],
-    s = Math.max(0, Math.min(g.L, (p[0] - A[0]) * g.d[0] + (p[1] - A[1]) * g.d[1])),
-    ss = s < 0.4 ? 0 : g.L - s < 0.4 ? g.L : s;
-  return [A[0] + g.d[0] * ss, A[1] + g.d[1] * ss];
-}
 /* reshaping or moving a deck platform with Select snaps the same way the Deck tool does (the Wall snap setting) */
+/* guide lines: 2D-only reference lines kept per floor */
+const GL = () => M.floors[M.cf].guides || (M.floors[M.cf].guides = []);
 function snapV(x, y) {
+  /* dragging a measurement's end snaps the way the Measure tool does */
+  if (tool === 'select' && drag && drag.mend) {
+    tool = 'measure';
+    try {
+      return snapV0(x, y);
+    } finally {
+      tool = 'select';
+    }
+  }
   if (tool === 'select' && drag && (drag.k === 'dkc' || (drag.k === 'roof' && sel && sel.t === 'dk'))) {
     tool = 'deck';
     try {
@@ -7072,7 +7358,41 @@ var snapFlush = null,
   startFl = null;
 /* Corner snapping: the points clicked are the OUTSIDE corners, so each wall's centerline sits half a wall inside them
    and consecutive walls meet at the outside corner */
-var wallChain = null;
+var wallChain = null,
+  cvEnd = null;
+/* three points A, B, C make a corner at B; the curve rounds that corner with an arc tangent to both legs, so its
+   sweep is 180 degrees minus the angle ABC (a right-angle corner gives a 90 degree curve). The arc starts and ends
+   min(|BA|, |BC|) from B; any longer leg stays straight. Returns the points from A to C, or null for a straight line. */
+function filletPts(A, B, C) {
+  const la = Math.hypot(A[0] - B[0], A[1] - B[1]),
+    lc = Math.hypot(C[0] - B[0], C[1] - B[1]);
+  if (la < 0.3 || lc < 0.3) return null;
+  const u1 = [(A[0] - B[0]) / la, (A[1] - B[1]) / la],
+    u2 = [(C[0] - B[0]) / lc, (C[1] - B[1]) / lc],
+    th = Math.acos(Math.max(-1, Math.min(1, u1[0] * u2[0] + u1[1] * u2[1])));
+  /* nearly straight (no bend to round) or nearly folded back on itself */
+  if (th > Math.PI - 0.05 || th < 0.17) return null;
+  const t = Math.min(la, lc),
+    r = t * Math.tan(th / 2),
+    bis = [u1[0] + u2[0], u1[1] + u2[1]],
+    bl = Math.hypot(bis[0], bis[1]),
+    d = r / Math.sin(th / 2),
+    c = [B[0] + (bis[0] / bl) * d, B[1] + (bis[1] / bl) * d],
+    T1 = [B[0] + u1[0] * t, B[1] + u1[1] * t],
+    T2 = [B[0] + u2[0] * t, B[1] + u2[1] * t],
+    a0 = Math.atan2(T1[1] - c[1], T1[0] - c[0]),
+    cr = (T1[0] - c[0]) * (T2[1] - c[1]) - (T1[1] - c[1]) * (T2[0] - c[0]),
+    sw = (cr > 0 ? 1 : -1) * (Math.PI - th),
+    n = Math.max(4, Math.ceil(Math.abs(sw) / (Math.PI / 18)), Math.ceil((r * Math.abs(sw)) / 3)),
+    out = [];
+  if (la - t > 0.05) out.push([A[0], A[1]]);
+  for (let k = 0; k <= n; k++)
+    out.push([c[0] + r * Math.cos(a0 + (sw * k) / n), c[1] + r * Math.sin(a0 + (sw * k) / n)]);
+  out[la - t > 0.05 ? 1 : 0] = T1;
+  out[out.length - 1] = T2;
+  if (lc - t > 0.05) out.push([C[0], C[1]]);
+  return out;
+}
 function chainWall(nw, pa, pb) {
   const h = nw.t / 2,
     nrm = (p, q) => {
@@ -7141,25 +7461,27 @@ function flushPt(fl, o, t) {
 function snapV0(x, y) {
   const c = s2w(x, y);
   snapPt = null;
-  if (tool === 'select' && drag && drag.mend) {
-    const e = measEdge(x, y);
-    snapPt = e;
-    return e || c;
-  }
-  if (tool === 'measure') {
-    const e = measEdge(x, y);
-    snapPt = e;
-    return e || c;
-  }
   snapGuide = null;
   snapKind = '';
   /* a cabinet is one object placed where the cursor is: no grid or corner snapping */
   if (tool === 'cabinet') return s2r(x, y);
   if (
     snapMode === 'off' &&
-    ['wall', 'room', 'path', 'roof', 'foundation', 'deck', 'cabinet', 'stairs', 'fsys', 'postbeam'].includes(
-      tool,
-    )
+    [
+      'wall',
+      'room',
+      'path',
+      'roof',
+      'foundation',
+      'deck',
+      'cabinet',
+      'stairs',
+      'fsys',
+      'postbeam',
+      'measure',
+      'furn',
+      'dormer',
+    ].includes(tool)
   )
     return c;
   if (
@@ -7173,6 +7495,8 @@ function snapV0(x, y) {
     tool !== 'stairs' &&
     tool !== 'fsys' &&
     tool !== 'postbeam' &&
+    tool !== 'furn' &&
+    tool !== 'dormer' &&
     tool !== 'cabinet'
   )
     return c;
@@ -7183,6 +7507,11 @@ function snapV0(x, y) {
   if (cstart) P.push(cstart);
   roomPts.forEach((p) => P.push(p));
   if (mA) P.push(mA);
+  (M.floors[M.cf].guides || []).forEach((g) => {
+    const m = [(g.a[0] + g.b[0]) / 2, (g.a[1] + g.b[1]) / 2];
+    m.k = 'Guide midpoint';
+    P.push(g.a, g.b, m);
+  });
   const mv = tool === 'wall' && drag && drag.refs ? drag.refs : null,
     ch = tool === 'wall' && start && snapMode === 'corner' && wallChain ? wallChain.items : null;
   if (ch)
@@ -7220,7 +7549,9 @@ function snapV0(x, y) {
       if (mv && (mv.includes(w.a) || mv.includes(w.b))) return;
       if (ch && ch.some((it) => it.w === w)) return;
       const g = geom(w),
-        h = w.t / 2;
+        h = w.t / 2,
+        /* a face point that lies inside another wall is hidden (a joint), so it is no real corner or edge */
+        buried = (q, tol) => F.walls.some((w2) => w2 !== w && !w2.hid && hit(q, w2)[0] < w2.t / 2 + tol);
       if (snapMode === 'center') {
         P.push(w.a, w.b);
         const md = [(w.a[0] + w.b[0]) / 2, (w.a[1] + w.b[1]) / 2];
@@ -7231,6 +7562,7 @@ function snapV0(x, y) {
           for (const k of [h, -h]) {
             const q = [g.ax + g.d[0] * s + g.n[0] * k, g.ay + g.d[1] * s + g.n[1] * k],
               dn = s === 0 ? 1 : -1;
+            if (buried(q, 0.01)) continue;
             /* remember which way the wall's body lies so a new wall can sit flush with this outside corner */
             q.body = [g.ax + g.d[0] * s + g.d[0] * dn * h, g.ay + g.d[1] * s + g.d[1] * dn * h];
             P.push(q);
@@ -7241,7 +7573,8 @@ function snapV0(x, y) {
             px = (x - off.x) / sc - A[0],
             py = (off.y - y) / sc - A[1],
             s = Math.max(0, Math.min(g.L, px * g.d[0] + py * g.d[1]));
-          P.push([A[0] + g.d[0] * s, A[1] + g.d[1] * s]);
+          const q = [A[0] + g.d[0] * s, A[1] + g.d[1] * s];
+          if (!buried(q, -0.02)) P.push(q);
         }
       }
     });
@@ -7340,6 +7673,28 @@ function snapV0(x, y) {
       if (fo) return flushPt(snapFlush, fo, drag && sel && sel.t === 'wall' ? sel.o.t : WALLT[wallSize]);
     }
     return [best[0], best[1]];
+  }
+  if (snapMode === 'center' && tool !== 'cabinet') {
+    /* pointer on a wall's edge or body: snap onto that wall's centerline */
+    const tol = 8 / sc;
+    let bw = null,
+      bq = null,
+      bdist = 1e9;
+    const F = M.floors[M.cf];
+    F.walls.forEach((w) => {
+      if (w.hid || (drag && drag.refs && (drag.refs.includes(w.a) || drag.refs.includes(w.b)))) return;
+      const [d, t] = hit(c, w);
+      if (d <= w.t / 2 + tol && d < bdist) {
+        bdist = d;
+        bw = w;
+        bq = [w.a[0] + (w.b[0] - w.a[0]) * t, w.a[1] + (w.b[1] - w.a[1]) * t];
+      }
+    });
+    if (bw) {
+      snapPt = [bq[0], bq[1]];
+      snapKind = 'Wall center';
+      return bq;
+    }
   }
   if (tool === 'cabinet') {
     const q = cabFaceSnap(c);
@@ -7548,6 +7903,7 @@ function drawFnds() {
     if (g) drawDorm2(g, false, true);
   }
   drawPrebuild();
+  drawHouseGhost();
   if (tool === 'door' || tool === 'window') drawOpenGhost();
   if (tool === 'postbeam') {
     x2.save();
@@ -7562,6 +7918,21 @@ function drawFnds() {
         fmt(Math.hypot(cur[0] - pmStart[0], cur[1] - pmStart[1])),
       );
     } else circ(cur, 0.3, '#b98f5a', '#3d2c18', 1);
+    x2.restore();
+  }
+  if (tool === 'stairs') {
+    const gs = newStair(cur);
+    x2.save();
+    x2.globalAlpha = 0.55;
+    stairPolys(gs).forEach((Q) => poly(Q, 'rgba(47,111,219,.25)', '#2f6fdb'));
+    x2.restore();
+  }
+  if (tool === 'foundation' && fdnType === 'sono') {
+    const gr = newSono(cur);
+    x2.save();
+    x2.globalAlpha = 0.55;
+    circ(cur, gr.pad / 24, 'rgba(120,120,110,.2)', '#8a8a80', 1.2, [2, 3]);
+    circ(cur, gr.dia / 24, 'rgba(150,150,140,.5)', '#6f6f66', 1.6);
     x2.restore();
   }
   if (tool === 'furn' && furnPick) {
@@ -7736,7 +8107,7 @@ function found3() {
         cx = (r.x0 + r.x1) / 2,
         cy = (r.y0 + r.y1) / 2,
         m = mat(r.color || '#9a9a95', r.tex || 'none'),
-        tag = r.auto ? null : {t: 'fnd', o: r, fi: 0},
+        tag = {t: 'fnd', o: r, fi: 0, autoF: !!r.auto},
         add = (sx, sy, sz, x, y, z) => {
           const g = new THREE.BoxGeometry(sx, sy, sz),
             b = new THREE.Mesh(g, m);
@@ -8257,22 +8628,69 @@ function deckRailEdges(D, i) {
 function deckHt(D, i) {
   return deckTop(D, i) - 0.125 - (FJD[D.sz] || FJD['2x8']);
 }
+/* deck posts are automatic until picked: a picked one becomes a real, editable post on that floor */
 function deckPosts(D, i) {
+  const F = M.floors[i],
+    near = (q, p) => Math.abs(q[0] - p[0]) < 0.3 && Math.abs(q[1] - p[1]) < 0.3;
+  return deckPostsAll(D, i).filter(
+    (p) =>
+      !(F.posts || []).some((o) => o.from && near(o.from, p)) && !(F.noAutoP || []).some((q) => near(q, p)),
+  );
+}
+function adoptDeckPost(D, i, p) {
+  const o = {
+    c: [p[0], p[1]],
+    sz: '6x6',
+    h: deckHt(D, i),
+    el: -ZBof(i),
+    color: '#6b4f2e',
+    name: 'Deck post',
+    from: [p[0], p[1]],
+  };
+  (M.floors[i].posts = M.floors[i].posts || []).push(o);
+  return o;
+}
+function deckPostsAll(D, i) {
   const h = deckHt(D, i),
     q = 0.25,
     out = [];
   if (h < 0.25) return out;
   const sp = (a, b) => {
-      const n = Math.max(1, Math.ceil((b - a) / 6)),
+      const n = Math.max(1, Math.ceil((b - a) / 8)),
         r = [];
       for (let k = 0; k <= n; k++) r.push(a + ((b - a) * k) / n);
       return r;
     },
     xs = sp(D.x0 + q, D.x1 - q),
-    ys = sp(D.y0 + q, D.y1 - q);
+    ys = sp(D.y0 + q, D.y1 - q),
+    /* an edge that touches a building wall is carried by a ledger on the wall: no posts or footings there */
+    F = M.floors[i],
+    touch = (horiz, v, lo, hi) =>
+      !!F &&
+      F.walls.some((w) => {
+        if (w.hid) return false;
+        const along = horiz ? Math.abs(w.a[1] - w.b[1]) < 1e-3 : Math.abs(w.a[0] - w.b[0]) < 1e-3,
+          pos = horiz ? w.a[1] : w.a[0],
+          s0 = horiz ? Math.min(w.a[0], w.b[0]) : Math.min(w.a[1], w.b[1]),
+          s1 = horiz ? Math.max(w.a[0], w.b[0]) : Math.max(w.a[1], w.b[1]);
+        return along && Math.abs(pos - v) <= w.t / 2 + 0.35 && Math.min(s1, hi) - Math.max(s0, lo) >= 1.5;
+      }),
+    tx0 = touch(false, D.x0, D.y0, D.y1),
+    tx1 = touch(false, D.x1, D.y0, D.y1),
+    ty0 = touch(true, D.y0, D.x0, D.x1),
+    ty1 = touch(true, D.y1, D.x0, D.x1);
   xs.forEach((x, a) =>
     ys.forEach((y, b) => {
-      if (a === 0 || a === xs.length - 1 || b === 0 || b === ys.length - 1) out.push([x, y]);
+      const ex = a === 0 || a === xs.length - 1 || b === 0 || b === ys.length - 1;
+      if (
+        !ex ||
+        (a === 0 && tx0) ||
+        (a === xs.length - 1 && tx1) ||
+        (b === 0 && ty0) ||
+        (b === ys.length - 1 && ty1)
+      )
+        return;
+      out.push([x, y]);
     }),
   );
   return out;
@@ -9487,6 +9905,7 @@ function deck3(D, i, tag) {
     const m = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.5, ph), pm);
     m.position.set(p[0], p[1], ph / 2);
     add(m);
+    m.userData.sel = {t: 'po', fi: i, autoP: {D, p}};
   });
   if (D.rail && !M.framing) {
     const rh = (D.rh || 36) / 12,
@@ -9817,13 +10236,14 @@ function cancelAct0() {
     setTool('select');
     return;
   }
-  if (tool === 'dormer' || tool === 'prebuild') {
+  if (tool === 'dormer' || tool === 'prebuild' || tool === 'prebuildhouse') {
     setTool('select');
     return;
   }
   if (start || roomPts.length || mA || rstart || fstart || jstart || dstart || cstart || pmStart) {
     pmStart = null;
     start = null;
+    cvEnd = null;
     roomPts = [];
     mA = null;
     rstart = null;
@@ -9878,7 +10298,33 @@ const c2Down = (e) => {
   if (!(nudged && tool === 'wall' && start)) cur = shiftSnap(snapV(x, y), e, x, y);
   if (isPoly() && roomPts.length) cur = polyLock(cur);
   nudged = false;
-  if (tool === 'wall' && dmode() === 'box') {
+  if (tool === 'wall' && dmode() === 'curve') {
+    if (!start) start = [...cur];
+    else if (!cvEnd) {
+      if (Math.hypot(cur[0] - start[0], cur[1] - start[1]) > 0.5) cvEnd = [...cur];
+    } else {
+      const P = filletPts(start, cvEnd, cur) || [start, cvEnd, [...cur]];
+      mut(() => {
+        let prev = null;
+        for (let i = 0; i < P.length - 1; i++) {
+          const nw = {
+            a: prev ? prev.b : [...P[i]],
+            b: [...P[i + 1]],
+            t: WALLT[wallSize],
+            sz: wallSize,
+            h: WH,
+            open: [],
+          };
+          M.walls.push(nw);
+          prev = nw;
+        }
+        wallChain = null;
+        prevW = prev;
+      });
+      start = null;
+      cvEnd = null;
+    }
+  } else if (tool === 'wall' && dmode() === 'box') {
     if (!start) start = [...cur];
     else if (Math.abs(cur[0] - start[0]) > 0.1 && Math.abs(cur[1] - start[1]) > 0.1) {
       const Q = boxPts(start, cur),
@@ -9900,8 +10346,11 @@ const c2Down = (e) => {
         h: WH,
         open: [],
       }));
-      mut(() => ws.forEach((w) => M.walls.push(w)));
-      prevW = ws[3];
+      if (guideOn) mut(() => ws.forEach((w) => GL().push({a: w.a, b: w.b})));
+      else {
+        mut(() => ws.forEach((w) => M.walls.push(w)));
+        prevW = ws[3];
+      }
       start = null;
     }
   } else if (tool === 'room' && dmode() === 'box' && roomPts.length === 1) {
@@ -9927,15 +10376,19 @@ const c2Down = (e) => {
       startFl = null;
     }
     if (start && Math.hypot(cur[0] - start[0], cur[1] - start[1]) > 0.1) {
-      const a = connPt(cur),
+      const a = guideOn ? [...start] : connPt(cur),
         b = cur,
         nw = {a: [...a], b: [...b], t: WALLT[wallSize], sz: wallSize, h: WH, open: []};
-      mut(() => {
-        if (snapMode === 'corner') chainWall(nw, rawA || a, rawB || b);
-        else wallChain = null;
-        M.walls.push(nw);
-      });
-      prevW = nw;
+      if (guideOn) {
+        mut(() => GL().push({a: [...a], b: [...b]}));
+        status('Guide line added. Select it and press Delete to remove it.');
+      } else
+        mut(() => {
+          if (snapMode === 'corner') chainWall(nw, rawA || a, rawB || b);
+          else wallChain = null;
+          M.walls.push(nw);
+        });
+      if (!guideOn) prevW = nw;
     }
     start = [...(rawB || cur)];
   } else if (tool === 'window' && windowType === 'skylight') placeSky(cur);
@@ -9955,6 +10408,8 @@ const c2Down = (e) => {
     else fstart = [...cur];
   } else if (tool === 'prebuild') {
     if (pbPlan) pbPlace(cur);
+  } else if (tool === 'prebuildhouse') {
+    if (phData) phPlace(cur);
   } else if (tool === 'furn') {
     if (furnPick) {
       const D = FURN[furnPick],
@@ -10053,6 +10508,8 @@ const c2Down = (e) => {
       stairSnap(ns);
       if (!stairClear(ns, M.cf))
         status('Not enough room nearby for 3 ft clear of walls at the top and bottom of the stair.');
+      else if (stairNearGarageDoor(M.cf, stairPolys(ns).flat()))
+        status('Warning: stairs in a garage should be at least 20 ft from the garage door.');
       autoRail(ns, M.walls);
       M.stairs.push(ns);
     });
@@ -11806,7 +12263,9 @@ function fsys(F) {
   return Object.assign({on: M.floors.indexOf(F) > 0, sz: '2x10', oc: 16, dir: 'auto'}, F.fs);
 }
 function fsRegion(F) {
-  const b = bb(F.walls);
+  /* a generated house: the floor follows the house walls only, never a detached garage, breezeway or bow */
+  const ew = F.walls.filter((w) => /^Exterior wall/.test(w.name || '')),
+    b = bb(ew.length >= 3 ? ew : F.walls);
   if (!b) return null;
   const e = Math.max(0.2, ...F.walls.map((w) => w.t)) / 2;
   return Object.assign({}, fsys(F), {x0: b.x0 - e, y0: b.y0 - e, x1: b.x1 + e, y1: b.y1 + e});
@@ -11972,12 +12431,30 @@ function cantPosts(i, R) {
   return out;
 }
 /* the footings under those posts: SonoTube piers, drawn with the foundations */
+/* an automatic footing becomes a real, editable one when it is picked: it remembers where it came from so the
+   automatic one stays away, and deleting it leaves that spot empty */
+function ftSkip(x, y) {
+  const F = M.floors[0],
+    near = (q) => Math.abs(q[0] - x) < 0.3 && Math.abs(q[1] - y) < 0.3;
+  return (
+    (F.noAuto || []).some(near) ||
+    (F.foundations || []).some((r) => r.type === 'sono' && r.from && near(r.from))
+  );
+}
+function adoptFnd(r) {
+  if (!r.auto) return r;
+  delete r.auto;
+  r.from = [(r.x0 + r.x1) / 2, (r.y0 + r.y1) / 2];
+  (M.floors[0].foundations = M.floors[0].foundations || []).push(r);
+  return r;
+}
 function cantFootings() {
   const out = [];
   M.floors.forEach((F, i) =>
     (F.fsys || []).forEach((R) => {
       if (R.hid) return;
       cantPosts(i, R).forEach((p) => {
+        if (ftSkip(p.x, p.y)) return;
         if (
           out.some((r) => Math.abs((r.x0 + r.x1) / 2 - p.x) < 0.3 && Math.abs((r.y0 + r.y1) / 2 - p.y) < 0.3)
         )
@@ -11994,7 +12471,8 @@ function cantFootings() {
       ? 0
       : (F.decks || []).forEach((D) => {
           if (D.hid) return;
-          deckPosts(D, i).forEach((p) => {
+          deckPostsAll(D, i).forEach((p) => {
+            if (ftSkip(p[0], p[1])) return;
             const r = {type: 'sono', d: FDEF.sono, dia: 12, pad: 24, padT: 8, auto: true};
             sonoBox(r, p[0], p[1]);
             out.push(r);
@@ -14727,7 +15205,25 @@ c3.addEventListener('pointerup', (e) => {
           x.object.userData.sel && x.object.userData.sel.t === 'dm' && x.distance <= hits[0].distance + 6,
       ) || hits[0];
   const u = h && h.object.userData.sel;
-  if (u && u.auto) {
+  if (u && u.autoP) {
+    setTool('select');
+    mut(() => {
+      const o = adoptDeckPost(u.autoP.D, u.fi, u.autoP.p);
+      if (allAt === M.cf) allAt = u.fi;
+      if (roofAt === M.cf) roofAt = u.fi;
+      M.cf = u.fi;
+      sel = {t: 'po', o};
+    });
+  } else if (u && u.autoF) {
+    setTool('select');
+    mut(() => {
+      adoptFnd(u.o);
+      if (allAt === M.cf) allAt = 0;
+      if (roofAt === M.cf) roofAt = 0;
+      M.cf = 0;
+      sel = {t: 'fnd', o: u.o};
+    });
+  } else if (u && u.auto) {
     setTool('select');
     mut(() => {
       const R = fsRegion(u.F);
@@ -14853,8 +15349,10 @@ document.querySelectorAll('[data-t]').forEach(
     }),
 );
 function setTool(t) {
+  if (t !== 'wall') guideOn = false;
   tool = t;
   start = null;
+  cvEnd = null;
   roomPts = [];
   sel = null;
   drag = null;
@@ -14887,6 +15385,7 @@ function setTool(t) {
     }
   });
   document.querySelectorAll('[data-t]').forEach((b) => b.classList.toggle('on', b.dataset.t === t));
+  updDrawBtn();
   status(
     {
       wall: 'Wall tool: click points to chain walls. Shift = straight, double-click/Esc = stop.',
@@ -14905,7 +15404,9 @@ function setTool(t) {
         'Dormer / Turret: pick Dormer (click on a roof) or Turret (click anywhere to place a round tower) from the menu. Right-click or Esc stops.',
       furn: 'Furniture: click to place, Q rotates, right-click stops.',
       prebuild:
-        'Prebuild: move over the plan and click to place the room. Q rotates it. Right-click or Esc stops.',
+        'Prebuild Room: move over the plan and click to place the room. Q rotates it. Right-click or Esc stops.',
+      prebuildhouse:
+        'Prebuild House: move over the plan and click to place the house. Right-click or Esc stops. Ctrl+Z undoes.',
       cabinet: 'Cabinet: pick a type from the menu, then click the start and end of the cabinet run.',
       postbeam:
         'Post / Beam: pick Post (click to place) or Beam (click start and end) from the menu. Right-click or Esc stops.',
@@ -14988,6 +15489,18 @@ $('sidebtn').onclick = () => {
   $('sidebtn').textContent = c ? 'Show properties' : 'Hide properties';
   size2();
   size3();
+};
+/* bottom toolbar: shows and cycles the drawing mode of the current tool (Curved is for walls) */
+function updDrawBtn() {
+  const e = $('drawcl');
+  if (!e) return;
+  const m = drawModes[tool] || drawModes.wall;
+  e.textContent = 'Drawing: ' + ({line: 'Line', box: 'Box', curve: 'Curved'}[m] || 'Line');
+}
+$('drawcyc').onclick = () => {
+  const m = drawModes[tool] || drawModes.wall,
+    order = tool === 'wall' ? ['line', 'box', 'curve'] : ['line', 'box'];
+  setDrawMode(order[(order.indexOf(m) + 1) % order.length]);
 };
 $('snapbtn').onclick = () => {
   snapMode = {center: 'corner', corner: 'edge', edge: 'off', off: 'center'}[snapMode];
@@ -15245,6 +15758,239 @@ const PBS = {
     ],
   },
   PBSN = ['Small', 'Medium', 'Large'];
+/* ---------- Prebuild House: a whole generated house placed on the plan ---------- */
+var pbMode = 'room',
+  phData = null,
+  phSet = {style: 'varied', shape: 'R', size: 1, W: 32, D: 26, stories: 2, garage: 'attached', seed: 1};
+/* house styles: footprint, stories, garage and roof that make each one recognisable */
+const PHSTYLE = {
+  varied: {n: 'Varied (random)'},
+  ranch: {n: 'Ranch', shape: 'R', stories: 1, W: 42, D: 26, garage: 'attached', roof: 'hip', pitch: 4},
+  cape: {
+    n: 'Cape Cod',
+    shape: 'R',
+    stories: 2,
+    W: 32,
+    D: 26,
+    garage: 'none',
+    roof: 'gable',
+    pitch: 12,
+    dorm: 2,
+  },
+  raised: {
+    n: 'Raised Ranch',
+    shape: 'R',
+    stories: 1,
+    W: 40,
+    D: 26,
+    garage: 'attached',
+    roof: 'gable',
+    pitch: 5,
+    bsm: true,
+  },
+  colonial: {
+    n: 'Colonial',
+    shape: 'R',
+    stories: 2,
+    W: 36,
+    D: 26,
+    garage: 'attached',
+    roof: 'gable',
+    pitch: 8,
+  },
+};
+const PHSZ = [
+    ['Small', 24, 20],
+    ['Medium', 32, 26],
+    ['Large', 42, 30],
+  ],
+  PHSHAPE = {
+    R: 'Rectangle',
+    L: 'L-shaped',
+    T: 'T-shaped',
+    O: 'Offset wings',
+    U: 'U-shaped (28 ft wide or more)',
+  },
+  PHGAR = {
+    none: 'No garage',
+    built: 'Built-in garage',
+    attached: 'Attached garage',
+    detached: 'Detached garage',
+  };
+function phRender() {
+  const o = (v, t, c) =>
+      '<option value=' + v + (String(c) === String(v) ? ' selected' : '') + '>' + t + '</option>',
+    S = phSet;
+  $('pbbody').innerHTML =
+    '<label class=sr>Style<select id=ph_style>' +
+    Object.keys(PHSTYLE)
+      .map((k) => o(k, PHSTYLE[k].n, S.style))
+      .join('') +
+    '</select></label>' +
+    '<label class=sr>Shape<select id=ph_shape>' +
+    Object.keys(PHSHAPE)
+      .map((k) => o(k, PHSHAPE[k], S.shape))
+      .join('') +
+    '</select></label>' +
+    '<label class=sr>Size<select id=ph_sz>' +
+    PHSZ.map((d, i) => o(i, d[0] + ' (' + d[1] + ' × ' + d[2] + ' ft)', S.size)).join('') +
+    o(-1, 'Custom', S.size) +
+    '</select></label>' +
+    '<label class=sr>Width (ft)<input type=number id=ph_w min=20 max=60 step=1 value=' +
+    S.W +
+    '></label>' +
+    '<label class=sr>Depth (ft)<input type=number id=ph_d min=18 max=40 step=1 value=' +
+    S.D +
+    '></label>' +
+    '<label class=sr>Stories<select id=ph_st>' +
+    o(1, 'One story', S.stories) +
+    o(2, 'Two stories', S.stories) +
+    '</select></label>' +
+    '<label class=sr>Garage<select id=ph_gar>' +
+    Object.keys(PHGAR)
+      .map((k) => o(k, PHGAR[k], S.garage))
+      .join('') +
+    '</select></label>' +
+    '<label class=sr>Layout number<input type=number id=ph_seed min=1 max=99999 step=1 value=' +
+    S.seed +
+    '></label>' +
+    '<button id=ph_shuf>Shuffle layout</button>' +
+    '<button class=pbgo id=pb_go>Build</button>' +
+    '<small>Each layout number gives a different room arrangement, built to code (stairs, windows, egress, structure, kitchen cabinets). After Build, move over the plan and click to place the house. Floors are added to your plan, and floors it already has get the new walls and rooms, so place it in clear ground.</small>';
+}
+function phChange(t) {
+  const S = phSet;
+  if (t.id === 'ph_style') {
+    S.style = t.value;
+    const P = PHSTYLE[S.style];
+    if (P.shape) {
+      Object.assign(S, {shape: P.shape, stories: P.stories, W: P.W, D: P.D, garage: P.garage});
+      S.size = PHSZ.findIndex((d) => d[1] === S.W && d[2] === S.D);
+    }
+  } else if (t.id === 'ph_shape') S.shape = t.value;
+  else if (t.id === 'ph_sz') {
+    S.size = +t.value;
+    if (S.size >= 0) [, S.W, S.D] = PHSZ[S.size];
+  } else if (t.id === 'ph_w' || t.id === 'ph_d') {
+    const k = t.id === 'ph_w' ? 'W' : 'D';
+    S[k] = Math.max(k === 'W' ? 20 : 18, Math.min(k === 'W' ? 60 : 40, Math.round(+t.value) || 20));
+    S.size = PHSZ.findIndex((d) => d[1] === S.W && d[2] === S.D);
+  } else if (t.id === 'ph_st') S.stories = +t.value;
+  else if (t.id === 'ph_gar') S.garage = t.value;
+  else if (t.id === 'ph_seed') S.seed = Math.max(1, Math.min(99999, Math.round(+t.value) || 1));
+  phRender();
+}
+/* move every coordinate in a generated floor (or path) by dx, dy; openings sit on their walls by fraction, so they stay put */
+function phShiftItem(it, dx, dy) {
+  if (!it || typeof it !== 'object') return;
+  const pt = (v) => Array.isArray(v) && v.length >= 2 && typeof v[0] === 'number' && typeof v[1] === 'number';
+  for (const k of Object.keys(it)) {
+    const v = it[k];
+    if (k === 'open') continue;
+    if (['a', 'b', 'c', 'f'].includes(k) && pt(v)) {
+      v[0] += dx;
+      v[1] += dy;
+    } else if (k === 'pts' && Array.isArray(v)) v.forEach((q) => pt(q) && ((q[0] += dx), (q[1] += dy)));
+    else if (k === 'x0' || k === 'x1') it[k] += dx;
+    else if (k === 'y0' || k === 'y1') it[k] += dy;
+    else if (Array.isArray(v)) v.forEach((x) => phShiftItem(x, dx, dy));
+  }
+  if (typeof it.x === 'number' && typeof it.y === 'number' && 'len' in it) {
+    it.x += dx;
+    it.y += dy;
+  }
+}
+function phBuild() {
+  const S = phSet,
+    keep = JSON.parse(JSON.stringify(M));
+  let data = null;
+  try {
+    const r = randomBuild(S.seed * 7919 + 13, {
+      W: S.W,
+      D: S.D,
+      stories: S.stories,
+      garage: S.garage,
+      shape: S.shape,
+      bsm: PHSTYLE[S.style].bsm || false,
+      roof: PHSTYLE[S.style].roof,
+      pitch: PHSTYLE[S.style].pitch,
+      dorm: PHSTYLE[S.style].dorm,
+    });
+    data = {
+      floors: JSON.parse(JSON.stringify(M.floors)),
+      paths: JSON.parse(JSON.stringify(M.paths || [])),
+      bsmt: M.bsmt ? 1 : 0,
+      info: r,
+    };
+  } finally {
+    setM(keep);
+  }
+  const pts = data.floors.flatMap((F) => F.walls.flatMap((w) => [w.a, w.b]));
+  data.cx = (Math.min(...pts.map((p) => p[0])) + Math.max(...pts.map((p) => p[0]))) / 2;
+  data.cy = (Math.min(...pts.map((p) => p[1])) + Math.max(...pts.map((p) => p[1]))) / 2;
+  phData = data;
+  pbClose();
+  setTool('prebuildhouse');
+  changed();
+}
+const phOffset = (c) => [Math.round((c[0] - phData.cx) * 2) / 2, Math.round((c[1] - phData.cy) * 2) / 2];
+function phPlace(c) {
+  const [dx, dy] = phOffset(c),
+    fl = JSON.parse(JSON.stringify(phData.floors)),
+    pa = JSON.parse(JSON.stringify(phData.paths));
+  fl.forEach((F) =>
+    Object.values(F).forEach((v) => Array.isArray(v) && v.forEach((it) => phShiftItem(it, dx, dy))),
+  );
+  pa.forEach((o) => phShiftItem(o, dx, dy));
+  mut(() => {
+    /* a basement in the house needs one in the plan (it goes under the existing floors); a house without one sits on the plan's ground floor */
+    if (phData.bsmt && !M.bsmt) {
+      M.floors.unshift({walls: [], rooms: [], stairs: [], roofs: [], name: 'Basement'});
+      M.bsmt = 1;
+      M.cf++;
+    }
+    const lift = M.bsmt && !phData.bsmt ? 1 : 0;
+    fl.forEach((F, i0) => {
+      const i = i0 + lift;
+      while (M.floors.length <= i) M.floors.push({walls: [], rooms: [], stairs: []});
+      const T = M.floors[i];
+      Object.keys(F).forEach((k) => {
+        if (Array.isArray(F[k])) T[k] = (T[k] || []).concat(F[k]);
+        else if (T[k] === undefined) T[k] = F[k];
+      });
+    });
+    M.paths = (M.paths || []).concat(pa);
+  });
+  const r = phData.info;
+  status(
+    'Placed a ' +
+      r.W +
+      ' × ' +
+      r.D +
+      ' ft house (' +
+      r.stories +
+      (r.stories > 1 ? ' stories' : ' story') +
+      (r.garage ? ', ' + r.garage : '') +
+      ') · click to place another · right-click or Esc stops · Ctrl+Z undoes',
+  );
+}
+function drawHouseGhost() {
+  if (tool !== 'prebuildhouse' || !phData || !cur) return;
+  const [dx, dy] = phOffset(cur);
+  x2.save();
+  x2.globalAlpha = 0.55;
+  const F = phData.floors[Math.min(M.cf, phData.floors.length - 1)];
+  F.rooms.forEach((r) =>
+    poly(
+      r.pts.map((p) => [p[0] + dx, p[1] + dy]),
+      'rgba(47,111,219,.12)',
+    ),
+  );
+  F.walls.forEach((w) =>
+    line([w.a[0] + dx, w.a[1] + dy], [w.b[0] + dx, w.b[1] + dy], '#2f6fdb', Math.max(2, w.t * sc)),
+  );
+  x2.restore();
+}
 var pbPlan = null,
   pbRot = 0,
   pbCur = null,
@@ -15702,7 +16448,7 @@ function landings() {
 /* structural members for a generated house, sized from the usual residential span rules:
    - joist spans: 2x8 12 ft, 2x10 15 ft, 2x12 18 ft at 16 in o.c.; joists are upsized first, then a beam is added
    - a basement gets a girder down the middle of the floor above, on 6x6 posts no more than 8 ft apart, 6 ft 4 in or more clear underneath
-   - an upper-floor span still too long for 2x12 joists gets a flush beam under it on posts at most 10 ft apart
+   - an upper-floor span still too long for 2x12 joists gets a flush beam under it on posts at most 8 ft apart
    - a floor that cantilevers 3 ft or more has 2x12 joists, and at 4 ft posts down at its corners
    - an open breezeway has a header beam along both open eaves */
 const JSPAN = {'2x8': 12, '2x10': 15, '2x12': 18},
@@ -15848,15 +16594,15 @@ function structure(cant, bz) {
         alongY ? [gm, cross1 - 0.3] : [cross1 - 0.3, gm],
         bs,
         top,
-        10,
+        8,
         'Floor beam',
         true,
       );
       out.push('floor beam');
     }
   }
-  /* 3. cantilever corner posts */
-  if (cant && cant.c >= 4 && M.floors[gi + 1]) {
+  /* 3. cantilever corner posts: floor joists carry an overhang of up to 4 ft on their own, so posts only past that */
+  if (cant && cant.c > 4 && M.floors[gi + 1]) {
     const G = M.floors[gi],
       jd = FJD[jsz(M.floors[gi + 1])] || FJD['2x12'],
       h = ZBof(gi + 1) - ZBof(gi) - 0.125 - jd,
@@ -15902,6 +16648,161 @@ function structure(cant, bz) {
     out.push('breezeway headers');
   }
   return out.join(', ');
+}
+/* kitchens get base cabinets along every free wall face, wall cabinets above them (not over windows or
+   appliances), and an island when the room is big enough */
+function kitchenCabinets() {
+  M.floors.forEach((F, fi) => {
+    const rooms = F.rooms.filter((r) => r.rt === 'kitchen' && !r.hid);
+    if (!rooms.length) return;
+    const polys = [],
+      add = (P) => P && P.length > 2 && polys.push(P),
+      bodyAt = (p) => F.walls.some((w) => !w.hid && hit(p, w)[0] < w.t / 2 - 0.01);
+    (F.furn || []).forEach((f) => add(furnPts(f)));
+    (F.posts || []).forEach((q) => add(pmPostPts(q)));
+    [F, M.floors[fi - 1]].forEach((G) =>
+      ((G && G.stairs) || []).forEach((st) => {
+        if (st.hid) return;
+        stairPolys(st).forEach(add);
+        const Lg = stairLandings(st);
+        add(Lg.bot);
+        add(Lg.top);
+      }),
+    );
+    F.walls.forEach((w) => {
+      const g = geom(w);
+      (w.open || [])
+        .filter((o) => o.kind === 'door')
+        .forEach((o) => {
+          const c = [g.ax + g.d[0] * g.L * o.t, g.ay + g.d[1] * g.L * o.t],
+            hw = (o.w + 0.3) / 2,
+            hd = Math.min(o.w, 3.2) + 0.1;
+          add(
+            [
+              [-hw, -hd],
+              [hw, -hd],
+              [hw, hd],
+              [-hw, hd],
+            ].map((q) => [c[0] + g.d[0] * q[0] + g.n[0] * q[1], c[1] + g.d[1] * q[0] + g.n[1] * q[1]]),
+          );
+        });
+    });
+    const blocked = (p) => polys.some((P) => inside(p, P)),
+      mk = (a, b, side, type) =>
+        Object.assign(
+          {
+            a,
+            b,
+            type,
+            side,
+            color: type === 'wall' ? '#d9d4c7' : '#c9a66b',
+            cc: '#9a9a95',
+          },
+          CABD[type],
+        ),
+      put = (c) => {
+        (F.cabs = F.cabs || []).push(c);
+        cabCorners(c, F);
+      },
+      fill = (A, d, n, s0, s1, type) => {
+        const side = -d[1] * n[0] + d[0] * n[1] >= 0 ? 1 : -1;
+        let s = s0;
+        while (s1 - s >= 1 - 1e-6) {
+          const rem = s1 - s;
+          let W = [3, 2.5, 2, 1.5, 1.25, 1].find(
+            (x) => x <= rem + 1e-6 && (rem - x < 1e-6 || rem - x >= 1 - 1e-6),
+          );
+          if (!W) W = [3, 2.5, 2, 1.5, 1.25, 1].find((x) => x <= rem + 1e-6);
+          put(
+            mk(
+              [A[0] + d[0] * s, A[1] + d[1] * s],
+              [A[0] + d[0] * (s + W), A[1] + d[1] * (s + W)],
+              side,
+              type,
+            ),
+          );
+          s += W;
+        }
+      },
+      runs = [];
+    rooms.forEach((r) =>
+      F.walls.forEach((w) => {
+        if (w.hid) return;
+        const g = geom(w),
+          h = w.t / 2;
+        for (const k of [h, -h]) {
+          const A = [g.ax + g.n[0] * k, g.ay + g.n[1] * k],
+            n = k > 0 ? g.n : [-g.n[0], -g.n[1]],
+            pt = (s, dep) => [A[0] + g.d[0] * s + n[0] * dep, A[1] + g.d[1] * s + n[1] * dep],
+            ok = (s) =>
+              [0.3, 1, 1.95].every((dep) => {
+                const p = pt(s, dep);
+                return !bodyAt(p) && !blocked(p);
+              }) && inside(pt(s, 0.3), r.pts);
+          const iv = [];
+          let a0 = null;
+          for (let s = 0; s <= g.L + 1e-6; s += 0.05) {
+            const good = ok(Math.min(s, g.L));
+            if (good && a0 === null) a0 = s;
+            if (!good && a0 !== null) {
+              iv.push([a0, s - 0.05]);
+              a0 = null;
+            }
+          }
+          if (a0 !== null) iv.push([a0, g.L]);
+          const wins = (w.open || [])
+            .filter((o) => o.kind === 'window')
+            .map((o) => [g.L * o.t - o.w / 2 - 0.1, g.L * o.t + o.w / 2 + 0.1]);
+          iv.forEach(([s0, s1]) => {
+            if (s1 - s0 < 1) return;
+            runs.push({A, d: g.d, n, s0, s1, wins});
+          });
+        }
+      }),
+    );
+    runs.forEach((q) => fill(q.A, q.d, q.n, q.s0, q.s1, 'base'));
+    runs.forEach((q) => {
+      let segs = [[q.s0, q.s1]];
+      q.wins.forEach(([w0, w1]) => {
+        segs = segs.flatMap(([a, b]) =>
+          w1 <= a || w0 >= b
+            ? [[a, b]]
+            : [
+                [a, Math.min(b, w0)],
+                [Math.max(a, w1), b],
+              ],
+        );
+      });
+      segs.forEach(([a, b]) => b - a >= 1 && fill(q.A, q.d, q.n, a, b, 'wall'));
+    });
+    /* island: 6 x 3 ft with 3 ft of clear aisle all round */
+    rooms.forEach((r) => {
+      const xs = r.pts.map((q) => q[0]),
+        ys = r.pts.map((q) => q[1]),
+        x0 = Math.min(...xs),
+        x1 = Math.max(...xs),
+        y0 = Math.min(...ys),
+        y1 = Math.max(...ys);
+      if (x1 - x0 < 12 || y1 - y0 < 10) return;
+      const cx = (x0 + x1) / 2,
+        cy = (y0 + y1) / 2,
+        vert = y1 - y0 > x1 - x0,
+        hx = vert ? 1.5 : 3,
+        hy = vert ? 3 : 1.5,
+        cl = 3,
+        cabP = (F.cabs || []).filter((c) => c.type !== 'wall').map((c) => cabPts(c));
+      for (let x = cx - hx - cl; x <= cx + hx + cl + 1e-6; x += 0.5)
+        for (let y = cy - hy - cl; y <= cy + hy + cl + 1e-6; y += 0.5) {
+          const p = [x, y];
+          if (!inside(p, r.pts) || bodyAt(p) || blocked(p) || cabP.some((P) => inside(p, P))) return;
+        }
+      F.cabs.push(
+        vert
+          ? mk([cx - hx, cy - hy], [cx - hx, cy + hy], -1, 'island')
+          : mk([cx - hx, cy - hy], [cx + hx, cy - hy], 1, 'island'),
+      );
+    });
+  });
 }
 function furnishHouse() {
   M.floors.forEach((F, fi) => {
@@ -16330,6 +17231,7 @@ function pbClamp(S) {
   return note;
 }
 function pbRender() {
+  if (pbMode === 'house') return phRender();
   const o = (v, t, c) =>
       '<option value=' + v + (String(c) === String(v) ? ' selected' : '') + '>' + t + '</option>',
     S = pbSet;
@@ -16371,6 +17273,14 @@ function pbRender() {
 }
 const pbClose = () => $('pbdlg').classList.remove('open');
 $('pbbtn').onclick = () => {
+  pbMode = 'room';
+  $('pbtitle').textContent = 'Prebuild Room';
+  pbRender();
+  $('pbdlg').classList.add('open');
+};
+$('phbtn').onclick = () => {
+  pbMode = 'house';
+  $('pbtitle').textContent = 'Prebuild House';
   pbRender();
   $('pbdlg').classList.add('open');
 };
@@ -16389,6 +17299,7 @@ addEventListener(
   true,
 );
 $('pbbody').addEventListener('change', (e) => {
+  if (pbMode === 'house') return phChange(e.target);
   const t = e.target,
     S = pbSet;
   if (t.id === 'pb_rt') {
@@ -16412,7 +17323,12 @@ $('pbbody').addEventListener('change', (e) => {
   pbRender();
 });
 $('pbbody').addEventListener('click', (e) => {
+  if (e.target.id === 'ph_shuf') {
+    phSet.seed = 1 + Math.floor(Math.random() * 99999);
+    return phRender();
+  }
   if (e.target.id !== 'pb_go') return;
+  if (pbMode === 'house') return phBuild();
   pbPlan = {...pbSet};
   pbRot = 0;
   pbCur = null;
@@ -16634,20 +17550,27 @@ var drawModes = {wall: 'line', room: 'line', roof: 'box', foundation: 'box', fsy
   dmode = (t) => drawModes[t || tool] || 'line';
 function setDrawMode(m, init) {
   if (!init) {
-    if (drawModes[tool]) drawModes[tool] = m;
+    if (m === 'curve') drawModes.wall = m;
+    else if (drawModes[tool]) drawModes[tool] = m;
     else for (const k in drawModes) drawModes[k] = m;
+    if (m === 'curve' && tool !== 'wall') setTool('wall');
   }
   document.querySelectorAll('#drawpop button').forEach((b) => {
     const on = b.dataset.dm === m;
     b.classList.toggle('on', on);
-    b.textContent = (on ? '✓ ' : '') + (b.dataset.dm === 'box' ? 'Box drawing' : 'Line drawing');
+    b.textContent =
+      (on ? '✓ ' : '') +
+      (b.dataset.dm === 'box' ? 'Box drawing' : b.dataset.dm === 'curve' ? 'Curved drawing' : 'Line drawing');
   });
+  updDrawBtn();
   if (init) return;
   cancelAct0();
   status(
     m === 'box'
       ? 'Box drawing: click two opposite corners to draw a rectangle.'
-      : 'Line drawing: click points to trace the outline; Enter, double-click or clicking the first point finishes.',
+      : m === 'curve'
+        ? 'Curved drawing: click the start, the corner, then the end. The curve rounds the corner by the angle between the three points.'
+        : 'Line drawing: click points to trace the outline; Enter, double-click or clicking the first point finishes.',
   );
 }
 (function loadSettings() {
@@ -16675,9 +17598,14 @@ $('optbtn').onclick = (e) => {
   $('filepop').classList.remove('open');
   setDrawMode(drawModes[tool] || drawModes.wall, true);
   $('drawfly').classList.remove('open');
+  $('pbfly').classList.remove('open');
   $('optpop').classList.toggle('open');
 };
 $('optpop').addEventListener('click', () => $('optpop').classList.remove('open'));
+$('pbfbtn').onclick = (e) => {
+  e.stopPropagation();
+  $('pbfly').classList.toggle('open');
+};
 $('drawbtn').onclick = (e) => {
   e.stopPropagation();
   setDrawMode(drawModes[tool] || drawModes.wall, true);
@@ -16803,8 +17731,18 @@ $('exbody').addEventListener('click', (e) => {
   const fnm = exFile('project');
   closeExport();
   if (b.id === 'expng2') {
-    draw2();
-    exportImage(c2, 'plan');
+    /* exports always use the light theme, whatever the screen shows */
+    const de = document.documentElement,
+      th = de.dataset.theme;
+    de.dataset.theme = 'light';
+    try {
+      draw2();
+      exportImage(c2, 'plan');
+    } finally {
+      if (th) de.dataset.theme = th;
+      else delete de.dataset.theme;
+      draw2();
+    }
   } else if (b.id === 'expng3') {
     render();
     exportImage(c3, '3d-view');
@@ -18086,6 +19024,15 @@ function materials() {
           qty: 1,
         }),
       );
+    (F.dormers || [])
+      .filter((d) => !(d.hid || d.ex))
+      .forEach((d) =>
+        sheets.push({
+          cat: nm + ' — Dormers',
+          item: (d.name || DORMN[d.type] || 'Dormer') + ', ' + fmt(d.w) + ' wide × ' + fmt(d.h) + ' tall',
+          qty: 1,
+        }),
+      );
     {
       const ks = (F.skys || []).filter((k) => !(k.hid || k.ex));
       ks.forEach((k) =>
@@ -18168,11 +19115,12 @@ function materials() {
       sheets.push({cat: cf, item: '3/4" subfloor sheathing', qty: Math.ceil((I.W * I.D) / 32)});
       cantPosts(fi, R).forEach((p) => {
         add(cf, 'Cantilever post', '6x6', p.h + 0.5, 1);
-        sheets.push({
-          cat: cf,
-          item: 'SonoTube footing (12 in tube, 24 in x 8 in pad) under cantilever post',
-          qty: 1,
-        });
+        if (!ftSkip(p.x, p.y))
+          sheets.push({
+            cat: cf,
+            item: 'SonoTube footing (12 in tube, 24 in x 8 in pad) under cantilever post',
+            qty: 1,
+          });
       });
     });
     /* roofs */
@@ -18663,7 +19611,7 @@ addEventListener('keydown', (e) => {
       });
     if (e.key.toLowerCase() === 'q' && sel.t === 'fu') mut(() => (sel.o.rot = (sel.o.rot + 90) % 360));
   }
-  if (e.key === 'Escape' && tool === 'prebuild') setTool('select');
+  if (e.key === 'Escape' && (tool === 'prebuild' || tool === 'prebuildhouse')) setTool('select');
   if (e.key === 'Escape') {
     start = null;
     roomPts = [];
