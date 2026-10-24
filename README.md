@@ -4,6 +4,9 @@ CADieux is a architecture program I'm developing because I'm sick of big compani
 
 ## Use It Online Or Offline
   You can head over to my Github Page and use it or download it to your local computer and use it offline.
+  
+  - Sign In with Guest user Guest password for 2hrs a day of full free use online
+  - Once purchased full use for life
 
 ## Notes
 - I'll let you know, if you want to show me some appreciation for my work you can donate to the development here: 
