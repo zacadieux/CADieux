@@ -804,6 +804,17 @@ canvas {
     border-bottom: 1px solid var(--line);
   }
 }
+.hexc{display:inline-flex;align-items:center;gap:5px}
+.hexc input[type=color]{display:none!important}
+.hexc .cwb{width:26px;height:26px;border-radius:50%;border:2px solid transparent;padding:0;flex:none;cursor:pointer;background:linear-gradient(var(--cwc),var(--cwc)) padding-box,conic-gradient(red,#ff0,lime,cyan,blue,#f0f,red) border-box}
+#cwpop{position:fixed;z-index:99999;display:none;background:var(--panel,#fff);border:1px solid var(--line,#ccc);border-radius:10px;padding:10px;box-shadow:0 6px 24px rgba(0,0,0,.25)}
+#cwpop.open{display:block}
+#cwpop canvas{position:static!important;inset:auto!important;width:160px!important;height:160px!important;max-width:none!important;display:block;border-radius:50%;cursor:crosshair;touch-action:none}
+#cwpop input[type=range]{width:160px!important;display:block;margin:8px 0 0}
+#cwpop .cwr{display:flex;align-items:center;gap:8px;margin-top:6px;font:12px ui-monospace,Menlo,Consolas,monospace}
+#cwpop .cwp{width:26px;height:26px;border-radius:6px;border:1px solid var(--line,#ccc)}
+.hexc input.hexin{width:76px!important;font:12px ui-monospace,Menlo,Consolas,monospace;text-transform:uppercase;padding:3px 5px}
+.hexc input.hexin.bad{outline:2px solid #d33}
 </style>
 </head>
 <body>
@@ -812,7 +823,7 @@ canvas {
   
   <select id='fl'></select><button id='flup' class='flb' title='Go up one floor'>▲</button><button id='fldn' class='flb' title='Go down one floor'>▼</button><span class='sep'></span>
   <span class="sep"></span>
-  <button id="rnd" title="Generate a random building" style="margin-left:auto">Random Build</button><span id="gtime" title="Guest time left today" style="display:none;margin-right:8px;font-size:12px"></span><button id='vm' title='Switch view: Split, 2D, 3D (click to cycle)'>View: Split</button><button id='sidebtn'>Hide properties</button>
+  <button id="xsb" title="Cross-section view of the building" style="margin-left:auto">Cross-Section</button><button id="rnd" title="Generate a random building">Random Build</button><span id="gtime" title="Guest time left today" style="display:none;margin-right:8px;font-size:12px"></span><button id='vm' title='Switch view: Split, 2D, 3D (click to cycle)'>View: Split</button><button id='sidebtn'>Hide properties</button>
 </div>
 <div id="pbdlg"><div id="pbwin" role="dialog" aria-label="Prebuild Room"><header><span id="pbtitle">Prebuild Room</span><button id="pbx" title="Close">✕</button></header><div id="pbbody"></div></div></div>
 <div id="setdlg"><div id="setwin" role="dialog" aria-label="Settings"><header><span>Settings</span><button id="setx" title="Close">✕</button></header><div id="setbody"></div></div></div>
@@ -823,7 +834,7 @@ canvas {
   <div class="pane" id="p2"><canvas id="c2"></canvas><div class="tag">2D plan · wheel zoom · right-click cancels · right-drag pans</div><div id="split" title="Drag to resize the split · double-click to reset"></div></div>
   <div class="pane" id="p3"><canvas id="c3"></canvas><div class="tag">3D view · drag orbit · wheel zoom</div></div>
 <div id='side'><details id='propd' open><summary>Properties</summary><div id='props'></div></details><details id='terrd'><summary>Terrain</summary><div id='terrBody'></div></details><details id='furnd'><summary>Furniture / Appliances</summary><div id='furnList'></div></details><details><summary>Floors</summary><div id='flList'></div><div class='r fb'><button id='addf2'>+ Add</button><button id='delf2'>− Remove</button></div></details><details><summary>Objects</summary><div class='r fb'><button id='frm' title='Show framing for all objects'>▦ Framing: all</button></div><div id='obList'></div></details></div></div>
-<div id='tb'><span>View</span><button data-vw='grid' title='Plan grid'>Grid</button><button data-vw='dims' title='Wall dimensions (zoom in to see them)'>Dimensions</button><button data-vw='labels' title='Room names and areas'>Room labels</button><button data-vw='land' title='3 ft stair landing zones'>Landings</button><button data-vw='roofs' title='Show roofs and dormers'>Roofs</button><button data-vw='fram' title='Show framing for all objects'>Framing</button><button data-vw='terr' title='Terrain and trees in 3D'>Terrain</button><button data-vw='sky' title='Sky in 3D'>Sky</button><button id='snapbtn' title='Snapping: Center'><span id='snapl'>Snapping: Center</span></button><button id='drawcyc' title='Click to cycle the drawing mode: Line, Box, Curved'><span id='drawcl'>Drawing: Line</span></button><span id='bld' title='Current program build'>CADieux v1.4.0 · build 440</span></div>
+<div id='tb'><span>View</span><button data-vw='grid' title='Plan grid'>Grid</button><button data-vw='dims' title='Wall dimensions (zoom in to see them)'>Dimensions</button><button data-vw='labels' title='Room names and areas'>Room labels</button><button data-vw='land' title='3 ft stair landing zones'>Landings</button><button data-vw='roofs' title='Show roofs and dormers'>Roofs</button><button data-vw='fram' title='Show framing for all objects'>Framing</button><button data-vw='terr' title='Terrain and trees in 3D'>Terrain</button><button data-vw='sky' title='Sky in 3D'>Sky</button><button id='snapbtn' title='Snapping: Center'><span id='snapl'>Snapping: Center</span></button><button id='drawcyc' title='Click to cycle the drawing mode: Line, Box, Curved'><span id='drawcl'>Drawing: Line</span></button><span id='bld' title='Current program build'>CADieux v1.4.0 · build 461</span></div>
 <div id='st'>Select: click to select, drag to move, drag a square handle to resize. Delete removes. Q rotates stairs.</div>
 <div id='fly'></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1767,10 +1778,40 @@ function renderSide0() {
       ro('Start', r2(w.a[0]) + ', ' + r2(w.a[1])) +
       ro('End', r2(w.b[0]) + ', ' + r2(w.b[1])) +
       ro('Openings', w.open.length) +
+      '<details id=wtrd' +
+      (window.trimOpen ? ' open' : '') +
+      '><summary>Trim</summary>' +
+      row(
+        'Baseboard',
+        '<select id=p_wbb><option value=0>None</option><option value=1>Add</option></select>',
+      ) +
+      (w.base
+        ? row('Baseboard height (in)', num('p_wbh', w.baseH || 5.25, 0.25)) +
+          row('Baseboard color', '<input id=p_wbc type=color value=' + (w.baseCol || '#f4f2ec') + '>')
+        : '') +
+      row(
+        'Crown trim',
+        '<select id=p_wct><option value=0>None</option><option value=1>Add</option></select>',
+      ) +
+      (w.crown
+        ? row('Crown height (in)', num('p_wch', w.crownH || 4.5, 0.25)) +
+          row('Crown color', '<input id=p_wcc type=color value=' + (w.crownCol || '#f4f2ec') + '>')
+        : '') +
+      ro('Applies to', 'the room-side faces of this wall') +
+      '</details>' +
       wsty(w);
     S.innerHTML = h;
     bsty(w);
     wsyW(w);
+    $('wtrd').ontoggle = () => (window.trimOpen = $('wtrd').open);
+    $('p_wbb').value = w.base ? 1 : 0;
+    $('p_wct').value = w.crown ? 1 : 0;
+    B('p_wbb', (v) => mut(() => (w.base = v === '1' || undefined)));
+    B('p_wbh', (v) => mut(() => (w.baseH = Math.max(1, Math.min(24, +v || 5.25)))));
+    B('p_wbc', (v) => mut(() => (w.baseCol = v)));
+    B('p_wct', (v) => mut(() => (w.crown = v === '1' || undefined)));
+    B('p_wch', (v) => mut(() => (w.crownH = Math.max(1, Math.min(24, +v || 4.5)))));
+    B('p_wcc', (v) => mut(() => (w.crownCol = v)));
     $('p_sz').value = w.sz || 'c';
     B('p_len', (v) => {
       const g = geom(w),
@@ -1836,8 +1877,8 @@ function renderSide0() {
           )
         : '') +
       row('Width (ft)', num('p_w', o.w, 0.5)) +
-      (o.kind === 'door' && (o.dt || 'hinged') === 'hinged'
-        ? row('Open angle (°, 0 = closed)', num('p_oa', o.ang || 0, 5))
+      (o.kind === 'door' && !['cased', 'arched'].includes(o.dt || 'hinged')
+        ? row('Door', '<button id=p_dopen>' + (o.ang > 0 ? 'Close door' : 'Open door') + '</button>')
         : '') +
       row('Center (ft)', num('p_pos', o.t * g.L, 0.5)) +
       ro('Sill height', fmt(o.kind === 'window' ? WSILL[o.wt || 'dh'] : sh[0])) +
@@ -1846,6 +1887,9 @@ function renderSide0() {
         'Header (doubled)',
         '<select id=p_hs><option>2x8</option><option>2x10</option><option>2x12</option></select>',
       ) +
+      '<details id=otrd' +
+      (window.trimOpen ? ' open' : '') +
+      '><summary>Trim</summary>' +
       row(
         'Interior trim',
         '<select id=p_ti><option value=0>None</option><option value=1>Casing</option></select>',
@@ -1854,10 +1898,9 @@ function renderSide0() {
         'Exterior trim',
         '<select id=p_te><option value=0>None</option><option value=1>Casing</option></select>',
       ) +
-      (o.trimIn || o.trimEx
-        ? row('Trim width (in)', num('p_tw', o.trimW || 3.5, 0.25)) +
-          row('Trim color', '<input id=p_tc type=color value=' + (o.trimCol || '#f4f2ec') + '>')
-        : '') +
+      (o.trimIn || o.trimEx ? row('Trim width (in)', num('p_tw', o.trimW || 3.5, 0.25)) : '') +
+      row('Trim color', '<input id=p_tc type=color value=' + (o.trimCol || '#f4f2ec') + '>') +
+      '</details>' +
       sty(
         o,
         o.kind === 'door' ? '#8a5a2b' : '#8fbfee',
@@ -1869,6 +1912,7 @@ function renderSide0() {
     $('p_k').value = o.kind;
     $('p_hs').value = o.hs || '2x8';
     B('p_hs', (v) => mut(() => (o.hs = v)));
+    if ($('otrd')) $('otrd').ontoggle = () => (window.trimOpen = $('otrd').open);
     $('p_ti').value = o.trimIn ? 1 : 0;
     $('p_te').value = o.trimEx ? 1 : 0;
     B('p_ti', (v) => mut(() => (o.trimIn = v === '1')));
@@ -1901,13 +1945,12 @@ function renderSide0() {
         delete o.color;
       }),
     );
-    B('p_oa', (v) =>
-      mut(() => {
-        const a = Math.max(0, Math.min(110, Math.round(+v || 0)));
-        if (a) o.ang = a;
-        else delete o.ang;
-      }),
-    );
+    if ($('p_dopen'))
+      $('p_dopen').onclick = () =>
+        mut(() => {
+          if (o.ang > 0) delete o.ang;
+          else o.ang = 90;
+        });
     B('p_w', (v) =>
       mut(() => {
         o.w = Math.max(1.5, Math.min(g.L - 0.5, +v));
@@ -2231,7 +2274,7 @@ function renderSide0() {
       (RT_FASCIA.includes(R.type)
         ? '<details id=fsd' +
           (window.fsOpen ? ' open' : '') +
-          '><summary>Fascia &amp; Soffit</summary>' +
+          '><summary>Trim</summary>' +
           row(
             'Fascia',
             '<select id=p_fa><option value=none>None</option><option>1x6</option><option>1x8</option><option>2x6</option></select>',
@@ -2649,6 +2692,26 @@ function renderSide0() {
       row('Depth (in)', num('p_cd', Math.round(C.d * 12 * 10) / 10, 0.5)) +
       row('Height (in)', num('p_ch', Math.round(C.h * 12 * 10) / 10, 0.5)) +
       row('Bottom above floor (in)', num('p_ce', Math.round((C.el || 0) * 12 * 10) / 10, 0.5)) +
+      '<details id=ctrd' +
+      (window.trimOpen ? ' open' : '') +
+      '><summary>Trim</summary>' +
+      (C.type === 'wall' || C.type === 'tall'
+        ? row(
+            'Crown molding',
+            '<select id=p_ccr><option value=0>None</option><option value=1>Add</option></select>',
+          ) +
+          (C.crown
+            ? row(
+                'Crown color',
+                '<input id=p_ccc type=color value=' + (C.crownCol || C.color || '#d9d4c7') + '>',
+              )
+            : '')
+        : '') +
+      (C.type !== 'wall' && !C.corner
+        ? row('Toe kick color', '<input id=p_ckc type=color value=' + (C.kc || '#2a241c') + '>')
+        : '') +
+      (C.type === 'wall' && C.corner ? ro('Trim', 'none for this cabinet') : '') +
+      '</details>' +
       row(
         'Door style',
         '<select id=p_cst>' +
@@ -2717,6 +2780,11 @@ function renderSide0() {
     B('p_cd', (v) => mut(() => (C.d = Math.max(0.25, +v / 12))));
     B('p_ch', (v) => mut(() => (C.h = Math.max(0.5, +v / 12))));
     B('p_ce', (v) => mut(() => (C.el = Math.max(0, +v / 12))));
+    if ($('ctrd')) $('ctrd').ontoggle = () => (window.trimOpen = $('ctrd').open);
+    if ($('p_ccr')) $('p_ccr').value = C.crown ? 1 : 0;
+    B('p_ccr', (v) => mut(() => (C.crown = v === '1' || undefined)));
+    B('p_ccc', (v) => mut(() => (C.crownCol = v)));
+    B('p_ckc', (v) => mut(() => (C.kc = v)));
     B('p_cn', (v) => mut(() => (C.nd = Math.max(1, Math.round(+v)))));
     B('p_ck', (v) => mut(() => (C.top = v === '1')));
     $('p_cf').onclick = () => mut(() => (C.side = -(C.side || 1)));
@@ -2986,10 +3054,26 @@ function renderSide0() {
       row(s.style === 'spiral' ? 'Center X (ft)' : 'Start X (ft)', num('p_x', s.x, 0.5)) +
       row(s.style === 'spiral' ? 'Center Y (ft)' : 'Start Y (ft)', num('p_y', s.y, 0.5)) +
       sty(s, '#b08a5a', 'none', 1) +
+      '<details id=strd' +
+      (window.trimOpen ? ' open' : '') +
+      '><summary>Trim</summary>' +
+      row('Tread color', '<input id=p_stc type=color value=' + (s.tc || s.color || '#b08a5a') + '>') +
+      row('Riser color', '<input id=p_src type=color value=' + (s.rc || s.color || '#b08a5a') + '>') +
+      (s.tc || s.rc ? row('Reset', '<button id=p_strs>Match stair color</button>') : '') +
+      '</details>' +
       stairInfo(s) +
       railUI(s);
     S.innerHTML = h;
     bsty(s);
+    $('strd').ontoggle = () => (window.trimOpen = $('strd').open);
+    B('p_stc', (v) => mut(() => (s.tc = v)));
+    B('p_src', (v) => mut(() => (s.rc = v)));
+    if ($('p_strs'))
+      $('p_strs').onclick = () =>
+        mut(() => {
+          delete s.tc;
+          delete s.rc;
+        });
     $('p_r').value = s.rot;
     if ($('p_sty')) $('p_sty').value = s.style || 'straight';
     if ($('p_hd')) $('p_hd').value = s.hd === -1 ? -1 : 1;
@@ -3021,6 +3105,235 @@ function renderSide0() {
     B('p_x', (v) => mut(() => (s.x = +v)));
     B('p_y', (v) => mut(() => (s.y = +v)));
   }
+}
+/* in Properties the plain options and facts come first; the collapsible sections (Trim, Fascia, rails...) sit below them */
+new MutationObserver(() => {
+  const P = $('props');
+  let seen = false,
+    bad = false;
+  for (const c of P.children) {
+    if (c.tagName === 'DETAILS') seen = true;
+    else if (seen) {
+      bad = true;
+      break;
+    }
+  }
+  if (bad) [...P.children].filter((c) => c.tagName === 'DETAILS').forEach((c) => P.appendChild(c));
+}).observe($('props'), {childList: true});
+/* every colour field is a swatch plus a HEX code box: type #RRGGBB (or RGB) to set it, or click the swatch */
+{
+  const HEX6 = /^#?([0-9a-f]{6})$/i,
+    HEX3 = /^#?([0-9a-f])([0-9a-f])([0-9a-f])$/i,
+    norm = (v) => {
+      v = (v || '').trim();
+      const m6 = HEX6.exec(v),
+        m3 = HEX3.exec(v);
+      return m6 ? '#' + m6[1].toLowerCase() : m3 ? '#' + m3[1] + m3[1] + m3[2] + m3[2] + m3[3] + m3[3] : null;
+    },
+    fire = (el) => {
+      el.dispatchEvent(new Event('input', {bubbles: true}));
+      el.dispatchEvent(new Event('change', {bubbles: true}));
+    },
+    wrap = (c) => {
+      if (c.dataset.hex) return;
+      c.dataset.hex = 1;
+      const w = document.createElement('span'),
+        t = document.createElement('input');
+      w.className = 'hexc';
+      t.className = 'hexin';
+      t.type = 'text';
+      t.maxLength = 7;
+      t.spellcheck = false;
+      t.autocomplete = 'off';
+      t.title = 'HEX colour code, e.g. #B08A5A';
+      t.value = c.value.toUpperCase();
+      t.onchange = () => {
+        const h = norm(t.value);
+        t.classList.toggle('bad', !h);
+        if (!h) return;
+        t.value = h.toUpperCase();
+        if (c.value !== h) {
+          c.value = h;
+          fire(c);
+        }
+      };
+      t.onkeydown = (e) => {
+        e.stopPropagation();
+        if (e.key === 'Enter') t.onchange();
+      };
+      const bt = document.createElement('button');
+      bt.type = 'button';
+      bt.className = 'cwb';
+      bt.title = 'Pick from the colour wheel';
+      bt.style.setProperty('--cwc', c.value);
+      bt.onclick = (e) => {
+        e.preventDefault();
+        openWheel(c, bt);
+      };
+      c.before(w);
+      w.append(bt, c, t);
+    },
+    hsv2hex = (h, s, v) => {
+      const f = (n) => {
+        const k = (n + h / 60) % 6,
+          x = v - v * s * Math.max(0, Math.min(k, 4 - k, 1));
+        return Math.round(x * 255)
+          .toString(16)
+          .padStart(2, '0');
+      };
+      return '#' + f(5) + f(3) + f(1);
+    },
+    hex2hsv = (hx) => {
+      const r = parseInt(hx.slice(1, 3), 16) / 255,
+        g = parseInt(hx.slice(3, 5), 16) / 255,
+        b = parseInt(hx.slice(5, 7), 16) / 255,
+        mx = Math.max(r, g, b),
+        d = mx - Math.min(r, g, b);
+      let h = 0;
+      if (d) h = mx === r ? ((g - b) / d + 6) % 6 : mx === g ? (b - r) / d + 2 : (r - g) / d + 4;
+      return [h * 60, mx ? d / mx : 0, mx];
+    },
+    WHEEL = 160;
+  let cwId = null,
+    cwEl = null,
+    cwv = [0, 0, 1];
+  const pop = document.createElement('div');
+  pop.id = 'cwpop';
+  pop.innerHTML =
+    '<canvas width=' +
+    WHEEL +
+    ' height=' +
+    WHEEL +
+    '></canvas><input type=range min=0 max=100 value=100 title="Brightness"><div class=cwr><span class=cwp></span><span class=cwh></span></div>';
+  document.body.appendChild(pop);
+  const cv = pop.querySelector('canvas'),
+    br = pop.querySelector('input'),
+    pv = pop.querySelector('.cwp'),
+    ph = pop.querySelector('.cwh'),
+    cx = cv.getContext('2d'),
+    target = () => (cwId ? document.getElementById(cwId) : cwEl),
+    paint = () => {
+      const im = cx.createImageData(WHEEL, WHEEL),
+        R = WHEEL / 2;
+      for (let y = 0; y < WHEEL; y++)
+        for (let x = 0; x < WHEEL; x++) {
+          const dx = x - R + 0.5,
+            dy = y - R + 0.5,
+            r = Math.hypot(dx, dy),
+            i = (y * WHEEL + x) * 4;
+          if (r > R) continue;
+          const hx = hsv2hex((Math.atan2(dy, dx) * 180) / Math.PI + 360, Math.min(1, r / R), cwv[2]);
+          im.data[i] = parseInt(hx.slice(1, 3), 16);
+          im.data[i + 1] = parseInt(hx.slice(3, 5), 16);
+          im.data[i + 2] = parseInt(hx.slice(5, 7), 16);
+          im.data[i + 3] = 255;
+        }
+      cx.putImageData(im, 0, 0);
+      /* the marker */
+      const a = (cwv[0] * Math.PI) / 180,
+        mx = R + Math.cos(a) * cwv[1] * R,
+        my = R + Math.sin(a) * cwv[1] * R;
+      cx.beginPath();
+      cx.arc(mx, my, 6, 0, 7);
+      cx.strokeStyle = '#fff';
+      cx.lineWidth = 2;
+      cx.stroke();
+      cx.beginPath();
+      cx.arc(mx, my, 7.5, 0, 7);
+      cx.strokeStyle = '#000';
+      cx.lineWidth = 1;
+      cx.stroke();
+      const hx = hsv2hex(cwv[0], cwv[1], cwv[2]);
+      pv.style.background = hx;
+      ph.textContent = hx.toUpperCase();
+      return hx;
+    },
+    apply = (commit) => {
+      const hx = paint(),
+        c = target();
+      if (!c) return;
+      c.value = hx;
+      const t = c.parentElement && c.parentElement.querySelector('.hexin');
+      if (t) t.value = hx.toUpperCase();
+      const b2 = c.parentElement && c.parentElement.querySelector('.cwb');
+      if (b2) b2.style.setProperty('--cwc', hx);
+      c.dispatchEvent(new Event('input', {bubbles: true}));
+      if (commit) c.dispatchEvent(new Event('change', {bubbles: true}));
+    },
+    pick = (e) => {
+      const r = cv.getBoundingClientRect(),
+        R = WHEEL / 2,
+        dx = ((e.clientX - r.left) / r.width) * WHEEL - R,
+        dy = ((e.clientY - r.top) / r.height) * WHEEL - R;
+      cwv[0] = ((Math.atan2(dy, dx) * 180) / Math.PI + 360) % 360;
+      cwv[1] = Math.min(1, Math.hypot(dx, dy) / R);
+      apply(false);
+    };
+  let down = false;
+  cv.onpointerdown = (e) => {
+    down = true;
+    cv.setPointerCapture(e.pointerId);
+    pick(e);
+  };
+  cv.onpointermove = (e) => down && pick(e);
+  cv.onpointerup = () => {
+    down = false;
+    apply(true);
+  };
+  br.oninput = () => {
+    cwv[2] = br.value / 100;
+    apply(false);
+  };
+  br.onchange = () => apply(true);
+  function openWheel(c, bt) {
+    cwId = c.id || null;
+    cwEl = c;
+    cwv = hex2hsv(c.value);
+    br.value = Math.round(cwv[2] * 100);
+    paint();
+    pop.classList.add('open');
+    const r = bt.getBoundingClientRect(),
+      w = pop.offsetWidth,
+      h = pop.offsetHeight;
+    pop.style.left = Math.max(6, Math.min(innerWidth - w - 6, r.left - w + r.width)) + 'px';
+    pop.style.top = Math.max(6, Math.min(innerHeight - h - 6, r.bottom + 6)) + 'px';
+  }
+  document.addEventListener(
+    'pointerdown',
+    (e) => {
+      if (pop.classList.contains('open') && !pop.contains(e.target) && !e.target.closest('.cwb'))
+        pop.classList.remove('open');
+    },
+    true,
+  );
+  addEventListener('keydown', (e) => e.key === 'Escape' && pop.classList.remove('open'), true);
+  const scan = (root) =>
+    (root || document).querySelectorAll('input[type=color]:not([data-hex])').forEach(wrap);
+  let q = false;
+  new MutationObserver(() => {
+    if (q) return;
+    q = true;
+    queueMicrotask(() => {
+      q = false;
+      scan();
+    });
+  }).observe(document.body, {childList: true, subtree: true});
+  /* keep the code box in step when the swatch is used */
+  document.addEventListener(
+    'input',
+    (e) => {
+      const c = e.target;
+      if (c.type === 'color' && c.dataset.hex) {
+        const t = c.parentElement.querySelector('.hexin');
+        if (t) {
+          t.value = c.value.toUpperCase();
+          t.classList.remove('bad');
+        }
+      }
+    },
+    true,
+  );
+  scan();
 }
 function refreshUI() {
   $('fl').innerHTML =
@@ -4384,12 +4697,6 @@ function randomBuild(seed, opt = {}) {
     const fo = f0.foundations[0];
     addBasement(fo);
     M.floors[0].stairs.push({x: xs / 2, y: 1.5, w: 3.5, len: 10, rot: 1, name: 'Basement stairs'});
-    /* basement bulkhead: a steel hatch door on a side/rear basement wall */
-    {
-      const bw = M.floors[0].walls.filter((w) => /East wall|West wall|North wall/.test(w.name)),
-        wl = bw.find((w) => Math.hypot(w.b[0] - w.a[0], w.b[1] - w.a[1]) >= 8 && !(w.open || []).length);
-      if (wl) wl.open.push({t: 0.5, w: 4, kind: 'door', dt: 'bulkhead'});
-    }
     M.cf = 1;
   }
   /* every stair needs 3 ft of clear floor at its bottom and top, inside the walls: search for a spot that works */
@@ -5150,6 +5457,7 @@ function randomBuild(seed, opt = {}) {
   landings();
   deckStairs(rnd);
   stairRails();
+  placeBulkhead();
   const struct = structure(cant, bz);
   M.floors.forEach((F) => F.rooms.forEach((q) => codeRoom(F, q)));
   furnishHouse();
@@ -6147,25 +6455,26 @@ function doorSym(o, pt, h, s0, s1, ext) {
     x2.stroke();
     x2.setLineDash([]);
   } else if (d === 'bifold') {
-    const sp = [0, 1, 2, 3, 4].map((i) => pt(s0 + (w * i) / 4, i % 2 ? w * 0.2 : 0));
+    const op = o.ang > 0,
+      sp = [0, 1, 2, 3, 4].map((i) =>
+        op ? pt(s0 + ((w * i) / 4) * 0.4, i % 2 ? w * 0.22 : 0) : pt(s0 + (w * i) / 4, i % 2 ? w * 0.2 : 0),
+      );
     for (let i = 0; i < 4; i++) line(sp[i], sp[i + 1], C, 2);
   } else if (d === 'barn') {
-    const k = h + 0.35;
-    L(s0, s1 + w * 0.6, k, k, null, 1);
-    poly(
-      [
-        pt(s0 + w * 0.5, k - 0.15),
-        pt(s1 + w * 0.5, k - 0.15),
-        pt(s1 + w * 0.5, k + 0.15),
-        pt(s0 + w * 0.5, k + 0.15),
-      ],
-      P,
-      C,
-    );
+    const k = h + 0.35,
+      sh = o.ang > 0 ? w * 1.05 : w * 0.5;
+    L(s0, s1 + w * (o.ang > 0 ? 1.2 : 0.6), k, k, null, 1);
+    poly([pt(s0 + sh, k - 0.15), pt(s1 + sh, k - 0.15), pt(s1 + sh, k + 0.15), pt(s0 + sh, k + 0.15)], P, C);
   } else if (d === 'garage') {
     [-0.3, 0, 0.3].forEach((f) => L(s0, s1, h * f, h * f, [5, 3], 1));
     L(s0, s0, -h, h);
     L(s1, s1, -h, h);
+    if (o.ang > 0) {
+      /* raised overhead: the panel rides back along the ceiling tracks */
+      L(s0, s0, 0, -(ext || 1) * 9, [6, 3], 1);
+      L(s1, s1, 0, -(ext || 1) * 9, [6, 3], 1);
+      L(s0, s1, -(ext || 1) * 9, -(ext || 1) * 9, null, 2);
+    }
   } else if (d === 'bulkhead') {
     /* outside hatch: sloped leaves in a concrete areaway with steps down to the basement door */
     const e = ext || 1,
@@ -6178,9 +6487,25 @@ function doorSym(o, pt, h, s0, s1, ext) {
     L(s1, s1, k0 * e, k1 * e, null, 1);
     for (let i = 1; i < 4; i++) L(s0 - 0.3, s1 + 0.3, (k0 + i * 1.15) * e, (k0 + i * 1.15) * e, [3, 3], 1);
     L(s0, s1, 0, 0, null, 2);
+    /* open: the two leaves stand up against the areaway cheeks */
+    if (o.ang > 0) {
+      L(s0 - 0.3, s0 - 0.3, k0 * e, k1 * e, null, 4);
+      L(s1 + 0.3, s1 + 0.3, k0 * e, k1 * e, null, 4);
+    }
   } else if (d === 'slider') {
     poly([pt(s0, 0.14), pt(s0 + w * 0.55, 0.14), pt(s0 + w * 0.55, 0.02), pt(s0, 0.02)], P, C);
-    poly([pt(s0 + w * 0.45, -0.02), pt(s1, -0.02), pt(s1, -0.14), pt(s0 + w * 0.45, -0.14)], P, C);
+    if (o.ang > 0)
+      poly(
+        [
+          pt(s0 + w * 0.02, -0.02),
+          pt(s0 + w * 0.52, -0.02),
+          pt(s0 + w * 0.52, -0.14),
+          pt(s0 + w * 0.02, -0.14),
+        ],
+        P,
+        C,
+      );
+    else poly([pt(s0 + w * 0.45, -0.02), pt(s1, -0.02), pt(s1, -0.14), pt(s0 + w * 0.45, -0.14)], P, C);
   } else if (d === 'cased' || d === 'arched') {
     /* an empty opening: a casing tick at each jamb, and for the arch a dashed curve across it */
     L(s0, s0, -h, h);
@@ -6201,9 +6526,26 @@ function doorSym(o, pt, h, s0, s1, ext) {
     x2.setLineDash([4, 3]);
     poly([pt(s1, h * 0.7), pt(s1 + w, h * 0.7), pt(s1 + w, -h * 0.7), pt(s1, -h * 0.7)], null, C);
     x2.setLineDash([]);
+    if (o.ang > 0)
+      poly(
+        [
+          pt(s1 + w * 0.05, 0.12),
+          pt(s1 + w * 0.95, 0.12),
+          pt(s1 + w * 0.95, -0.12),
+          pt(s1 + w * 0.05, -0.12),
+        ],
+        P,
+        C,
+      );
     L(s0, s1, 0, 0, null, 1);
   } else {
     poly([pt(s0 + w * 0.45, 0.1), pt(s1, 0.1), pt(s1, -0.1), pt(s0 + w * 0.45, -0.1)], P, C);
+    if (o.ang > 0)
+      poly(
+        [pt(s0 + w * 0.05, -0.1), pt(s0 + w * 0.55, -0.1), pt(s0 + w * 0.55, 0.1), pt(s0 + w * 0.05, 0.1)],
+        P,
+        C,
+      );
     L(s0, s1, h * 0.8, h * 0.8, [4, 3], 1);
   }
 }
@@ -9808,8 +10150,18 @@ function cab3(C, i, tag) {
     return;
   }
   /* toe kick (recessed) and carcass */
-  if (kick) bx(0, L, 0, C.d - 0.25, zb, zb + kick, dark);
+  if (kick) bx(0, L, 0, C.d - 0.25, zb, zb + kick, C.kc ? mat(C.kc, 'none') : dark);
   bx(0, L, 0, C.d, zb + kick, zb + C.h - ct, bm);
+  if (C.crown)
+    bx(
+      -0.03,
+      L + 0.03,
+      -0.02,
+      C.d + 0.07,
+      zb + C.h,
+      zb + C.h + 0.3,
+      mat(C.crownCol || C.color || '#d9d4c7', 'none'),
+    );
   if (ct) bx(-0.0, L, 0, C.d + 0.08, zb + C.h - ct, zb + C.h, mat(C.cc || '#9a9a95', 'none'));
   /* doors, drawers and hardware on the front face, by door style */
   const n = C.nd || cabDoors(C),
@@ -12224,7 +12576,38 @@ function dragHandle(e) {
   build3();
   draw2();
 }
+/* exterior stairs that touch a deck take that deck's finish and railing */
+function syncDeckStairs() {
+  M.floors.forEach((F) =>
+    (F.stairs || []).forEach((s) => {
+      if (!s.ext || !s.x) return;
+      const P = stairPolys(s).flat(),
+        x0 = Math.min(...P.map((p) => p[0])) - 0.7,
+        x1 = Math.max(...P.map((p) => p[0])) + 0.7,
+        y0 = Math.min(...P.map((p) => p[1])) - 0.7,
+        y1 = Math.max(...P.map((p) => p[1])) + 0.7,
+        D = (F.decks || []).find((d) => !d.hid && d.x0 < x1 && d.x1 > x0 && d.y0 < y1 && d.y1 > y0);
+      if (!D) return;
+      s.color = D.color || '#a9825a';
+      s.tex = D.tex || 'wood';
+      s.tc = s.rc = null;
+      s.rl = Object.assign(s.rl || {}, {col: '#e8e0d0', st: 'bal', h: D.rh || 36});
+    }),
+  );
+}
 function build3() {
+  try {
+    syncDeckStairs();
+  } catch (e) {
+    console.warn(e);
+  }
+  try {
+    build3b();
+  } finally {
+    xsMat();
+  }
+}
+function build3b() {
   while (grp.children.length) {
     const o = grp.children.pop();
     o.geometry && o.geometry.dispose();
@@ -12269,7 +12652,8 @@ function openDetail3(g, o, w, F, m) {
     sd = o.fh ? -1 : 1,
     gx = (k) => ({...g, ax: g.ax + g.n[0] * k * out, ay: g.ay + g.n[1] * k * out}),
     B = (s0, s1, z0, z1, t, mt, k) => box(gx(k || 0), s0, s1, z0, z1, t, mt),
-    fr = mat('#f4f2ec', 'none'),
+    /* frame, sash, muntins and casings all take the trim colour; the glass and the hardware keep their own */
+    fr = mat(o.trimCol || '#f4f2ec', 'none'),
     dark = mat('#3a3a3a', 'none'),
     metal = mat('#c9b27a', 'none'),
     x0 = m - o.w / 2,
@@ -12472,45 +12856,59 @@ function openDetail3(g, o, w, F, m) {
     const a = x0 + jf,
       b = x1 - jf,
       n = 4,
-      pw = (b - a) / n;
+      pw = (b - a) / n,
+      op = o.ang > 0;
     B(a, b, hd - jf - 0.1, hd - jf, 0.1, dark);
     for (let i = 0; i < n; i++) {
-      const s0 = a + i * pw,
-        k = i % 2 ? 0.07 : -0.07;
-      B(s0 + 0.01, s0 + pw - 0.01, 0.08, hd - jf - 0.1, 0.07, dm, k);
-      for (let z = 0.5; z < hd - 0.6; z += 0.5) B(s0 + 0.08, s0 + pw - 0.08, z, z + 0.05, 0.04, dm, k + 0.05);
+      /* open: the four leaves fold into a stack at the hinge side, alternate leaves swinging out */
+      const s0 = op ? (sd > 0 ? a + i * pw * 0.22 : b - (i + 1) * pw * 0.22) : a + i * pw,
+        pw2 = op ? pw * 0.22 : pw,
+        k = op ? (i % 2 ? 0.32 : -0.32) : i % 2 ? 0.07 : -0.07;
+      B(s0 + 0.01, s0 + pw2 - 0.01, 0.08, hd - jf - 0.1, op ? 0.45 : 0.07, dm, k);
+      if (!op)
+        for (let z = 0.5; z < hd - 0.6; z += 0.5)
+          B(s0 + 0.08, s0 + pw2 - 0.08, z, z + 0.05, 0.04, dm, k + 0.05);
     }
-    B(a + pw - 0.06, a + pw + 0.06, 3.1, 3.3, 0.05, metal, 0.12);
-    B(b - pw - 0.06, b - pw + 0.06, 3.1, 3.3, 0.05, metal, 0.12);
+    if (!op) {
+      B(a + pw - 0.06, a + pw + 0.06, 3.1, 3.3, 0.05, metal, 0.12);
+      B(b - pw - 0.06, b - pw + 0.06, 3.1, 3.3, 0.05, metal, 0.12);
+    }
   } else if (dt === 'barn') {
     /* slab hangs in front of the wall on a track and overlaps the opening */
-    const k = w.t / 2 + 0.2,
-      s0 = x0 - 0.15 + sd * 0.1,
-      s1 = x1 + 0.15 + sd * 0.1;
+    const sl = o.ang > 0 ? sd * (x1 - x0 + 0.3) : 0,
+      k = w.t / 2 + 0.2,
+      s0 = x0 - 0.15 + sd * 0.1 + sl,
+      s1 = x1 + 0.15 + sd * 0.1 + sl;
     B(s0, s1, 0.1, hd + 0.1, 0.12, dm, k);
     for (let s = s0 + 0.5; s < s1 - 0.2; s += 0.5)
       B(s - 0.015, s + 0.015, 0.15, hd + 0.05, 0.02, dark, k + 0.065);
     [0.5, (hd + 0.1) / 2, hd - 0.4].forEach((z) => B(s0, s1, z, z + 0.3, 0.05, dm, k + 0.08));
     B(s0 + 0.6, s1 - 0.6, 0.5, hd - 0.1, 0.04, dm, k + 0.12);
-    B(x0 - 1.2, x1 + 1.8, hd + 0.35, hd + 0.45, 0.08, dark, k);
+    B(Math.min(x0 - 1.2, s0 - 0.5), Math.max(x1 + 1.8, s1 + 0.5), hd + 0.35, hd + 0.45, 0.08, dark, k);
     [s0 + 0.5, s1 - 0.5].forEach((s) => B(s - 0.08, s + 0.08, hd + 0.1, hd + 0.4, 0.06, dark, k + 0.01));
     B(sd > 0 ? s1 - 0.7 : s0 + 0.5, sd > 0 ? s1 - 0.5 : s0 + 0.7, 3, 4.2, 0.06, dark, k + 0.1);
     /* dark void behind the slab so the opening reads as a doorway */
-    B(x0 + jf, x1 - jf, 0, hd - jf, 0.04, mat('#2a2a2a', 'none'));
+    if (!(o.ang > 0)) B(x0 + jf, x1 - jf, 0, hd - jf, 0.04, mat('#2a2a2a', 'none'));
   } else if (dt === 'garage') {
     const secs = 4,
       sh = hd / secs;
     B(x0 - 0.2, x0, 0, hd + 0.2, 0.3, fr);
     B(x1, x1 + 0.2, 0, hd + 0.2, 0.3, fr);
     B(x0 - 0.2, x1 + 0.2, hd, hd + 0.3, 0.3, fr);
+    const up = o.ang > 0;
     for (let i = 0; i < secs; i++) {
+      if (up) {
+        /* raised overhead: the sections stack flat under the ceiling inside, leaving the opening clear */
+        B(x0, x1, hd - 0.2, hd - 0.05, 0.16, dm, -0.4 - i * 0.7);
+        continue;
+      }
       B(x0, x1, i * sh + 0.03, (i + 1) * sh - 0.03, 0.16, dm);
       B(x0 + 0.3, x1 - 0.3, i * sh + 0.14, (i + 1) * sh - 0.14, 0.03, dm, 0.095);
     }
     const wz = (secs - 1) * sh,
       n = 4,
       ww = (W - 0.8) / n - 0.2;
-    for (let i = 0; i < n; i++) {
+    for (let i = 0; !up && i < n; i++) {
       const s0 = x0 + 0.5 + i * (ww + 0.2);
       B(
         s0,
@@ -12547,22 +12945,34 @@ function openDetail3(g, o, w, F, m) {
       B(a, b, bot, bot + 0.3, dn / 4, conc, k0 + dn / 8);
     }
     B(x0 - 0.45, x1 + 0.45, Gz - 0.05, Gz + 0.35, 0.4, conc, hw + dn + 0.2);
-    /* two sloped steel leaves from the grade-level sill down to the wall */
-    [0, 1].forEach((i) => {
-      const lw = (x1 + 0.45 - (x0 - 0.45)) / 2,
-        cs = x0 - 0.45 + lw * (i + 0.5),
-        len = Math.hypot(rise, dn - 0.4),
-        geo = new THREE.BoxGeometry(lw - 0.05, len, 0.12),
-        mm = new THREE.Mesh(geo, dm),
-        k = hw + 0.2 + (dn - 0.4) / 2,
-        zc = Gz + 0.35 + rise / 2 - 0.2;
-      mm.rotation.order = 'ZXY';
-      mm.rotation.z = Math.atan2(g.d[1], g.d[0]);
-      mm.rotation.x = -out * al;
-      mm.position.set(g.ax + g.d[0] * cs + g.n[0] * k * out, g.ay + g.d[1] * cs + g.n[1] * k * out, zc + ZB);
-      mm.userData.sel = TAG;
-      grp.add(mm);
-    });
+    /* two sloped steel leaves from the grade-level sill down to the wall; open, they stand up on the cheek walls */
+    if (o.ang > 0)
+      [
+        [x0 - 0.45, x0 - 0.33],
+        [x1 + 0.33, x1 + 0.45],
+      ].forEach((r) =>
+        B(r[0], r[1], Gz + 0.3, Gz + 0.3 + rise + 0.5, dn - 0.4, dm, hw + 0.2 + (dn - 0.4) / 2),
+      );
+    else
+      [0, 1].forEach((i) => {
+        const lw = (x1 + 0.45 - (x0 - 0.45)) / 2,
+          cs = x0 - 0.45 + lw * (i + 0.5),
+          len = Math.hypot(rise, dn - 0.4),
+          geo = new THREE.BoxGeometry(lw - 0.05, len, 0.12),
+          mm = new THREE.Mesh(geo, dm),
+          k = hw + 0.2 + (dn - 0.4) / 2,
+          zc = Gz + 0.35 + rise / 2 - 0.2;
+        mm.rotation.order = 'ZXY';
+        mm.rotation.z = Math.atan2(g.d[1], g.d[0]);
+        mm.rotation.x = -out * al;
+        mm.position.set(
+          g.ax + g.d[0] * cs + g.n[0] * k * out,
+          g.ay + g.d[1] * cs + g.n[1] * k * out,
+          zc + ZB,
+        );
+        mm.userData.sel = TAG;
+        grp.add(mm);
+      });
   } else if (dt === 'slider') {
     frame();
     const a = x0 + jf,
@@ -12572,8 +12982,14 @@ function openDetail3(g, o, w, F, m) {
     B(a, b, 0.06, top, 0.04, glass);
     B(mid - 0.05, mid + 0.05, 0.06, top, 0.2, fr);
     sash(a + 0.02, mid + 0.1, 0.1, top - 0.04, -0.07, 0.1);
-    sash(mid - 0.1, b - 0.02, 0.1, top - 0.04, 0.07, 0.1);
-    B(mid + 0.02, mid + 0.08, 2.6, 3.7, 0.05, metal, 0.13);
+    if (o.ang > 0) {
+      /* open: the moving sash slides in front of the fixed one */
+      sash(a + 0.02, mid + 0.1, 0.1, top - 0.04, 0.07, 0.1);
+      B(a + 0.08, a + 0.14, 2.6, 3.7, 0.05, metal, 0.13);
+    } else {
+      sash(mid - 0.1, b - 0.02, 0.1, top - 0.04, 0.07, 0.1);
+      B(mid + 0.02, mid + 0.08, 2.6, 3.7, 0.05, metal, 0.13);
+    }
   } else if (dt === 'pocket') {
     frame();
     const a = x0 + jf,
@@ -12581,12 +12997,17 @@ function openDetail3(g, o, w, F, m) {
       top = hd - jf,
       s0 = sd > 0 ? a + (b - a) * 0.5 : a,
       s1 = sd > 0 ? b : b - (b - a) * 0.5;
-    B(s0, s1, 0.06, top, 0.1, dm);
-    const pw = s1 - s0 - 0.4;
-    B(s0 + 0.2, s0 + 0.2 + pw, 0.5, 2.8, 0.03, dm, 0.065);
-    B(s0 + 0.2, s0 + 0.2 + pw, 3.2, top - 0.3, 0.03, dm, 0.065);
-    B(sd > 0 ? s0 + 0.06 : s1 - 0.14, sd > 0 ? s0 + 0.14 : s1 - 0.06, 2.9, 3.4, 0.04, dark, 0.07);
-    B(sd > 0 ? a : s1, sd > 0 ? s0 : b, 0.06, top, 0.04, mat('#2a2a2a', 'none'));
+    if (o.ang > 0) {
+      /* open: the leaf has slid into the wall; only its edge shows at the pocket jamb */
+      B(sd > 0 ? b - 0.1 : a, sd > 0 ? b : a + 0.1, 0.06, top, 0.1, dm);
+    } else {
+      B(s0, s1, 0.06, top, 0.1, dm);
+      const pw = s1 - s0 - 0.4;
+      B(s0 + 0.2, s0 + 0.2 + pw, 0.5, 2.8, 0.03, dm, 0.065);
+      B(s0 + 0.2, s0 + 0.2 + pw, 3.2, top - 0.3, 0.03, dm, 0.065);
+      B(sd > 0 ? s0 + 0.06 : s1 - 0.14, sd > 0 ? s0 + 0.14 : s1 - 0.06, 2.9, 3.4, 0.04, dark, 0.07);
+      B(sd > 0 ? a : s1, sd > 0 ? s0 : b, 0.06, top, 0.04, mat('#2a2a2a', 'none'));
+    }
   } else {
     /* sliding closet doors: two opaque panels on a track, one in front of the other */
     frame();
@@ -12597,11 +13018,16 @@ function openDetail3(g, o, w, F, m) {
     B(a, b, top - 0.08, top, 0.2, dark);
     B(a, b, 0.06, 0.12, 0.2, dark);
     B(a, a + pw, 0.12, top - 0.08, 0.05, dm, -0.06);
-    B(b - pw, b, 0.12, top - 0.08, 0.05, dm, 0.06);
     B(a + 0.15, a + pw - 0.15, 0.4, top - 0.35, 0.03, dm, -0.095);
-    B(b - pw + 0.15, b - 0.15, 0.4, top - 0.35, 0.03, dm, 0.095);
     B(a + pw - 0.2, a + pw - 0.12, 2.8, 3.6, 0.04, metal, -0.1);
-    B(b - pw + 0.12, b - pw + 0.2, 2.8, 3.6, 0.04, metal, 0.1);
+    if (o.ang > 0) {
+      /* open: the second panel has slid behind the first */
+      B(a, a + pw, 0.12, top - 0.08, 0.05, dm, 0.06);
+    } else {
+      B(b - pw, b, 0.12, top - 0.08, 0.05, dm, 0.06);
+      B(b - pw + 0.15, b - 0.15, 0.4, top - 0.35, 0.03, dm, 0.095);
+      B(b - pw + 0.12, b - pw + 0.2, 2.8, 3.6, 0.04, metal, 0.1);
+    }
   }
 }
 /* baseboard / crown trim runs for a room: inward-offset wall faces, mitred at the corners.
@@ -12671,6 +13097,54 @@ function trimSegs(F, r, base) {
     seg(u0, L);
   });
   return out;
+}
+/* baseboard and crown set on a wall itself: run along its room-side faces, breaking at doors */
+function wallTrim3(F, w, i) {
+  const g = geom(w),
+    ex = extSide(w, F),
+    tag = {t: 'wall', o: w, fi: i},
+    brk = (w.open || [])
+      .filter((o) => o.kind === 'door' && !o.hid)
+      .map((o) => [o.t * g.L - o.w / 2, o.t * g.L + o.w / 2])
+      .sort((p, q) => p[0] - q[0]),
+    spans = (base) => {
+      if (!base) return [[0, g.L]];
+      const out = [];
+      let c = 0;
+      brk.forEach(([a, b]) => {
+        if (a > c) out.push([c, a]);
+        c = Math.max(c, b);
+      });
+      if (c < g.L) out.push([c, g.L]);
+      return out;
+    },
+    run = (base, hgt, depth, z0, col) => {
+      const m = mat(col, 'none');
+      [1, -1].forEach((sd) => {
+        /* the outside face of an outside wall gets none */
+        if (w.ec && sd === ex) return;
+        spans(base).forEach(([a, b]) => {
+          if (b - a < 0.1) return;
+          const L = b - a,
+            u = (a + b) / 2,
+            off = w.t / 2 + depth / 2,
+            q = new THREE.Mesh(new THREE.BoxGeometry(L, depth, hgt), m);
+          q.position.set(
+            g.ax + g.d[0] * u + g.n[0] * sd * off,
+            g.ay + g.d[1] * u + g.n[1] * sd * off,
+            ZB + z0 + hgt / 2,
+          );
+          q.rotation.z = Math.atan2(g.d[1], g.d[0]);
+          q.userData.sel = tag;
+          grp.add(q);
+        });
+      });
+    };
+  if (w.base) run(true, (w.baseH || 5.25) / 12, 0.045, 0.02, w.baseCol || '#f4f2ec');
+  if (w.crown) {
+    const h = (w.crownH || 4.5) / 12;
+    run(false, h, h * 0.6, (w.h || WH) - h, w.crownCol || '#f4f2ec');
+  }
 }
 function trim3(F, r, i) {
   const tag = {t: 'room', o: r, fi: i},
@@ -12749,6 +13223,7 @@ function build3f(F, i) {
     if (w.hid) return;
     const g = geom(w);
     TAG = {t: 'wall', o: w, fi: i};
+    if ((w.base || w.crown) && !M.framing && !w.frm) wallTrim3(F, w, i);
     const PC = pieces(w, F.walls),
       GR = 0.004,
       touch = (p, q, k) => {
@@ -14319,6 +14794,10 @@ function stair3b(s, fi) {
       : mat(s.color || '#b08a5a', s.tex || 'none'),
     wood = '#d9b27c',
     fs = (a, b, sd, dep, th) => stick(a, b, null, fi, dep, sd, wood, th, tag),
+    /* treads and risers can be coloured on their own; unset they match the stair */
+    tm = !FRS && s.tc ? mat(s.tc, 'none') : sm,
+    rm = !FRS && s.rc ? mat(s.rc, 'none') : sm,
+    sdm = [sm, rm, sm, sm, tm, sm],
     tb = (cx, cy, cz, sx, sy, sz, rz) => {
       const m = new THREE.Mesh(new THREE.BoxGeometry(sx, sy, sz), mat(wood, 'none'));
       m.position.set(cx, cy, cz);
@@ -14332,10 +14811,10 @@ function stair3b(s, fi) {
         const h = rise * (i + 1),
           pts = spStep(p, i),
           sh = new THREE.Shape(pts.map((q) => new THREE.Vector2(q[0] - p.c[0], q[1] - p.c[1]))),
-          m = new THREE.Mesh(
-            new THREE.ExtrudeGeometry(sh, {depth: h, bevelEnabled: false}),
-            mat(s.color || '#b08a5a', s.tex || 'none'),
-          );
+          m = new THREE.Mesh(new THREE.ExtrudeGeometry(sh, {depth: h, bevelEnabled: false}), [
+            tm === sm ? mat(s.color || '#b08a5a', s.tex || 'none') : tm,
+            rm === sm ? mat(s.color || '#b08a5a', s.tex || 'none') : rm,
+          ]);
         m.position.set(p.c[0], p.c[1], ZB);
         m.userData.sel = tag;
         grp.add(m);
@@ -14371,7 +14850,7 @@ function stair3b(s, fi) {
     if (p.k === 'land') {
       const h = rise * (p.s0 + 1),
         g = new THREE.BoxGeometry(p.a, p.b, h),
-        m = new THREE.Mesh(g, sm);
+        m = new THREE.Mesh(g, sdm);
       if (sm.map) uvBox(g, p.a, p.b, h, sm.userData.tile);
       m.position.set(p.o[0], p.o[1], ZB + h / 2);
       m.rotation.z = rz;
@@ -14403,7 +14882,7 @@ function stair3b(s, fi) {
       const h = rise * (p.s0 + k + 1),
         c = frP(p, tr * (k + 0.5), 0),
         sg = new THREE.BoxGeometry(tr, p.w, h),
-        m = new THREE.Mesh(sg, sm);
+        m = new THREE.Mesh(sg, sdm);
       if (sm.map) uvBox(sg, tr, p.w, h, sm.userData.tile);
       m.position.set(c[0], c[1], ZB + h / 2);
       m.rotation.z = rz;
@@ -16921,6 +17400,93 @@ const doRnd = () => {
   );
 };
 $('rnd').onclick = () => doRnd();
+/* ---------- cross-section view: a clipping plane through the building seen square-on ---------- */
+var XS = {on: false, axis: 'x', off: 0, saved: null};
+function xsMat() {
+  if (!XS.on) return;
+  grp.traverse((o) => {
+    const ms = o.material ? (Array.isArray(o.material) ? o.material : [o.material]) : [];
+    ms.forEach((m) => {
+      if (m.side !== THREE.DoubleSide) {
+        m.side = THREE.DoubleSide;
+        m.needsUpdate = true;
+      }
+    });
+  });
+}
+function xsApply(keep) {
+  if (!XS.on) {
+    R.clippingPlanes = [];
+    if (XS.saved) Object.assign(cs, XS.saved);
+    XS.saved = null;
+    XS.cut = undefined;
+    $('xsp').style.display = 'none';
+    $('xsb').classList.remove('on');
+    changed();
+    render();
+    return;
+  }
+  const c = center();
+  if (!XS.saved) XS.saved = Object.assign({}, cs);
+  R.localClippingEnabled = true;
+  const x = XS.axis === 'x',
+    cut = (x ? c[1] : c[0]) + XS.off;
+  R.clippingPlanes = [new THREE.Plane(new THREE.Vector3(x ? 0 : -1, x ? -1 : 0, 0), cut)];
+  if (keep && XS.cut !== undefined) {
+    /* slider: slide the target with the cut and leave the user's angle, tilt and zoom alone */
+    if (x) cs.ty += cut - XS.cut;
+    else cs.tx += cut - XS.cut;
+  } else {
+    cs.yaw = x ? Math.PI / 2 : 0;
+    cs.pit = 0.03;
+    cs.tx = x ? 0 : cut - c[0];
+    cs.ty = x ? cut - c[1] : 0;
+    cs.tz = 8;
+    cs.dist = Math.min(120, Math.max(60, cs.dist));
+  }
+  XS.cut = cut;
+  $('xsp').style.display = 'flex';
+  $('xsb').classList.add('on');
+  xsMat();
+  render();
+}
+$('xsb').onclick = () => {
+  XS.on = !XS.on;
+  if (XS.on) {
+    viewIx = 2;
+    $('main').classList.remove('v2d');
+    $('main').classList.add('v3d');
+    $('vm').textContent = 'View: 3D';
+    size2();
+    size3();
+    M.cf = M.floors.length - 1;
+    allAt = M.cf;
+    roofAt = -1;
+    changed();
+  }
+  xsApply();
+};
+(() => {
+  const d = document.createElement('div');
+  d.id = 'xsp';
+  d.style.cssText =
+    'display:none;position:fixed;bottom:48px;left:50%;transform:translateX(-50%);z-index:50;gap:8px;align-items:center;background:#fffd;border:1px solid #888;border-radius:6px;padding:6px 10px;font-size:12px;color:#222';
+  d.innerHTML =
+    'Section <select id=xsa><option value=x>Front-back (cut along X)</option><option value=y>Left-right (cut along Y)</option></select> Position <input id=xso type=range min=-40 max=40 step=0.5 value=0 style="width:160px"> <button id=xsx>Close</button>';
+  document.body.appendChild(d);
+  $('xsa').onchange = () => {
+    XS.axis = $('xsa').value;
+    xsApply();
+  };
+  $('xso').oninput = () => {
+    XS.off = +$('xso').value;
+    xsApply(true);
+  };
+  $('xsx').onclick = () => {
+    XS.on = false;
+    xsApply();
+  };
+})();
 
 /* ---------- Settings window ---------- */
 const SET_VIEW = [
@@ -17748,6 +18314,108 @@ function furnRoom(rt, ix0, iy0, ix1, iy1, placed) {
 /* every generated room gets its usual furnishings, kept clear of doors and stairs */
 /* IRC R311.3: a landing at least 36 in deep and as wide as the door on the outside of every exterior door;
    the front door and a detached garage's side door get a 5 ft stoop when no deck or porch is already there */
+/* basement bulkhead: a steel hatch door in a basement wall, set where its areaway has open ground - clear of decks,
+   stoops, exterior stairs, walks, the driveway, other walls and every exterior door and its landing */
+function placeBulkhead() {
+  if (!M.bsmt) return;
+  const B = M.floors[0],
+    G = M.floors[1];
+  if (!B || !G) return;
+  const AW = 5.2,
+    AD = 5.6,
+    obs = [],
+    box = (x0, y0, x1, y1) => [
+      [x0, y0],
+      [x1, y0],
+      [x1, y1],
+      [x0, y1],
+    ];
+  (G.decks || []).forEach((d) => obs.push(box(d.x0 - 0.5, d.y0 - 0.5, d.x1 + 0.5, d.y1 + 0.5)));
+  M.floors.forEach((F) =>
+    (F.stairs || []).forEach((st) => {
+      if (!st.ext) return;
+      stairPolys(st).forEach((p) => obs.push(p));
+      const L = stairLandings(st);
+      if (L.bot) obs.push(L.bot);
+    }),
+  );
+  (M.paths || []).forEach((p) => {
+    for (let i = 0; i + 1 < p.pts.length; i++) {
+      const [a, b] = [p.pts[i], p.pts[i + 1]],
+        L = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1,
+        n = [-(b[1] - a[1]) / L, (b[0] - a[0]) / L],
+        h = p.w / 2 + 0.5;
+      obs.push([
+        [a[0] + n[0] * h, a[1] + n[1] * h],
+        [b[0] + n[0] * h, b[1] + n[1] * h],
+        [b[0] - n[0] * h, b[1] - n[1] * h],
+        [a[0] - n[0] * h, a[1] - n[1] * h],
+      ]);
+    }
+  });
+  /* the zone in front of every exterior door on the ground floor */
+  G.walls.forEach((w) => {
+    const g = geom(w),
+      ex = extSide(w, G);
+    (w.open || []).forEach((o) => {
+      if (o.kind !== 'door' || !w.ec) return;
+      const u = o.t * g.L,
+        h = o.w / 2 + 2.5,
+        P = (uu, k) => [g.ax + g.d[0] * uu + g.n[0] * ex * k, g.ay + g.d[1] * uu + g.n[1] * ex * k];
+      obs.push([P(u - h, -w.t / 2), P(u + h, -w.t / 2), P(u + h, w.t / 2 + 7), P(u - h, w.t / 2 + 7)]);
+    });
+  });
+  const wsegs = G.walls.filter((w) => !w.hid),
+    clear = (Q) => {
+      if (obs.some((p) => quadsOverlap(Q, p))) return false;
+      const c = [(Q[0][0] + Q[2][0]) / 2, (Q[0][1] + Q[2][1]) / 2];
+      if (G.rooms.some((r) => r.pts.length > 2 && inPoly(c, r.pts))) return false;
+      /* no wall of the house (a wing, the garage) cuts across the areaway */
+      return !wsegs.some((w) => {
+        const g = geom(w);
+        for (let s = 0; s <= g.L; s += 0.5) {
+          const p = [g.ax + g.d[0] * s, g.ay + g.d[1] * s];
+          if (inside(p, Q) && Math.min(...Q.map((q) => Math.hypot(q[0] - p[0], q[1] - p[1]))) > 0.01) {
+            /* the wall the hatch sits in runs along the near edge; only count points deeper than 0.4 ft */
+            const d0 = Math.abs(
+              (p[0] - Q[0][0]) * ((Q[3][0] - Q[0][0]) / AD) + (p[1] - Q[0][1]) * ((Q[3][1] - Q[0][1]) / AD),
+            );
+            if (d0 > 0.4) return true;
+          }
+        }
+        return false;
+      });
+    };
+  const cands = [];
+  B.walls
+    .filter((w) => !w.hid)
+    .forEach((w) => {
+      const g = geom(w);
+      if (g.L < 8) return;
+      const ex = extSide(w, B);
+      for (const t of [0.5, 0.35, 0.65, 0.25, 0.75, 0.15, 0.85]) {
+        const u = t * g.L;
+        if (u < 3.2 || u > g.L - 3.2) continue;
+        if ((w.open || []).some((o) => Math.abs(o.t * g.L - u) < (o.w + 4) / 2 + 0.5)) continue;
+        const P = (uu, k) => [g.ax + g.d[0] * uu + g.n[0] * ex * k, g.ay + g.d[1] * uu + g.n[1] * ex * k],
+          Q = [
+            P(u - AW / 2, w.t / 2 + 0.05),
+            P(u + AW / 2, w.t / 2 + 0.05),
+            P(u + AW / 2, w.t / 2 + AD),
+            P(u - AW / 2, w.t / 2 + AD),
+          ];
+        if (clear(Q))
+          cands.push({
+            w,
+            t,
+            pref: /East wall|West wall|North wall/.test(w.name) ? 0 : 1,
+            c: Math.abs(t - 0.5),
+          });
+      }
+    });
+  cands.sort((p, q) => p.pref - q.pref || p.c - q.c);
+  if (cands[0]) cands[0].w.open.push({t: cands[0].t, w: 4, kind: 'door', dt: 'bulkhead'});
+}
 function landings() {
   const F = M.floors[M.bsmt ? 1 : 0];
   F.walls.forEach((w) =>
