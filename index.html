@@ -823,18 +823,18 @@ canvas {
   
   <select id='fl'></select><button id='flup' class='flb' title='Go up one floor'>▲</button><button id='fldn' class='flb' title='Go down one floor'>▼</button><span class='sep'></span>
   <span class="sep"></span>
-  <button id="xsb" title="Cross-section view of the building" style="margin-left:auto">Cross-Section</button><button id="rnd" title="Generate a random building">Random Build</button><span id="gtime" title="Guest time left today" style="display:none;margin-right:8px;font-size:12px"></span><button id='vm' title='Switch view: Split, 2D, 3D (click to cycle)'>View: Split</button><button id='sidebtn'>Hide properties</button>
+  <button id="xsb" title="Cross-section view of the building" style="margin-left:auto">Cross-Section</button><button id="rnd" title="Generate a random building">Random Build</button><span id="gtime" title="Guest time left today" style="display:none;margin-right:8px;font-size:12px"></span><button id='vm' title='Switch view: Split, 2D, 3D (click to cycle)'>View: Split</button><button id='sidebtn'>Hide Properties</button>
 </div>
 <div id="pbdlg"><div id="pbwin" role="dialog" aria-label="Prebuild Room"><header><span id="pbtitle">Prebuild Room</span><button id="pbx" title="Close">✕</button></header><div id="pbbody"></div></div></div>
 <div id="setdlg"><div id="setwin" role="dialog" aria-label="Settings"><header><span>Settings</span><button id="setx" title="Close">✕</button></header><div id="setbody"></div></div></div>
 <div id="sidlg"><div id="siwin" role="dialog" aria-label="Sign In"><header><span id="sittl">Sign In</span><button id="six" title="Close">✕</button></header><div id="sibody"></div></div></div>
-<div id="gdlg"><div id="gwin"><b>Guest time is used up</b><p>Guest accounts get 2 hours of use per day on this device. Your time resets tomorrow. Sign in with another account to keep working.</p><button id="gout">Sign out</button></div></div>
+<div id="gdlg"><div id="gwin"><b>Guest time is used up</b><p>Guest accounts get 2 hours of use per day on this device. Your time resets tomorrow. Sign in with another account to keep working.</p><button id="gout">Sign Out</button></div></div>
 <div id="exdlg"><div id="exwin" role="dialog" aria-label="Export"><header><span>Export</span><button id="exx" title="Close">✕</button></header><div id="exbody"><label id="exnl">File name<input id="exname" maxlength="80" autocomplete="off" placeholder="cadieux-project"></label><button id="exbp" title="Export the architectural drawing set as a PDF">Blueprint (PDF)<small>Plans, roof plan, elevations and schedules as a printable PDF</small></button><button id="exbh" title="Export the drawing set as a web page">Blueprint (web page)<small>The same drawing set as a web page you can print or save as PDF</small></button><button id="expng2">Plan image (PNG)<small>The 2D plan as it is currently shown</small></button><button id="expng3">3D view image (PNG)<small>The 3D view as it is currently shown</small></button><button id="exproj">Project file (.json)<small>Save the whole design so it can be opened again</small></button><button id="exhr" title="Render the 3D view at high resolution with sharper textures and shadows">High Res (PNG)<small>The 3D view re-rendered large, with detailed textures and sun shadows</small></button><button id="exmat">Material List<small>Open the material list in a new window</small></button></div></div></div>
 <div id="main"><div id='rail'><button data-t='select' class='on' title='Select / move / resize (S)'><svg viewBox='0 0 24 24'><path d='M5 3l14 7-6 2-2 6z'/></svg>Select</button><button data-t='wall' title='Wall (W)'><svg viewBox='0 0 24 24'><path d='M4 19L20 5'/><circle cx='4' cy='19' r='2'/><circle cx='20' cy='5' r='2'/></svg>Wall</button><button data-t='door' title='Door (D)'><svg viewBox='0 0 24 24'><path d='M6 21V3h12v18M3 21h18'/><circle cx='15' cy='12' r='.9'/></svg>Door</button><button data-t='window' title='Window (N)'><svg viewBox='0 0 24 24'><rect x='4' y='4' width='16' height='16'/><path d='M12 4v16M4 12h16'/></svg>Window</button><button data-t='path' title='Path: driveways and walkways (P)'><svg viewBox='0 0 24 24'><path d='M5 21c0-7 7-5 7-10s-4-4-4-8M19 21c0-7-7-5-7-10'/></svg>Path</button><button data-t='stairs' title='Stairs (T)'><svg viewBox='0 0 24 24'><path d='M3 20h6v-5h6v-5h6'/></svg>Stairs</button><button data-t='roof' title='Roof (F)'><svg viewBox='0 0 24 24'><path d='M3 12l9-8 9 8M6 10v9h12v-9'/></svg>Roof</button><button data-t='dormer' title='Dormer'><svg viewBox='0 0 24 24'><path d='M3 20l9-9 9 9M8 20v-5l4-4 4 4v5M10 20v-3h4v3'/></svg>Dormer</button><button data-t='foundation' title='Foundation (G)'><svg viewBox='0 0 24 24'><path d='M3 20h18M5 20v-6h14v6M8 14V9h8v5'/></svg>Found.</button><button data-t='fsys' title='Floor System (J)'><svg viewBox='0 0 24 24'><path d='M3 6h18M3 18h18M7 6v12M12 6v12M17 6v12'/></svg>Joists</button><button data-t='deck' title='Deck (K)'><svg viewBox='0 0 24 24'><path d='M3 8h18M3 12h18M3 16h18M5 8v12M19 8v12M3 8l2-3h14l2 3'/></svg>Deck</button><button data-t='cabinet' title='Cabinet (C)'><svg viewBox='0 0 24 24'><rect x='3' y='5' width='18' height='14'/><path d='M12 5v14M9 12h.01M15 12h.01'/></svg>Cabinet</button><button data-t='postbeam' title='Post / Beam (B)'><svg viewBox='0 0 24 24'><path d='M3 6h18v3H3zM6 9v12M18 9v12M4 21h4M16 21h4'/></svg>Post/Beam</button><button data-t='measure' title='Measure (M)'><svg viewBox='0 0 24 24'><path d='M3 17l14-14 4 4L7 21z'/><path d='M7 13l2 2M10 10l2 2M13 7l2 2'/></svg>Measure</button><button id='frm2' title='Show framing for all objects' style='margin-top:auto'><svg viewBox='0 0 24 24'><rect x='3' y='3' width='18' height='18'/><path d='M8 3v18M12 3v18M16 3v18M3 8h18'/></svg>Framing</button></div>
   <div class="pane" id="p2"><canvas id="c2"></canvas><div class="tag">2D plan · wheel zoom · right-click cancels · right-drag pans</div><div id="split" title="Drag to resize the split · double-click to reset"></div></div>
   <div class="pane" id="p3"><canvas id="c3"></canvas><div class="tag">3D view · drag orbit · wheel zoom</div></div>
-<div id='side'><details id='propd' open><summary>Properties</summary><div id='props'></div></details><details id='terrd'><summary>Terrain</summary><div id='terrBody'></div></details><details id='furnd'><summary>Furniture / Appliances</summary><div id='furnList'></div></details><details><summary>Floors</summary><div id='flList'></div><div class='r fb'><button id='addf2'>+ Add</button><button id='delf2'>− Remove</button></div></details><details><summary>Objects</summary><div class='r fb'><button id='frm' title='Show framing for all objects'>▦ Framing: all</button></div><div id='obList'></div></details></div></div>
-<div id='tb'><span>View</span><button data-vw='grid' title='Plan grid'>Grid</button><button data-vw='dims' title='Wall dimensions (zoom in to see them)'>Dimensions</button><button data-vw='labels' title='Room names and areas'>Room labels</button><button data-vw='land' title='3 ft stair landing zones'>Landings</button><button data-vw='roofs' title='Show roofs and dormers'>Roofs</button><button data-vw='fram' title='Show framing for all objects'>Framing</button><button data-vw='terr' title='Terrain and trees in 3D'>Terrain</button><button data-vw='sky' title='Sky in 3D'>Sky</button><button id='snapbtn' title='Snapping: Center'><span id='snapl'>Snapping: Center</span></button><button id='drawcyc' title='Click to cycle the drawing mode: Line, Box, Curved'><span id='drawcl'>Drawing: Line</span></button><span id='bld' title='Current program build'>CADieux v1.4.0 · build 463</span></div>
+<div id='side'><details id='propd' open><summary>Properties</summary><div id='props'></div></details><details id='terrd'><summary>Terrain</summary><div id='terrBody'></div></details><details id='furnd'><summary>Furniture / Appliances</summary><div id='furnList'></div></details><details><summary>Floors</summary><div id='flList'></div><div class='r fb'><button id='addf2'>+ Add</button><button id='delf2'>− Remove</button></div></details><details><summary>Objects</summary><div class='r fb'><button id='frm' title='Show framing for all objects'>▦ Framing: All</button></div><div id='obList'></div></details></div></div>
+<div id='tb'><span>View</span><button data-vw='grid' title='Plan grid'>Grid</button><button data-vw='dims' title='Wall dimensions (zoom in to see them)'>Dimensions</button><button data-vw='labels' title='Room names and areas'>Room labels</button><button data-vw='land' title='3 ft stair landing zones'>Landings</button><button data-vw='roofs' title='Show roofs and dormers'>Roofs</button><button data-vw='fram' title='Show framing for all objects'>Framing</button><button data-vw='terr' title='Terrain and trees in 3D'>Terrain</button><button data-vw='sky' title='Sky in 3D'>Sky</button><button id='snapbtn' title='Snapping: Center'><span id='snapl'>Snapping: Center</span></button><button id='drawcyc' title='Click to cycle the drawing mode: Line, Box, Curved'><span id='drawcl'>Drawing: Line</span></button><span id='bld' title='Current program build'>CADieux v1.4.0 · build 469</span></div>
 <div id='st'>Select: click to select, drag to move, drag a square handle to resize. Delete removes. Q rotates stairs.</div>
 <div id='fly'></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1602,7 +1602,7 @@ function renderTerr() {
     row('Grass', '<select id=t_gr><option value=1>On</option><option value=0>Off</option></select>') +
     row('Number of trees', num('t_tn', T.tn == null ? 45 : T.tn)) +
     row('Distance from house (ft)', num('t_td', T.td == null ? 100 : T.td)) +
-    '<div class="r fb"><button id=t_rnd>New random seed</button></div>';
+    '<div class="r fb"><button id=t_rnd>New Random Seed</button></div>';
   $('t_on').value = T.on ? 1 : 0;
   $('t_tr').value = T.trees === false ? 0 : 1;
   $('t_gr').value = T.grass === false ? 0 : 1;
@@ -1703,7 +1703,7 @@ function renderSide0() {
       ro('Walls', c('wall')) +
       ro('Rooms', c('room')) +
       ro('Stairs', c('stair')) +
-      '<div class=r><span>Group</span><button id=p_gdel>Delete all</button></div><p class=m>Drag any selected object to move the group. Right-click or press Esc to deselect.</p>';
+      '<div class=r><span>Group</span><button id=p_gdel>Delete All</button></div><p class=m>Drag any selected object to move the group. Right-click or press Esc to deselect.</p>';
     $('p_gdel').onclick = delGroup;
     return;
   }
@@ -2053,7 +2053,7 @@ function renderSide0() {
       row('Elevation (ft)', num('p_te', T.elev || 0, 1)) +
       row('Flat margin (ft)', num('p_tp', T.pad == null ? 8 : T.pad, 1)) +
       row('Blend (ft)', num('p_tb', T.blend == null ? 34 : T.blend, 2)) +
-      '<div class="r fb"><button id=p_tr>New random seed</button></div>';
+      '<div class="r fb"><button id=p_tr>New Random Seed</button></div>';
     S.innerHTML = h;
     $('p_tn').value = T.on ? 1 : 0;
     B('p_tn', (v) =>
@@ -2213,7 +2213,7 @@ function renderSide0() {
       '<h3>Roof</h3>' +
       NM +
       (R.dq || R.rk
-        ? '<div class=r><span>Shape</span><span><button id=p_rdq>Reset shape</button></span></div>'
+        ? '<div class=r><span>Shape</span><span><button id=p_rdq>Reset Shape</button></span></div>'
         : '') +
       row(
         'Type',
@@ -2502,7 +2502,10 @@ function renderSide0() {
       row('Front X (ft)', num('p_dmx', D.f[0], 0.25)) +
       row('Front Y (ft)', num('p_dmy', D.f[1], 0.25)) +
       row('Rotation (°)', num('p_dmr', Math.round(D.rot * 10) / 10, 5)) +
-      row('Turn', '<span><button id=p_dml>⟲ 90°</button> <button id=p_dmq>⟳ 90°</button></span>') +
+      row(
+        'Rotate',
+        '<span><button id=p_dmq title="Rotate 90 degrees clockwise">↻ 90° CW</button> <button id=p_dml title="Rotate 90 degrees counter-clockwise">↺ 90° CCW</button></span>',
+      ) +
       row(
         'Window',
         '<select id=p_dmwin>' +
@@ -2512,7 +2515,7 @@ function renderSide0() {
       ) +
       sty(D, '#e6dfd0', 'siding', 1, null, 'Wall texture') +
       row('Roof color', '<input id=p_dmc type=color value=' + dormRoofCol(D, I.R) + '>') +
-      row('Roof', '<button id=p_dmm>Match main roof</button>') +
+      row('Roof', '<button id=p_dmm>Match Main Roof</button>') +
       (I.R ? '' : ro('Warning', 'Not on a roof — drag it onto one')) +
       ro('Depth into roof', fmt(I.te) + ' (to eave) / ' + fmt(I.tr) + ' (to ridge)');
     S.innerHTML = h;
@@ -2564,7 +2567,7 @@ function renderSide0() {
       row('Name', '<input id=p_n>') +
       row('Diameter (ft)', num('p_tr', Math.round(T.r * 2 * 100) / 100, 0.5)) +
       row('Floors (stories)', num('p_tn', T.n, 1)) +
-      row('View floor', '<button id=p_tcy>Next floor \u25B6</button>') +
+      row('View floor', '<button id=p_tcy>Next Floor \u25B6</button>') +
       row('Sides', num('p_ts', T.sides || 12, 1)) +
       row(
         'Roof',
@@ -2660,7 +2663,10 @@ function renderSide0() {
       row('X (ft)', num('p_ux', U.c[0], 0.25)) +
       row('Y (ft)', num('p_uy', U.c[1], 0.25)) +
       row('Rotation (°)', num('p_ur', Math.round(U.rot * 10) / 10, 5)) +
-      row('Turn', '<span><button id=p_ul>⟲ 90°</button> <button id=p_urr>⟳ 90°</button></span>') +
+      row(
+        'Rotate',
+        '<span><button id=p_urr title="Rotate 90 degrees clockwise">↻ 90° CW</button> <button id=p_ul title="Rotate 90 degrees counter-clockwise">↺ 90° CCW</button></span>',
+      ) +
       sty(U, FURN[U.k] ? FURN[U.k][5] : '#999999', 'none', 0);
     S.innerHTML = h;
     const c = $('p_c');
@@ -2760,7 +2766,7 @@ function renderSide0() {
         'Countertop',
         '<select id=p_ck>' + op(1, 'Yes', cabTop(C) ? 1 : 0) + op(0, 'No', cabTop(C) ? 1 : 0) + '</select>',
       ) +
-      row('Side', '<button id=p_cf>↔ Flip side</button>') +
+      row('Side', '<button id=p_cf>↔ Flip Side</button>') +
       row('Start X (ft)', num('p_cax', C.a[0], 0.5)) +
       row('Start Y (ft)', num('p_cay', C.a[1], 0.5)) +
       row('End X (ft)', num('p_cbx', C.b[0], 0.5)) +
@@ -2962,7 +2968,7 @@ function renderSide0() {
       ) +
       row('Rail height (in)', num('p_dh', D.rh || 36, 1)) +
       sty(D, '#a9825a', 'wood', 1) +
-      ro('Deck area', r2(I.W * I.D) + ' sq ft') +
+      ro('Deck area', r2(dkArea(D)) + ' sq ft') +
       ro('Height above grade', fmt(Math.max(0, hgt))) +
       ro('Joists', L.items.filter((t) => t.k === 'j').length + ' x ' + D.sz + ' (span ' + fmt(I.span) + ')') +
       ro(
@@ -2970,7 +2976,7 @@ function renderSide0() {
         L.items.filter((t) => t.k === 'h').length + ' / ' + L.items.filter((t) => t.k === 'r').length,
       ) +
       ro('Posts (6x6)', np) +
-      ro('Decking', r2(I.W * I.D * 1.05) + ' sq ft (5/4x6, +5% waste)') +
+      ro('Decking', r2(dkArea(D) * 1.05) + ' sq ft (5/4x6, +5% waste)') +
       ro('Railing length', D.rail ? fmt(per) : '—');
     S.innerHTML = h;
     const c = $('p_c'),
@@ -3070,7 +3076,10 @@ function renderSide0() {
             '<select id=p_sty><option value=straight>Straight</option><option value=L>L-shaped</option><option value=U>U-shaped</option><option value=spiral>Spiral</option></select>',
           )) +
       (s.style
-        ? row('Turn', '<select id=p_hd><option value=1>Left</option><option value=-1>Right</option></select>')
+        ? row(
+            'Turn direction',
+            '<select id=p_hd><option value=1>Left</option><option value=-1>Right</option></select>',
+          )
         : '') +
       row(s.style === 'spiral' ? 'Radius (ft)' : 'Width (ft)', num('p_w', s.w, 0.5)) +
       (s.style === 'spiral' ? '' : row(s.style ? 'First run (ft)' : 'Run (ft)', num('p_l', s.len, 0.5))) +
@@ -3086,7 +3095,7 @@ function renderSide0() {
       '><summary>Trim</summary>' +
       row('Tread color', '<input id=p_stc type=color value=' + (s.tc || s.color || '#b08a5a') + '>') +
       row('Riser color', '<input id=p_src type=color value=' + (s.rc || s.color || '#b08a5a') + '>') +
-      (s.tc || s.rc ? row('Reset', '<button id=p_strs>Match stair color</button>') : '') +
+      (s.tc || s.rc ? row('Reset', '<button id=p_strs>Match Stair Color</button>') : '') +
       '</details>' +
       stairInfo(s) +
       railUI(s);
@@ -4778,8 +4787,10 @@ function randomBuild(seed, opt = {}) {
               Math.max(...c.map((p) => p[1])),
             ],
             cx = (bb[0] + bb[1]) / 2,
-            cy = (bb[2] + bb[3]) / 2,
-            /* prefer a stair that sits against a wall: score the gap to the nearest wall face, then closeness to the room */
+            cy = (bb[2] + bb[3]) / 2;
+          /* outside the walls or the stair run's range: skip before the costlier scoring */
+          if (cx < rx[0] || cx > rx[1] || !inb(c)) continue;
+          const /* prefer a stair that sits against a wall: score the gap to the nearest wall face, then closeness to the room */
             gap = Math.min(
               30,
               ...F0.walls.flatMap((w) => {
@@ -4805,7 +4816,7 @@ function randomBuild(seed, opt = {}) {
                   : 0
               : 0,
             d = gap * 3 + 0.15 * Math.hypot(cx - ax, cy - 4) + pen;
-          if (cx < rx[0] || cx > rx[1] || d >= bd || !good()) continue;
+          if (d >= bd || !good()) continue;
           bd = d;
           best = [x, y, rot];
         }
@@ -7141,7 +7152,13 @@ function pick(x, y) {
   for (const r of M.floors[M.cf].decks || []) {
     if (r.hid) continue;
     /* the whole platform is clickable, not just its edge */
-    if (raw[0] >= r.x0 - e2 && raw[0] <= r.x1 + e2 && raw[1] >= r.y0 - e2 && raw[1] <= r.y1 + e2) {
+    if (
+      raw[0] >= r.x0 - e2 &&
+      raw[0] <= r.x1 + e2 &&
+      raw[1] >= r.y0 - e2 &&
+      raw[1] <= r.y1 + e2 &&
+      (!r.pn || inside(raw, deckPts(r)) || hitPoly(raw, deckPts(r)) < e2)
+    ) {
       sel = {t: 'dk', o: r};
       return begin('roof', null, {o: r, orig: [r.x0, r.y0, r.x1, r.y1]});
     }
@@ -7632,7 +7649,7 @@ function polyLock(c) {
   return Math.abs(c[0] - l[0]) >= Math.abs(c[1] - l[1]) ? [c[0], l[1]] : [l[0], c[1]];
 }
 /* split a traced outline into rectangles (cells of the vertex grid whose centre lies inside) */
-function polyRects(P) {
+function polyRects(P, inv) {
   const xs = [...new Set(P.map((p) => p[0]))].sort((a, b) => a - b),
     ys = [...new Set(P.map((p) => p[1]))].sort((a, b) => a - b),
     rows = [];
@@ -7640,7 +7657,7 @@ function polyRects(P) {
     const runs = [];
     let st = null;
     for (let i = 0; i + 1 < xs.length; i++) {
-      const on = inside([(xs[i] + xs[i + 1]) / 2, (ys[j] + ys[j + 1]) / 2], P);
+      const on = inside([(xs[i] + xs[i + 1]) / 2, (ys[j] + ys[j + 1]) / 2], P) !== !!inv;
       if (on && st === null) st = xs[i];
       if ((!on || i + 2 === xs.length) && st !== null) {
         runs.push([st, on ? xs[i + 1] : xs[i]]);
@@ -7791,6 +7808,18 @@ function finishPoly() {
       });
     });
     status('Roof added. Draw another, or right-click to go back to Select.');
+    return;
+  }
+  if (
+    tool === 'deck' &&
+    P.length >= 5 &&
+    P.every((p, i) => {
+      const q = P[(i + 1) % P.length];
+      return Math.abs(p[0] - q[0]) < 0.01 || Math.abs(p[1] - q[1]) < 0.01;
+    })
+  ) {
+    /* a rectilinear outline (L, T, U ...) is one deck with that shape */
+    finishDeckPoly(P);
     return;
   }
   let R = P.length >= 3 ? (tool === 'roof' ? polyRectsCover(P) : polyRects(P)) : [];
@@ -9721,6 +9750,61 @@ function finishFS() {
     'Floor system added. Joists and headers are laid out automatically. Draw another, or right-click to go back to Select.',
   );
 }
+/* a deck drawn as an outline keeps one shape: its corners are stored as 0..1 fractions of its bounding box, so moving and resizing carry the shape along */
+function deckPts(D) {
+  return D.pn ? D.pn.map(([u, v]) => [D.x0 + u * (D.x1 - D.x0), D.y0 + v * (D.y1 - D.y0)]) : null;
+}
+/* the rectangles of the bounding box that lie outside an outlined deck: joists stop at them like at a stairwell */
+function deckNotches(D) {
+  const P = deckPts(D);
+  return P ? polyRects(P, true) : [];
+}
+function insetPoly(P, q) {
+  const n = P.length,
+    A = P.reduce((t, p, i) => t + p[0] * P[(i + 1) % n][1] - P[(i + 1) % n][0] * p[1], 0),
+    sg = A >= 0 ? 1 : -1,
+    nm = (a, b) => {
+      const dx = b[0] - a[0],
+        dy = b[1] - a[1],
+        l = Math.hypot(dx, dy) || 1;
+      return [(-dy / l) * sg, (dx / l) * sg];
+    };
+  return P.map((p, i) => {
+    const n1 = nm(P[(i + n - 1) % n], p),
+      n2 = nm(p, P[(i + 1) % n]),
+      k = q / (1 + n1[0] * n2[0] + n1[1] * n2[1]);
+    return [p[0] + (n1[0] + n2[0]) * k, p[1] + (n1[1] + n2[1]) * k];
+  });
+}
+function finishDeckPoly(P) {
+  const xs = P.map((p) => p[0]),
+    ys = P.map((p) => p[1]),
+    x0 = Math.min(...xs),
+    x1 = Math.max(...xs),
+    y0 = Math.min(...ys),
+    y1 = Math.max(...ys);
+  mut(() => {
+    const F = M.floors[M.cf];
+    (F.decks = F.decks || []).push({
+      sz: '2x8',
+      oc: 16,
+      dir: 'auto',
+      x0,
+      y0,
+      x1,
+      y1,
+      pn: P.map((p) => [+((p[0] - x0) / (x1 - x0)).toFixed(6), +((p[1] - y0) / (y1 - y0)).toFixed(6)]),
+      el: 0,
+      rail: true,
+      rh: 36,
+      color: '#a9825a',
+      tex: 'wood',
+    });
+  });
+  status(
+    'Deck added. Select it to change level, joists, railing and finish. Draw another, or right-click to go back to Select.',
+  );
+}
 function finishDeck() {
   const a = dstart,
     b = cur;
@@ -9751,18 +9835,28 @@ function finishDeck() {
     'Deck added. Select it to change level, joists, railing and finish. Draw another, or right-click to go back to Select.',
   );
 }
+function dkArea(D) {
+  const P = deckPts(D);
+  return P ? Math.abs(area(P)) : (D.x1 - D.x0) * (D.y1 - D.y0);
+}
+function hitPoly(p, P) {
+  return Math.min(...P.map((a, k) => hit(p, {a, b: P[(k + 1) % P.length]})[0]));
+}
 function deckTop(D, i) {
   return ZBof(i) + (D.el || 0) / 12;
 }
 /* the railing runs round the deck except along the house: an edge that sits against a wall of this floor is left open */
 function deckRailEdges(D, i) {
   const q = 0.1,
-    pts = [
-      [D.x0 + q, D.y0 + q],
-      [D.x1 - q, D.y0 + q],
-      [D.x1 - q, D.y1 - q],
-      [D.x0 + q, D.y1 - q],
-    ],
+    dp = deckPts(D),
+    pts = dp
+      ? insetPoly(dp, q)
+      : [
+          [D.x0 + q, D.y0 + q],
+          [D.x1 - q, D.y0 + q],
+          [D.x1 - q, D.y1 - q],
+          [D.x0 + q, D.y1 - q],
+        ],
     W = ((M.floors[i] || {}).walls || []).filter((w) => !w.hid);
   const gap = ([a, b]) => {
     /* leave the railing open where an exterior stair comes up onto the deck */
@@ -9803,7 +9897,7 @@ function deckRailEdges(D, i) {
       );
   };
   return pts
-    .map((a, k) => [a, pts[(k + 1) % 4]])
+    .map((a, k) => [a, pts[(k + 1) % pts.length]])
     .filter(([a, b]) => {
       const hz = Math.abs(a[1] - b[1]) < 1e-6,
         lo = Math.min(a[hz ? 0 : 1], b[hz ? 0 : 1]),
@@ -9847,7 +9941,41 @@ function adoptDeckPost(D, i, p) {
   (M.floors[i].posts = M.floors[i].posts || []).push(o);
   return o;
 }
+function deckPostsPoly(D, i) {
+  const h = deckHt(D, i),
+    out = [];
+  if (h < 0.25) return out;
+  const P = deckPts(D),
+    I = insetPoly(P, 0.25),
+    F = M.floors[i],
+    touch = (horiz, v, lo, hi) =>
+      !!F &&
+      F.walls.some((w) => {
+        if (w.hid) return false;
+        const along = horiz ? Math.abs(w.a[1] - w.b[1]) < 1e-3 : Math.abs(w.a[0] - w.b[0]) < 1e-3,
+          pos = horiz ? w.a[1] : w.a[0],
+          s0 = horiz ? Math.min(w.a[0], w.b[0]) : Math.min(w.a[1], w.b[1]),
+          s1 = horiz ? Math.max(w.a[0], w.b[0]) : Math.max(w.a[1], w.b[1]);
+        return along && Math.abs(pos - v) <= w.t / 2 + 0.35 && Math.min(s1, hi) - Math.max(s0, lo) >= 1.5;
+      }),
+    put = (x, y) => {
+      if (!out.some((o) => Math.abs(o[0] - x) < 0.3 && Math.abs(o[1] - y) < 0.3)) out.push([x, y]);
+    };
+  P.forEach((a, k) => {
+    const b = P[(k + 1) % P.length],
+      ia = I[k],
+      ib = I[(k + 1) % P.length],
+      hz = Math.abs(a[1] - b[1]) < 1e-6,
+      lo = Math.min(a[hz ? 0 : 1], b[hz ? 0 : 1]),
+      hi = Math.max(a[hz ? 0 : 1], b[hz ? 0 : 1]);
+    if (touch(hz, hz ? a[1] : a[0], lo, hi)) return;
+    const n = Math.max(1, Math.ceil(Math.hypot(ib[0] - ia[0], ib[1] - ia[1]) / 8));
+    for (let t = 0; t <= n; t++) put(ia[0] + ((ib[0] - ia[0]) * t) / n, ia[1] + ((ib[1] - ia[1]) * t) / n);
+  });
+  return out;
+}
 function deckPostsAll(D, i) {
+  if (D.pn) return deckPostsPoly(D, i);
   const h = deckHt(D, i),
     q = 0.25,
     out = [];
@@ -9895,19 +10023,38 @@ function deckPostsAll(D, i) {
 function drawDeck2(D, on) {
   const L = fsLayout(M.cf, D),
     I = fsInfoR(D),
-    Q = [
+    Q = deckPts(D) || [
       [D.x0, D.y0],
       [D.x1, D.y0],
       [D.x1, D.y1],
       [D.x0, D.y1],
     ],
-    bw = 5.5 / 12;
+    bw = 5.5 / 12,
+    /* decking board lines, cut to the outline */
+    hatch = (a, b) => {
+      const hz = a[1] === b[1],
+        cs = [...new Set([hz ? a[0] : a[1], hz ? b[0] : b[1], ...Q.map((p) => p[hz ? 0 : 1])])]
+          .filter(
+            (v) =>
+              v >= Math.min(hz ? a[0] : a[1], hz ? b[0] : b[1]) - 1e-9 &&
+              v <= Math.max(hz ? a[0] : a[1], hz ? b[0] : b[1]) + 1e-9,
+          )
+          .sort((u, v) => u - v);
+      for (let k = 0; k + 1 < cs.length; k++) {
+        const m = (cs[k] + cs[k + 1]) / 2;
+        if (!D.pn || inside(hz ? [m, a[1]] : [a[0], m], Q))
+          line(
+            hz ? [cs[k], a[1]] : [a[0], cs[k]],
+            hz ? [cs[k + 1], a[1]] : [a[0], cs[k + 1]],
+            'rgba(120,90,55,.35)',
+            0.6,
+          );
+      }
+    };
   poly(Q, on ? 'rgba(47,111,219,.10)' : 'rgba(169,130,90,.18)');
-  Q.forEach((p, k) => line(p, Q[(k + 1) % 4], on ? '#2f6fdb' : '#8a6a44', on ? 2.5 : 1.5));
-  if (I.ax === 'x')
-    for (let y = D.y0 + bw; y < D.y1 - 0.01; y += bw) line([D.x0, y], [D.x1, y], 'rgba(120,90,55,.35)', 0.6);
-  else
-    for (let x = D.x0 + bw; x < D.x1 - 0.01; x += bw) line([x, D.y0], [x, D.y1], 'rgba(120,90,55,.35)', 0.6);
+  Q.forEach((p, k) => line(p, Q[(k + 1) % Q.length], on ? '#2f6fdb' : '#8a6a44', on ? 2.5 : 1.5));
+  if (I.ax === 'x') for (let y = D.y0 + bw; y < D.y1 - 0.01; y += bw) hatch([D.x0, y], [D.x1, y]);
+  else for (let x = D.x0 + bw; x < D.x1 - 0.01; x += bw) hatch([x, D.y0], [x, D.y1]);
   if (M.framing)
     L.items.forEach((it) => {
       const [a, b, c, e] = it.r;
@@ -11230,10 +11377,17 @@ function deck3(D, i, tag) {
   });
   if (!M.framing) {
     const dm = mat(D.color || '#a9825a', D.tex || 'wood'),
-      g = new THREE.BoxGeometry(D.x1 - D.x0, D.y1 - D.y0, tk),
+      dp = deckPts(D),
+      g = dp
+        ? new THREE.ExtrudeGeometry(new THREE.Shape(dp.map((p) => new THREE.Vector2(p[0], p[1]))), {
+            depth: tk,
+            bevelEnabled: false,
+          })
+        : new THREE.BoxGeometry(D.x1 - D.x0, D.y1 - D.y0, tk),
       m = new THREE.Mesh(g, dm);
     if (dm.map) scaleUV(g, dm.userData.tile);
-    m.position.set((D.x0 + D.x1) / 2, (D.y0 + D.y1) / 2, top - tk / 2);
+    if (dp) m.position.set(0, 0, top - tk);
+    else m.position.set((D.x0 + D.x1) / 2, (D.y0 + D.y1) / 2, top - tk / 2);
     add(m);
   }
   const pm = mat('#6b4f2e', 'none'),
@@ -11938,8 +12092,14 @@ const TOUCH_TAP_TOOLS = [
   'furn',
 ];
 let pend = null;
+const tapTool = () => TOUCH_TAP_TOOLS.includes(tool) || isPoly(),
+  /* a drag-to-draw gesture: press at one end, drag, lift at the other (walls, measuring, box rooms) */
+  dragDraw = () =>
+    (tool === 'wall' && dmode() !== 'curve' && !start) ||
+    (tool === 'measure' && !mA) ||
+    (tool === 'room' && dmode() === 'box' && !roomPts.length);
 const pend0 = (q, up) =>
-  TOUCH_TAP_TOOLS.includes(tool)
+  tapTool()
     ? {
         button: 0,
         pointerId: q.pointerId,
@@ -11970,7 +12130,7 @@ c2.addEventListener(
       e.stopImmediatePropagation();
     } else if (!touchSwallow) {
       e.stopImmediatePropagation();
-      const tap = TOUCH_TAP_TOOLS.includes(tool);
+      const tap = tapTool();
       pend = {e, tap, t: tap ? 0 : setTimeout(pendFlush, 90)};
     }
   },
@@ -12013,6 +12173,8 @@ c2.addEventListener(
           clearTimeout(pend.t);
           const q = pend.e;
           pend = null;
+          if (tapTool() && dragDraw() && Math.hypot(e.clientX - q.clientX, e.clientY - q.clientY) > 14)
+            c2Down(pend0(q, q));
           c2Down(pend0(q, e));
         } else {
           clearTimeout(pend.t);
@@ -14011,42 +14173,61 @@ function flipRow() {
   const r = document.createElement('div');
   r.className = 'r';
   r.innerHTML =
-    '<span>Flip</span><span><button id=p_fh>↔ Horiz</button> <button id=p_fv>↕ Vert</button></span>';
+    '<span>Rotate</span><span><button id=p_rcw title="Rotate 90 degrees clockwise">↻ 90° CW</button> <button id=p_rccw title="Rotate 90 degrees counter-clockwise">↺ 90° CCW</button></span>';
   const rd = $('rafd'),
     dr = sel && sel.t === 'stair' && $('p_r');
   if (dr) dr.closest('label').after(r);
   else if (rd) rd.parentNode.insertBefore(r, rd);
   else $('props').appendChild(r);
-  $('p_fh').onclick = () => flipSel('h');
-  $('p_fv').onclick = () => flipSel('v');
+  $('p_rcw').onclick = () => rotSel(-1);
+  $('p_rccw').onclick = () => rotSel(1);
 }
-function flipSel(ax) {
+/* turn the selected object a quarter turn: dir 1 = counter-clockwise, -1 = clockwise (plan view, y up) */
+function rotSel(dir) {
   const s = sel;
   if (!s) return;
   mut(() => {
-    const o = s.o;
+    const o = s.o,
+      turn = (pts, c) =>
+        pts.forEach((q) => {
+          const dx = q[0] - c[0],
+            dy = q[1] - c[1];
+          q[0] = c[0] - dir * dy;
+          q[1] = c[1] + dir * dx;
+        });
     if (s.t === 'open') {
-      if (ax === 'h') o.fh = !o.fh;
-      else o.fv = !o.fv;
+      /* the four hand/swing positions come round in turn */
+      const k = ((o.fh ? 1 : 0) << 1) | (o.fv ? 1 : 0),
+        seq = [0, 1, 3, 2],
+        n = seq[(seq.indexOf(k) + (dir > 0 ? 1 : 3)) % 4];
+      o.fh = !!(n >> 1);
+      o.fv = !!(n & 1);
+      if (!o.fh) delete o.fh;
+      if (!o.fv) delete o.fv;
     } else if (s.t === 'wall') {
-      if (ax === 'h')
-        o.open.forEach((p) => {
-          p.t = 1 - p.t;
-          p.fh = !p.fh;
-        });
-      else
-        o.open.forEach((p) => {
-          p.fv = !p.fv;
-        });
+      const c = [(o.a[0] + o.b[0]) / 2, (o.a[1] + o.b[1]) / 2];
+      turn([...new Set([...refsAt(o.a), ...refsAt(o.b), o.a, o.b])], c);
     } else if (s.t === 'stair') {
-      const c = stairPivot(o),
-        map = ax === 'h' ? {0: 2, 2: 0, 1: 1, 3: 3} : {1: 3, 3: 1, 0: 0, 2: 2};
-      o.rot = map[o.rot];
-      if (o.style) o.hd = o.hd === -1 ? 1 : -1;
-      const q2 = sd(o);
-      o.x = c[0] - q2.d[0] * stairHalf(o);
-      o.y = c[1] - q2.d[1] * stairHalf(o);
+      const c = stairPivot(o);
+      o.rot = (((o.rot + dir) % 4) + 4) % 4;
+      if (o.style !== 'spiral') {
+        const q2 = sd(o);
+        o.x = c[0] - q2.d[0] * stairHalf(o);
+        o.y = c[1] - q2.d[1] * stairHalf(o);
+      }
     } else if (s.t === 'roof') o.rr = !o.rr;
+    else if (o && o.x1 !== undefined && o.x0 !== undefined) {
+      /* a rectangle (foundation, floor system, deck) swaps its width and depth about its centre */
+      const cx = (o.x0 + o.x1) / 2,
+        cy = (o.y0 + o.y1) / 2,
+        hw = (o.x1 - o.x0) / 2,
+        hh = (o.y1 - o.y0) / 2;
+      if (o.pn) o.pn = o.pn.map(([u, v]) => (dir < 0 ? [v, 1 - u] : [1 - v, u]));
+      o.x0 = cx - hh;
+      o.x1 = cx + hh;
+      o.y0 = cy - hw;
+      o.y1 = cy + hw;
+    }
   });
 }
 function titleRename(o) {
@@ -14239,6 +14420,7 @@ function fsLayout(i, R) {
           ys = c.map((p) => p[1]);
         return {x0: Math.min(...xs), x1: Math.max(...xs), y0: Math.min(...ys), y1: Math.max(...ys)};
       })
+      .concat(R.pn ? deckNotches(R).map((c) => ({...c, nt: true})) : [])
       .filter((c) => c.x1 > R.x0 && c.x0 < R.x1 && c.y1 > R.y0 && c.y0 < R.y1),
     A0 = ax === 'x' ? R.x0 : R.y0,
     A1 = ax === 'x' ? R.x1 : R.y1,
@@ -14308,8 +14490,8 @@ function fsLayout(i, R) {
       l1 = ax === 'x' ? c.y1 : c.x1,
       a0 = (ax === 'x' ? c.x0 : c.y0) - 0.05 - tk / 2,
       a1 = (ax === 'x' ? c.x1 : c.y1) + 0.05 + tk / 2;
-    H(Math.max(L0, l0), Math.min(L1, l1), a0, 'h');
-    H(Math.max(L0, l0), Math.min(L1, l1), a1, 'h');
+    if (!c.nt || a0 > A0 + 0.2) H(Math.max(L0, l0), Math.min(L1, l1), a0, 'h');
+    if (!c.nt || a1 < A1 - 0.2) H(Math.max(L0, l0), Math.min(L1, l1), a1, 'h');
     [l0, l1].forEach((q) => {
       if (q > L0 + 0.2 && q < L1 - 0.2) {
         const a = Math.max(A0, a0),
@@ -14323,8 +14505,27 @@ function fsLayout(i, R) {
     });
   });
   if (!R.poly) {
-    H(L0, L1, A0 + tk / 2, 'r');
-    H(L0, L1, A1 - tk / 2, 'r');
+    /* the outer rims stop where an outlined deck has a notch in that edge */
+    [A0 + tk / 2, A1 - tk / 2].forEach((ea) => {
+      let segs = [[L0, L1]];
+      cuts.forEach((c) => {
+        if (!c.nt) return;
+        const a0 = ax === 'x' ? c.x0 : c.y0,
+          a1 = ax === 'x' ? c.x1 : c.y1,
+          l0 = ax === 'x' ? c.y0 : c.x0,
+          l1 = ax === 'x' ? c.y1 : c.x1;
+        if (a0 - 0.05 <= ea && a1 + 0.05 >= ea)
+          segs = segs.flatMap(([u, v]) =>
+            l1 <= u || l0 >= v
+              ? [[u, v]]
+              : [
+                  [u, Math.min(v, l0)],
+                  [Math.max(u, l1), v],
+                ],
+          );
+      });
+      segs.forEach(([u, v]) => H(u, v, ea, 'r'));
+    });
   }
   return {items: out, cuts, I};
 }
@@ -17480,7 +17681,7 @@ $('vm').onclick = () => {
 };
 $('sidebtn').onclick = () => {
   const c = $('main').classList.toggle('nos');
-  $('sidebtn').textContent = c ? 'Show properties' : 'Hide properties';
+  $('sidebtn').textContent = c ? 'Show Properties' : 'Hide Properties';
   size2();
   size3();
 };
@@ -17940,7 +18141,7 @@ function phRender() {
     '<label class=sr>Layout number<input type=number id=ph_seed min=1 max=99999 step=1 value=' +
     S.seed +
     '></label>' +
-    '<button id=ph_shuf>Shuffle layout</button>' +
+    '<button id=ph_shuf>Shuffle Layout</button>' +
     '<button class=pbgo id=pb_go>Build</button>' +
     '<small>Each layout number gives a different room arrangement, built to code (stairs, windows, egress, structure, kitchen cabinets). After Build, move over the plan and click to place the house. Floors are added to your plan, and floors it already has get the new walls and rooms, so place it in clear ground.</small>';
 }
@@ -17989,7 +18190,7 @@ function phShiftItem(it, dx, dy) {
 function phBuild() {
   const S = phSet,
     keep = JSON.parse(JSON.stringify(M));
-  let data = null;
+  let data;
   try {
     const r = randomBuild(S.seed * 7919 + 13, {
       W: S.W,
@@ -19063,6 +19264,151 @@ function kitchenCabinets() {
     });
   });
 }
+/* a 3 ft walkway: in every furnished room a 3 ft wide clear path must run from each door to the middle of the room.
+   Pieces that block it are removed, least important first (loose pieces before beds, sofas and storage). */
+var FURN_KEEP = [
+  'coffee',
+  'chair',
+  'night',
+  'armchair',
+  'desk',
+  'dresser',
+  'bookshelf',
+  'loveseat',
+  'dining',
+  'tvstand',
+  'tv',
+];
+function furnWalkOk(F, r, fi) {
+  const xs = r.pts.map((q) => q[0]),
+    ys = r.pts.map((q) => q[1]),
+    x0 = Math.min(...xs) + 0.2,
+    x1 = Math.max(...xs) - 0.2,
+    y0 = Math.min(...ys) + 0.2,
+    y1 = Math.max(...ys) - 0.2,
+    W = 3,
+    mx = Math.min(W / 2, (x1 - x0) / 2),
+    my = Math.min(W / 2, (y1 - y0) / 2),
+    inR = (q) => q[0] > x0 && q[0] < x1 && q[1] > y0 && q[1] < y1,
+    boxOf = (P) => {
+      const a = P.map((q) => q[0]),
+        b = P.map((q) => q[1]);
+      return [Math.min(...a), Math.min(...b), Math.max(...a), Math.max(...b)];
+    },
+    obs = [];
+  (F.furn || []).forEach((f) => inR(f.c) && obs.push(boxOf(furnPts(f))));
+  (F.posts || []).forEach((q) => obs.push(boxOf(pmPostPts(q))));
+  [F, M.floors[fi - 1]].forEach((G) =>
+    ((G && G.stairs) || []).forEach((st) => !st.hid && stairPolys(st).forEach((P) => obs.push(boxOf(P)))),
+  );
+  const doors = [];
+  F.walls.forEach((w) =>
+    (w.open || [])
+      .filter((o) => o.kind === 'door' && o.dt !== 'bulkhead')
+      .forEach((o) => {
+        const c = [w.a[0] + (w.b[0] - w.a[0]) * o.t, w.a[1] + (w.b[1] - w.a[1]) * o.t];
+        if (c[0] < x0 - 1 || c[0] > x1 + 1 || c[1] < y0 - 1 || c[1] > y1 + 1) return;
+        doors.push([Math.max(x0, Math.min(x1, c[0])), Math.max(y0, Math.min(y1, c[1]))]);
+      }),
+  );
+  if (!doors.length) return true;
+  const g = 0.25,
+    nx = Math.max(1, Math.floor((x1 - x0) / g)),
+    ny = Math.max(1, Math.floor((y1 - y0) / g)),
+    pt = (i, j) => [x0 + (i + 0.5) * g, y0 + (j + 0.5) * g],
+    free = (q) => {
+      if (q[0] < x0 + mx - 1e-6 || q[0] > x1 - mx + 1e-6 || q[1] < y0 + my - 1e-6 || q[1] > y1 - my + 1e-6)
+        return false;
+      return obs.every(
+        (b) =>
+          Math.hypot(Math.max(b[0] - q[0], 0, q[0] - b[2]), Math.max(b[1] - q[1], 0, q[1] - b[3])) >=
+          W / 2 - 1e-6,
+      );
+    },
+    ok = Array.from({length: ny}, (_, j) => Array.from({length: nx}, (_, i) => free(pt(i, j)))),
+    near = (q, rad) => {
+      let best = null;
+      for (let j = 0; j < ny; j++)
+        for (let i = 0; i < nx; i++)
+          if (ok[j][i]) {
+            const p = pt(i, j),
+              d = Math.hypot(p[0] - q[0], p[1] - q[1]);
+            if (d <= rad && (!best || d < best.d)) best = {d, i, j};
+          }
+      return best;
+    },
+    ctr = near([(x0 + x1) / 2, (y0 + y1) / 2], 1e9);
+  if (!ctr) return (x1 - x0 < 5 || y1 - y0 < 5) && true;
+  /* flood fill from the middle of the room */
+  const seen = Array.from({length: ny}, () => Array(nx).fill(false)),
+    st = [[ctr.i, ctr.j]];
+  seen[ctr.j][ctr.i] = true;
+  while (st.length) {
+    const [i, j] = st.pop();
+    [
+      [1, 0],
+      [-1, 0],
+      [0, 1],
+      [0, -1],
+    ].forEach(([a, b]) => {
+      const u = i + a,
+        v = j + b;
+      if (u >= 0 && v >= 0 && u < nx && v < ny && ok[v][u] && !seen[v][u]) {
+        seen[v][u] = true;
+        st.push([u, v]);
+      }
+    });
+  }
+  return doors.every((d) => {
+    const n = near(d, W + 0.5);
+    return n && seen[n.j][n.i];
+  });
+}
+function furnWalkways() {
+  M.floors.forEach((F, fi) => {
+    F.rooms.forEach((r) => {
+      if (r.hid || !r.pts || r.pts.length !== 4) return;
+      const xs = r.pts.map((q) => q[0]),
+        ys = r.pts.map((q) => q[1]);
+      if (Math.max(...xs) - Math.min(...xs) < 7 || Math.max(...ys) - Math.min(...ys) < 7) return;
+      const inside4 = (f) =>
+          f.c[0] > Math.min(...xs) &&
+          f.c[0] < Math.max(...xs) &&
+          f.c[1] > Math.min(...ys) &&
+          f.c[1] < Math.max(...ys),
+        rank = (f) => {
+          const k = FURN_KEEP.indexOf(f.k);
+          return k < 0 ? 99 : k;
+        };
+      /* only furniture is moved: when the room fails even when empty (a stair in the way, say) it is left alone */
+      const mine = (F.furn || []).filter(inside4),
+        keep = (F.furn || []).filter((f) => !inside4(f)),
+        all = F.furn;
+      F.furn = keep;
+      const emptyOk = furnWalkOk(F, r, fi);
+      F.furn = all;
+      if (!emptyOk || !mine.length) return;
+      let guard = 0;
+      while (!furnWalkOk(F, r, fi) && guard++ < 12) {
+        const list = (F.furn || []).filter(inside4).sort((a, b) => rank(a) - rank(b));
+        if (!list.length) break;
+        /* take the least important piece whose removal clears the path, else the least important one */
+        let pick = null;
+        for (const f of list) {
+          const i = F.furn.indexOf(f);
+          F.furn.splice(i, 1);
+          const good = furnWalkOk(F, r, fi);
+          F.furn.splice(i, 0, f);
+          if (good) {
+            pick = f;
+            break;
+          }
+        }
+        F.furn.splice(F.furn.indexOf(pick || list[0]), 1);
+      }
+    });
+  });
+}
 function furnishHouse() {
   M.floors.forEach((F, fi) => {
     const blk = [];
@@ -19155,6 +19501,7 @@ function furnishHouse() {
       });
     });
   });
+  furnWalkways();
 }
 function pbLayout(plan, rot, c) {
   const t = WALLT[wallSize],
@@ -20412,7 +20759,7 @@ function bpPlan(S, fi, g) {
   tuOn(M.floors.indexOf(F)).forEach((T) => V.poly(turPts(T), 'k', 0.012));
   (F.decks || []).forEach((D) => {
     if (D.hid) return;
-    V.poly(rect(D), 'k', 0.01, ' stroke-dasharray="0.12 0.05"');
+    V.poly(deckPts(D) || rect(D), 'k', 0.01, ' stroke-dasharray="0.12 0.05"');
     V.text([(D.x0 + D.x1) / 2, (D.y0 + D.y1) / 2], 'DECK', 0.12);
   });
   (F.cabs || []).forEach((c) => !c.hid && V.poly(cabPts(c), 'lt', 0.007));
@@ -20984,9 +21331,9 @@ function bpBuild(name, raw) {
     '.wk{fill:var(--ink);stroke:var(--ink);stroke-linejoin:miter}.wf{stroke:none}.tx{fill:var(--ink);stroke:none}' +
     '@page{size:17in 11in;margin:0}@media print{body{background:#fff}.bar{display:none}.sheet{margin:0;max-width:none;box-shadow:none;page-break-after:always;break-after:page}.sheet svg{width:17in;height:11in}}';
   const js =
-    "document.getElementById('tg').onclick=function(){document.body.classList.toggle('pr');this.textContent=document.body.classList.contains('pr')?'Show blueprint colours':'Show print colours'};" +
+    "document.getElementById('tg').onclick=function(){document.body.classList.toggle('pr');this.textContent=document.body.classList.contains('pr')?'Show Blueprint Colors':'Show Print Colors'};" +
     "document.getElementById('pr').onclick=function(){window.print()};";
-  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${bpEsc(name)} - Blueprint</title><style>${css}</style></head><body><div class="bar"><b>${bpEsc(name)}</b><span>${sheets.length} sheets</span><button id="tg">Show print colours</button><button id="pr">Print / Save as PDF</button></div>${svgs.map((v) => `<section class="sheet">${v}</section>`).join('')}<script>${js}<\/script></body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${bpEsc(name)} - Blueprint</title><style>${css}</style></head><body><div class="bar"><b>${bpEsc(name)}</b><span>${sheets.length} sheets</span><button id="tg">Show Print Colors</button><button id="pr">Print / Save as PDF</button></div>${svgs.map((v) => `<section class="sheet">${v}</section>`).join('')}<script>${js}<\/script></body></html>`;
 }
 /* ---------- Blueprint PDF ----------
    Writes the drawing set as a real PDF (one 17 x 11 in page per sheet, black on white) straight from the sheet SVGs: lines,
@@ -21572,7 +21919,13 @@ function materials() {
       deckPosts(D, fi).forEach(() => add(cd, nmD + ' post', '6x6', ph + 0.5, 1));
       const bl = I.ax === 'x' ? I.D : I.W,
         across = I.ax === 'x' ? I.W : I.D;
-      add(cd, nmD + ' decking board', '5/4x6', bl, Math.ceil(across / (5.6875 / 12)));
+      add(
+        cd,
+        nmD + ' decking board',
+        '5/4x6',
+        bl,
+        Math.ceil((across * dkArea(D)) / Math.max(1, I.W * I.D) / (5.6875 / 12)),
+      );
       if (D.rail) {
         deckRailEdges(D, fi).forEach(([p, p2]) => rail(nmD + ' railing', p, p2, (D.rh || 36) / 12, cd));
       }
@@ -21749,7 +22102,7 @@ function openMats() {
   o.style.cssText =
     'position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:300;display:flex;align-items:center;justify-content:center;padding:16px';
   o.innerHTML =
-    '<div style="background:#fff;border-radius:10px;width:min(820px,100%);max-height:100%;display:flex;flex-direction:column;box-shadow:0 8px 30px rgba(0,0,0,.35)"><div style="display:flex;justify-content:flex-end;padding:8px 12px 0"><button id=mclose>Close ✕</button></div><div style="overflow:auto"><style>' +
+    '<div style="background:#fff;border-radius:10px;width:min(820px,100%);max-height:100%;display:flex;flex-direction:column;box-shadow:0 8px 30px rgba(0,0,0,.35)"><div style="display:flex;justify-content:flex-end;padding:8px 12px 0"><button id=mclose>Close</button></div><div style="overflow:auto"><style>' +
     MATCSS +
     '</style><div style="padding:0 24px 20px;color:#222">' +
     head +
