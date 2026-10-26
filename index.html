@@ -834,7 +834,7 @@ canvas {
   <div class="pane" id="p2"><canvas id="c2"></canvas><div class="tag">2D plan · wheel zoom · right-click cancels · right-drag pans</div><div id="split" title="Drag to resize the split · double-click to reset"></div></div>
   <div class="pane" id="p3"><canvas id="c3"></canvas><div class="tag">3D view · drag orbit · wheel zoom</div></div>
 <div id='side'><details id='propd' open><summary>Properties</summary><div id='props'></div></details><details id='terrd'><summary>Terrain</summary><div id='terrBody'></div></details><details id='furnd'><summary>Furniture / Appliances</summary><div id='furnList'></div></details><details><summary>Floors</summary><div id='flList'></div><div class='r fb'><button id='addf2'>+ Add</button><button id='delf2'>− Remove</button></div></details><details><summary>Objects</summary><div class='r fb'><button id='frm' title='Show framing for all objects'>▦ Framing: all</button></div><div id='obList'></div></details></div></div>
-<div id='tb'><span>View</span><button data-vw='grid' title='Plan grid'>Grid</button><button data-vw='dims' title='Wall dimensions (zoom in to see them)'>Dimensions</button><button data-vw='labels' title='Room names and areas'>Room labels</button><button data-vw='land' title='3 ft stair landing zones'>Landings</button><button data-vw='roofs' title='Show roofs and dormers'>Roofs</button><button data-vw='fram' title='Show framing for all objects'>Framing</button><button data-vw='terr' title='Terrain and trees in 3D'>Terrain</button><button data-vw='sky' title='Sky in 3D'>Sky</button><button id='snapbtn' title='Snapping: Center'><span id='snapl'>Snapping: Center</span></button><button id='drawcyc' title='Click to cycle the drawing mode: Line, Box, Curved'><span id='drawcl'>Drawing: Line</span></button><span id='bld' title='Current program build'>CADieux v1.4.0 · build 461</span></div>
+<div id='tb'><span>View</span><button data-vw='grid' title='Plan grid'>Grid</button><button data-vw='dims' title='Wall dimensions (zoom in to see them)'>Dimensions</button><button data-vw='labels' title='Room names and areas'>Room labels</button><button data-vw='land' title='3 ft stair landing zones'>Landings</button><button data-vw='roofs' title='Show roofs and dormers'>Roofs</button><button data-vw='fram' title='Show framing for all objects'>Framing</button><button data-vw='terr' title='Terrain and trees in 3D'>Terrain</button><button data-vw='sky' title='Sky in 3D'>Sky</button><button id='snapbtn' title='Snapping: Center'><span id='snapl'>Snapping: Center</span></button><button id='drawcyc' title='Click to cycle the drawing mode: Line, Box, Curved'><span id='drawcl'>Drawing: Line</span></button><span id='bld' title='Current program build'>CADieux v1.4.0 · build 463</span></div>
 <div id='st'>Select: click to select, drag to move, drag a square handle to resize. Delete removes. Q rotates stairs.</div>
 <div id='fly'></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -1876,6 +1876,24 @@ function renderSide0() {
               '</select>',
           )
         : '') +
+      (o.kind === 'window'
+        ? row(
+            'Shape',
+            '<select id=p_wsh>' +
+              Object.keys(WSHN)
+                .map(
+                  (k) =>
+                    '<option value=' +
+                    k +
+                    (k === (o.shape || 'rect') ? ' selected' : '') +
+                    '>' +
+                    WSHN[k] +
+                    '</option>',
+                )
+                .join('') +
+              '</select>',
+          )
+        : '') +
       row('Width (ft)', num('p_w', o.w, 0.5)) +
       (o.kind === 'door' && !['cased', 'arched'].includes(o.dt || 'hinged')
         ? row('Door', '<button id=p_dopen>' + (o.ang > 0 ? 'Close door' : 'Open door') + '</button>')
@@ -1935,6 +1953,15 @@ function renderSide0() {
         clampT(o, w);
         delete o.color;
         delete o.tex;
+      }),
+    );
+    B('p_wsh', (v) =>
+      mut(() => {
+        if (v === 'rect') delete o.shape;
+        else o.shape = v;
+        if (v === 'round' || v === 'octagon')
+          o.w = Math.max(1.5, Math.min(OP.window[1] - WSILL[o.wt || 'dh'], g.L - 0.5));
+        clampT(o, w);
       }),
     );
     B('p_wt', (v) =>
@@ -7642,6 +7669,51 @@ function polyRects(P) {
   });
   return out;
 }
+/* roofs over a rectilinear outline: the fewest overlapping rectangles, each wing running through the junction, so hips and valleys meet like a real roof */
+function polyRectsCover(P) {
+  const xs = [...new Set(P.map((p) => p[0]))].sort((a, b) => a - b),
+    ys = [...new Set(P.map((p) => p[1]))].sort((a, b) => a - b),
+    nx = xs.length - 1,
+    ny = ys.length - 1,
+    on = Array.from({length: ny}, (_, j) =>
+      Array.from({length: nx}, (_, i) => inside([(xs[i] + xs[i + 1]) / 2, (ys[j] + ys[j + 1]) / 2], P)),
+    ),
+    full = (i0, i1, j0, j1) => {
+      for (let j = j0; j <= j1; j++) for (let i = i0; i <= i1; i++) if (!on[j][i]) return false;
+      return true;
+    },
+    cand = [];
+  if (nx * ny > 400) return polyRects(P);
+  for (let j0 = 0; j0 < ny; j0++)
+    for (let j1 = j0; j1 < ny; j1++)
+      for (let i0 = 0; i0 < nx; i0++)
+        for (let i1 = i0; i1 < nx; i1++)
+          if (
+            full(i0, i1, j0, j1) &&
+            !(i0 > 0 && full(i0 - 1, i1, j0, j1)) &&
+            !(i1 < nx - 1 && full(i0, i1 + 1, j0, j1)) &&
+            !(j0 > 0 && full(i0, i1, j0 - 1, j1)) &&
+            !(j1 < ny - 1 && full(i0, i1, j0, j1 + 1))
+          )
+            cand.push({i0, i1, j0, j1, x0: xs[i0], x1: xs[i1 + 1], y0: ys[j0], y1: ys[j1 + 1]});
+  const done = on.map((r) => r.map(() => false)),
+    out = [],
+    need = () => on.some((r, j) => r.some((v, i) => v && !done[j][i]));
+  while (need()) {
+    let best = null;
+    cand.forEach((c) => {
+      let g = 0;
+      for (let j = c.j0; j <= c.j1; j++)
+        for (let i = c.i0; i <= c.i1; i++) if (!done[j][i]) g += (xs[i + 1] - xs[i]) * (ys[j + 1] - ys[j]);
+      if (g > 0 && (!best || g > best.g + 1e-6)) best = {g, c};
+    });
+    if (!best) break;
+    out.push(best.c);
+    for (let j = best.c.j0; j <= best.c.j1; j++)
+      for (let i = best.c.i0; i <= best.c.i1; i++) done[j][i] = true;
+  }
+  return out.filter((r) => r.x1 - r.x0 >= 1 && r.y1 - r.y0 >= 1);
+}
 function finishPoly() {
   const P = roomPts.filter((p, i, a) => !i || p[0] !== a[i - 1][0] || p[1] !== a[i - 1][1]);
   roomPts = [];
@@ -7721,7 +7793,7 @@ function finishPoly() {
     status('Roof added. Draw another, or right-click to go back to Select.');
     return;
   }
-  let R = P.length >= 3 ? polyRects(P) : [];
+  let R = P.length >= 3 ? (tool === 'roof' ? polyRectsCover(P) : polyRects(P)) : [];
   if (tool === 'foundation' && fdnType === 'basement')
     R = R.sort((a, b) => (b.x1 - b.x0) * (b.y1 - b.y0) - (a.x1 - a.x0) * (a.y1 - a.y0)).slice(0, 1);
   const fin = {roof: finishRoof, foundation: finishFnd, fsys: finishFS, deck: finishDeck}[tool],
@@ -12626,8 +12698,109 @@ function build3b() {
 }
 /* windows and doors in 3D: built from frames, sashes, panels and hardware so each type reads as itself */
 /* casing around a door or window opening, on the interior and/or exterior face of the wall */
+var WSHN = {
+  rect: 'Rectangle',
+  arch: 'Arched top',
+  half: 'Half-round (fanlight)',
+  round: 'Round / oval',
+  octagon: 'Octagon',
+  triangle: 'Triangle (gable)',
+};
+/* outline of a window shape inside the box x0..x1, z0..z1, as [along-wall, height] points */
+function winShapePts(sh, x0, x1, z0, z1) {
+  const m = (x0 + x1) / 2,
+    hw = (x1 - x0) / 2,
+    hh = (z1 - z0) / 2,
+    zc = (z0 + z1) / 2,
+    arcPts = (cx, cz, rx, rz, a0, a1, n) =>
+      Array.from({length: n + 1}, (_, i) => {
+        const a = a0 + ((a1 - a0) * i) / n;
+        return [cx + rx * Math.cos(a), cz + rz * Math.sin(a)];
+      });
+  if (sh === 'round') return arcPts(m, zc, hw, hh, 0, Math.PI * 2, 36).slice(0, -1);
+  if (sh === 'half') return [[x0, z0], [x1, z0], ...arcPts(m, z0, hw, Math.min(hw, z1 - z0), 0, Math.PI, 20)];
+  if (sh === 'arch') {
+    const ra = Math.min(hw, (z1 - z0) * 0.7),
+      zs = z1 - ra;
+    return [[x0, z0], [x1, z0], ...arcPts(m, zs, hw, ra, 0, Math.PI, 20)];
+  }
+  if (sh === 'octagon') {
+    const c = Math.min(hw, hh) * 0.58;
+    return [
+      [x0 + c, z0],
+      [x1 - c, z0],
+      [x1, z0 + c],
+      [x1, z1 - c],
+      [x1 - c, z1],
+      [x0 + c, z1],
+      [x0, z1 - c],
+      [x0, z0 + c],
+    ];
+  }
+  if (sh === 'triangle')
+    return [
+      [x0, z0],
+      [x1, z0],
+      [m, z1],
+    ];
+  return [
+    [x0, z0],
+    [x1, z0],
+    [x1, z1],
+    [x0, z1],
+  ];
+}
+/* a non-rectangular window: the wall opening stays a rectangle, so the corners are filled with wall, then frame, glass and bars follow the shape */
+function shapedWindow3(g, o, w, m, z0, z1, B, fr, glass) {
+  const sh = o.shape,
+    x0 = m - o.w / 2,
+    x1 = m + o.w / 2,
+    f = 0.16,
+    up = new THREE.Vector3(0, 0, 1),
+    X = new THREE.Vector3(g.d[0], g.d[1], 0),
+    Z = new THREE.Vector3().crossVectors(X, up),
+    bas = new THREE.Matrix4().makeBasis(X, up, Z),
+    wm = mat(w.color || '#ece9e0', 'none'),
+    pts = (a) => a.map((p) => new THREE.Vector2(p[0], p[1])),
+    add = (shape, depth, k, mt) => {
+      const geo = new THREE.ExtrudeGeometry(shape, {depth, bevelEnabled: false});
+      geo.translate(0, 0, -depth / 2 + k);
+      geo.applyMatrix4(bas);
+      geo.translate(g.ax, g.ay, ZB);
+      const mesh = new THREE.Mesh(geo, mt);
+      mesh.userData.sel = TAG;
+      grp.add(mesh);
+    },
+    outer = winShapePts(sh, x0, x1, z0, z1),
+    inner = winShapePts(sh, x0 + f, x1 - f, z0 + f, z1 - f),
+    box4 = [
+      [x0, z0],
+      [x1, z0],
+      [x1, z1],
+      [x0, z1],
+    ],
+    sp = new THREE.Shape(pts(box4)),
+    fp = new THREE.Shape(pts(outer));
+  sp.holes.push(new THREE.Path(pts(outer).reverse()));
+  add(sp, w.t, 0, wm);
+  fp.holes.push(new THREE.Path(pts(inner).reverse()));
+  add(fp, 0.3, 0, fr);
+  add(new THREE.Shape(pts(inner)), 0.04, 0, glass);
+  const iz0 = z0 + f,
+    iz1 = z1 - f,
+    ix0 = x0 + f,
+    ix1 = x1 - f;
+  B(m - 0.025, m + 0.025, iz0, iz1, 0.06, fr, 0.03);
+  if (sh === 'round' || sh === 'octagon')
+    B(ix0, ix1, (iz0 + iz1) / 2 - 0.025, (iz0 + iz1) / 2 + 0.025, 0.06, fr, 0.03);
+  if (sh === 'arch') {
+    const zs = z1 - Math.min(o.w / 2, (z1 - z0) * 0.7) - 0.03;
+    B(ix0, ix1, zs - 0.025, zs + 0.025, 0.06, fr, 0.03);
+  }
+}
 function openTrim3(g, o, w, F, m) {
   if (!o.trimIn && !o.trimEx) return;
+  if (o.kind === 'window' && o.shape) return;
   const ext = extSide(w, F),
     cw = (o.trimW || 3.5) / 12,
     tt = 0.06,
@@ -12678,6 +12851,11 @@ function openDetail3(g, o, w, F, m) {
       iz1 = z1 - f,
       zm = (iz0 + iz1) / 2,
       glass = mat(o.color || '#8fbfee', 'none', {transparent: true, opacity: 0.5});
+    if (o.shape && o.shape !== 'rect') {
+      shapedWindow3(g, o, w, m, z0, z1, B, fr, glass);
+      if (o.shape !== 'round') B(x0 - 0.1, x1 + 0.1, z0 - 0.1, z0, 0.22, fr, w.t / 2 + 0.06);
+      return;
+    }
     /* frame */
     B(x0, x1, z0, z0 + f, 0.3, fr);
     B(x0, x1, z1 - f, z1, 0.3, fr);
